@@ -1,3 +1,5 @@
 <Solution>
+  <Project Path="BootStrapper.Core/BootStrapper.Core.csproj" Id="6b4c9ff6-c06c-4257-9d1f-7acf76a110ca" />
+  <Project Path="BootStrapper.Tests/BootStrapper.Tests.csproj" Id="d0c49f61-b9ab-422d-951e-00a3a8fb5d7e" />
   <Project Path="BootStrapper/BootStrapper.csproj" />
 </Solution>
