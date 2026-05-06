@@ -1,4 +1,4 @@
-namespace Category
+namespace BootStrapper.Core.Models
 {
     public class Category
     {
@@ -6,7 +6,7 @@ namespace Category
         public enum ProjectCategory
         {
             Gameplay,
-            Camers,
+            Camera,
             Networking,
             UI,
             Steam,

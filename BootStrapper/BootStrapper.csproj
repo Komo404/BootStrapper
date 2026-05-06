@@ -10,6 +10,13 @@
   <ItemGroup>
     <Folder Include="Models\" />
     <AvaloniaResource Include="Assets\**" />
+    <Folder Include="Templates\Camera\ThirdPerson\scripts\" />
+    <Folder Include="Templates\Gameplay\HSM\scripts\" />
+    <Folder Include="Templates\Audio\" />
+    <Folder Include="Templates\Networking\Fishnet-P2P\scripts\" />
+    <Folder Include="Templates\Steam\SteamOverlay\scripts\" />
+    <Folder Include="Templates\UI\" />
+    <Folder Include="Templates\SaveSystem\" />
   </ItemGroup>
 
   <ItemGroup>
