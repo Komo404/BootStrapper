@@ -1,11 +1,14 @@
 <Window xmlns="https://github.com/avaloniaui"
+        xmlns:collections="using:System.Collections"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="using:BootStrapper.ViewModels"
+        xmlns:view="clr-namespace:BootStrapper.Views"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="BootStrapper.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
+        RequestedThemeVariant="Dark"
         Icon="/Assets/avalonia-logo.ico"
         Title="BootStrapper">
 
@@ -15,6 +18,7 @@
         <vm:MainWindowViewModel/>
     </Design.DataContext>
 
-    <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-
+    <Grid Background="Pink">
+        <ContentControl Content="{Binding CurrentView}" />
+    </Grid>
 </Window>

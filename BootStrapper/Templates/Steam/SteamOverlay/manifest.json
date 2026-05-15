@@ -1,10 +1,10 @@
 ﻿{
     "name": "",
     "description": "",
-    "creationdate": "",
-    "unityMinVersion": "",
-    "unityMaxVersion": "",
+    "minUnityVersion": "",
+    "maxUnityVersion": "",
     "category": "",
     "author": "",
+    "version": "",
     "dependencies": {}
 }

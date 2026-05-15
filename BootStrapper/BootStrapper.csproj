@@ -34,4 +34,22 @@
   <ItemGroup>
     <ProjectReference Include="..\BootStrapper.Core\BootStrapper.Core.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Views\Projects\ProjectList.axaml.cs">
+      <DependentUpon>ProjectList.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Projects\ProjectCreate.axaml.cs">
+      <DependentUpon>ProjectCreate.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Templates\TemplateCreate.axaml.cs">
+      <DependentUpon>TemplateCreate.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Templates\TemplateInfoView.axaml.cs">
+      <DependentUpon>TemplateInfoView.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\HomeView.axaml.cs">
+      <DependentUpon>HomeView.axaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
 </Project>
