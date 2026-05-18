@@ -4,7 +4,7 @@ using System.Text;
 
 namespace BootStrapper.ViewModels.Projects
 {
-    internal class ProjectListViewmodel : ViewModelBase
+    internal class ProjectListViewModel : ViewModelBase
     {
     }
 }

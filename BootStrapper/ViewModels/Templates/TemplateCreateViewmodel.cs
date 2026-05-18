@@ -4,7 +4,7 @@ using System.Text;
 
 namespace BootStrapper.ViewModels.Templates
 {
-    internal class TemplateCreateViewmodel : ViewModelBase
+    internal class TemplateCreateViewModel : ViewModelBase
     {
     }
 }

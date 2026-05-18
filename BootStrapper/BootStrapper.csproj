@@ -39,8 +39,8 @@
     <Compile Update="Views\Projects\ProjectList.axaml.cs">
       <DependentUpon>ProjectList.axaml</DependentUpon>
     </Compile>
-    <Compile Update="Views\Projects\ProjectCreate.axaml.cs">
-      <DependentUpon>ProjectCreate.axaml</DependentUpon>
+    <Compile Update="Views\Projects\ProjectCreateView.axaml.cs">
+      <DependentUpon>ProjectCreateView.axaml</DependentUpon>
     </Compile>
     <Compile Update="Views\Templates\TemplateCreate.axaml.cs">
       <DependentUpon>TemplateCreate.axaml</DependentUpon>

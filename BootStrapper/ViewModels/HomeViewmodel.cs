@@ -1,11 +1,26 @@
-﻿using System;
+﻿using BootStrapper.ViewModels.Projects;
+using BootStrapper.Views;
+using CommunityToolkit.Mvvm.Input;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace BootStrapper.ViewModels.Templates
+namespace BootStrapper.ViewModels
 {
-    public partial class HomeViewmodel : ViewModelBase
+    public partial class HomeViewModel : ViewModelBase
     {
-        public string Test { get; set; } = "Home";
+        public string HomeViewMainTEXT { get; set; } = "Hello from HomeView/ViewModel";
+        private readonly NavigationService _navigation;
+
+        public HomeViewModel(NavigationService navigation)
+        {
+            _navigation = navigation;
+        }
+
+        [RelayCommand]
+        private void GoToProjectCreate()
+        {
+            _navigation.CurrentView = new ProjectCreateViewModel(_navigation);
+        }
     }
 }

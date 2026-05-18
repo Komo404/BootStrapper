@@ -10,10 +10,5 @@ namespace BootStrapper.Views
         {
             InitializeComponent();
         }
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            // Quando loaded 
-        }
     }
 }
