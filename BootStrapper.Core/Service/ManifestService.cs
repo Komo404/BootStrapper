@@ -8,8 +8,7 @@ namespace BootStrapper.Core.Service
 {
     internal class ManifestService
     {
-
-        public static void WriteTemplateManifest(string manifestPath, Template template) // Fluxo: Serializa um OBJETO para JSON e gera um arquivo manifest.json no path recebido
+        public static void WriteTemplateManifest(string manifestPath, UserConfig template) // Fluxo: Serializa um OBJETO para JSON e gera um arquivo manifest.json no path recebido
         {
             string manifest = SerializeItem(template);
 
@@ -19,7 +18,7 @@ namespace BootStrapper.Core.Service
             }
         }
 
-        public static Template ReadTemplateManifest(string manifestpath) // Fluxo: Lê o arquivo de manifest que está naquele path, desserializa e retorna um objeto com as informações do template
+        public static UserConfig ReadTemplateManifest(string manifestpath) // Fluxo: Lê o arquivo de manifest que está naquele path, desserializa e retorna um objeto com as informações do template
         {
             if (!File.Exists(manifestpath))
             {
@@ -27,21 +26,21 @@ namespace BootStrapper.Core.Service
             }
 
             string manifest = File.ReadAllText(manifestpath);
-            Template template = DeserializeItem(manifest);
+            UserConfig template = DeserializeItem(manifest);
             return template;
         }
 
-        static string SerializeItem(Template template)
+        static string SerializeItem(UserConfig template)
         {
             string json = JsonSerializer.Serialize(template);
             return json;
         }
 
-        static Template DeserializeItem(string manifest)
+        static UserConfig DeserializeItem(string manifest)
         {
             ArgumentNullException.ThrowIfNull(manifest);
 
-            Template? template = JsonSerializer.Deserialize<Template>(manifest);
+            UserConfig? template = JsonSerializer.Deserialize<UserConfig>(manifest);
             return template ?? throw new InvalidOperationException("Erro ao desserializar");
         }
     }

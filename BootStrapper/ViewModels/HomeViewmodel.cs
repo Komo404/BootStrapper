@@ -17,6 +17,8 @@ namespace BootStrapper.ViewModels
             _navigation = navigation;
         }
 
+        public HomeViewModel() { }
+
         [RelayCommand]
         private void GoToProjectCreate()
         {
