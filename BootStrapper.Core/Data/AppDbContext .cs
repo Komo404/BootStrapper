@@ -13,8 +13,8 @@ public class AppDbContext : DbContext
     public DbSet<UserConfig> UserConfigs { get; set; }
 
     private static readonly ValueConverter<string[], string> JsonConverter = new ValueConverter<string[], string>(
-        v => System.Text.Json.JsonSerializer.Serialize(v, (System.Text.Json.JsonSerializerOptions?)null),
-        v => System.Text.Json.JsonSerializer.Deserialize<string[]>(v, (System.Text.Json.JsonSerializerOptions?)null) ?? Array.Empty<string>()
+        templates => System.Text.Json.JsonSerializer.Serialize(templates, (System.Text.Json.JsonSerializerOptions?)null),
+        templates => System.Text.Json.JsonSerializer.Deserialize<string[]>(templates, (System.Text.Json.JsonSerializerOptions?)null) ?? Array.Empty<string>()
     );
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -26,15 +26,12 @@ public class AppDbContext : DbContext
     {
         modelBuilder
             .Entity<Project>()
-            .Property(e => e.Templates)
-            .HasConversion(
-                v => string.Join(';', v),
-                v => v.Split(';', StringSplitOptions.RemoveEmptyEntries)
-            );
+            .Property(e => e.Templates) // String Array -> Json string
+            .HasConversion(JsonConverter);
 
         modelBuilder
             .Entity<Project>()
-            .Property(e => e.ChangeHistory) // String Array -> Json string
+            .Property(e => e.ChangeHistory) 
             .HasConversion(JsonConverter);
     }
 }
