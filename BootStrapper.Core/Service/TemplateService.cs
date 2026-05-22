@@ -11,73 +11,80 @@ public class TemplateService
 
     List<Template> GetAllTemplates(string templateFolderPath) // Scan Templates Directory 
     {
-        // Lógica: 1. Ler todos os arquivos de template do diretório especificado.
-        string[] manifests = System.IO.Directory.GetFiles(templateFolderPath, ".json");
+        // Lógica: 1. Ler todos os manifest JSON
+        string[] manifests = Directory.GetFiles(templateFolderPath, "*.json");
 
         List<Template> templates = new List<Template>();
-    
-        // 2. Para cada arquivo, desserializar 
-        foreach (string manifestPath in manifests)
+
+        // 2. Para cada arquivo, desserializar
+        foreach (string manifest in manifests)
         {
-            Template template = ManifestService.ReadManifest(manifestPath);
-            // Adicionar o template à lista de templates
+            Template template = ManifestService.ReadManifest<Template>(manifest);
             templates.Add(template);
         }
+
         return templates;
     }
 
-    List<Template> GetTemplateByCategory(string templateFolderPath, string category) // Scan Templates Directory, filtra por categoria e retorna os templates daquela categoria
+    List<Template> GetTemplateByTag(string templateFolderPath, string tag) // Scan Templates Directory, filtra por tag e retorna os templates daquela tag
     {
         List<Template> allTemplates = GetAllTemplates(templateFolderPath);
-        return allTemplates.FindAll(t => t.Category == category);
+        return allTemplates.FindAll(template => template.Tags.Contains(tag));
     }
 
     Template GetTemplateById(string templateFolderPath, Guid templateId) // Scan Templates Directory, filtra por ID e retorna o template correspondente
     {
         List<Template> allTemplates = GetAllTemplates(templateFolderPath);
-        Template foundTemplate = allTemplates.Find(template => template.Id == templateId);
-        if (foundTemplate != null)
+
+        Template? foundTemplate = allTemplates.Find(template => template.Id == templateId);
+
+        if (foundTemplate != null) {
             return foundTemplate;
-        else
-            throw new Exception($"Template with ID {templateId} not found.");
+        }
+
+        throw new Exception($"Template with ID {templateId} not found.");
     }
 
-    void CreateTemplate(string creationPath) 
+    void CreateTemplate(string creationPath, Template templateInfo) 
     {
         Template newTemplate = new Template
         {
             Id = Guid.NewGuid(),
-            Name = "New Template",
-            Description = "Description",
-            Version = "1.0.0",  
+            Name = templateInfo.Name,
+            Description = templateInfo.Description,
+            Version = "1.0.0",
             CreationDate = DateTime.Now,
-            maxUnityVersion = 2024,
-            minUnityVersion = 0,
-            Category = "Category"
+            maxUnityVersion = templateInfo.maxUnityVersion,
+            minUnityVersion = templateInfo.minUnityVersion,
+            Tags = new List<string>(),
+            ScriptStructure = new List<Script>()
         };
 
         ManifestService.WriteManifest(creationPath, newTemplate);
     }
 
-    void DeleteTemplate(string templatePath)
+    void DeleteTemplate(string templateFolderPath, Guid templateId)
     {
-        if (System.IO.File.Exists(templatePath))
+        Template template = GetTemplateById(templateFolderPath, templateId);
+
+        if (Directory.Exists(template.TemplatePath))
         {
-            System.IO.File.Delete(templatePath);
+            Directory.Delete(template.TemplatePath, true);
         }
     }
 
-    void UpdateTemplateManifest (string templatePath) 
+    void UpdateTemplateManifest (string templatePath, Template templateInfo) 
     {
         Template updatedManifest = new Template
         {
-            Name = "Updated Template",
-            Description = "Updated Description",
-            Version = "1.0.1",
+            Name = templateInfo.Name,
+            Description = templateInfo.Description,
+            Version = templateInfo.Version,
             CreationDate = DateTime.Now,
-            maxUnityVersion = 2024,
-            minUnityVersion = 0,
-            Category = "Updated Category"
+            maxUnityVersion = templateInfo.maxUnityVersion,
+            minUnityVersion = templateInfo.minUnityVersion,
+            Tags = new List<string>(),
+            ScriptStructure = new List<Script>()
         };
 
         ManifestService.WriteManifest(templatePath, updatedManifest);

@@ -13,7 +13,8 @@
 
     <Design.DataContext> <vm:MainWindowViewModel/> </Design.DataContext>
 
-    <Grid>
-        <ContentControl Content="{Binding Navigation.CurrentView}" />
+    <Grid ColumnDefinitions="200,*">
+        <view:SidebarView Grid.Column="0"/>
+        <ContentControl Grid.Column="1" Content="{Binding Navigation.CurrentView}" />
     </Grid>
 </Window>

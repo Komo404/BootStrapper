@@ -5,24 +5,23 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace BootStrapper.ViewModels
+namespace BootStrapper.ViewModels;
+
+public partial class HomeViewModel : ViewModelBase
 {
-    public partial class HomeViewModel : ViewModelBase
+    public string HomeViewMainTEXT { get; set; } = "Hello from HomeView";
+    private readonly NavigationService _navigation;
+
+    public HomeViewModel(NavigationService navigation)
     {
-        public string HomeViewMainTEXT { get; set; } = "Hello from HomeView/ViewModel";
-        private readonly NavigationService _navigation;
+        _navigation = navigation;
+    }
 
-        public HomeViewModel(NavigationService navigation)
-        {
-            _navigation = navigation;
-        }
+    public HomeViewModel() { }
 
-        public HomeViewModel() { }
-
-        [RelayCommand]
-        private void GoToProjectCreate()
-        {
-            _navigation.CurrentView = new ProjectCreateViewModel(_navigation);
-        }
+    [RelayCommand]
+    private void GoToProjectCreate()
+    {
+        _navigation.CurrentView = new ProjectCreateViewModel(_navigation);
     }
 }

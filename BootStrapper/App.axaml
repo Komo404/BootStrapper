@@ -11,9 +11,11 @@
   
     <Application.Styles>
         <FluentTheme />
+        <StyleInclude Source="avares://BootStraapper/Styles/Buttons.axaml"/>
+        <StyleInclude Source="avares://BootStraapper/Styles/Colors.axaml"/>
     </Application.Styles>
 
     <Application.Resources>
-    
+        
     </Application.Resources>
 </Application>

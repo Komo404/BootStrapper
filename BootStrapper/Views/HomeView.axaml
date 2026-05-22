@@ -8,7 +8,7 @@
              x:DataType="vm:HomeViewModel">
 
     <Design.DataContext>
-        <vm:HomeViewModel></vm:HomeViewModel>
+        <vm:HomeViewModel />
     </Design.DataContext>
             
             <Grid Background="Black">

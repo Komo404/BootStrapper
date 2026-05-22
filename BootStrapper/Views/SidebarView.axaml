@@ -1,0 +1,61 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             xmlns:vm="clr-namespace:BootStrapper.ViewModels"
+             x:Class="BootStrapper.Views.SidebarView"
+             x:DataType="vm:SidebarViewModel">
+  
+    <UserControl.Styles>
+
+        <Style Selector="Button.sidebar">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Height" Value="48"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Padding" Value="12,0"/>
+        </Style>
+
+        <Style Selector="Button.sidebar:pointerover"> <!-- Hover -->
+            <Setter Property="Background" Value="#2D2D2D"/>
+        </Style>
+
+        <Style Selector="TextBlock.menuText">
+            <Setter Property="IsVisible" Value="False"/>
+        </Style>
+
+        <Style Selector="Border:pointerover TextBlock.menuText"> <!-- Mostrar texto quando sidebar hover -->
+            <Setter Property="IsVisible" Value="True"/>
+        </Style>
+
+    </UserControl.Styles>
+
+    <Border x:Name="SidebarBorder"
+            Width="70"
+            Background="#1E1E1E">
+
+        <Border.Styles>
+            <Style Selector="Border:pointerover">
+                <Setter Property="Width" Value="220"/>
+            </Style>
+        </Border.Styles>
+
+        <StackPanel Margin="10">
+            <Button Classes="sidebar">
+                <StackPanel Orientation="Horizontal">
+
+                    <TextBlock Text="◉"
+                               Width="32"
+                               FontSize="18"/>
+
+                    <TextBlock Text="Home"
+                               Classes="menuText"
+                               VerticalAlignment="Center"/>
+                </StackPanel>
+            </Button>
+        </StackPanel>
+    </Border>
+
+</UserControl>  

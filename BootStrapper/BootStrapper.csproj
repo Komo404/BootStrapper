@@ -42,14 +42,23 @@
     <Compile Update="Views\Projects\ProjectCreateView.axaml.cs">
       <DependentUpon>ProjectCreateView.axaml</DependentUpon>
     </Compile>
-    <Compile Update="Views\Templates\TemplateCreate.axaml.cs">
-      <DependentUpon>TemplateCreate.axaml</DependentUpon>
+    <Compile Update="Views\Projects\ProjectInfoView.axaml.cs">
+      <DependentUpon>ProjectInfoView.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Templates\TemplateCreateView.axaml.cs">
+      <DependentUpon>TemplateCreateView.axaml</DependentUpon>
     </Compile>
     <Compile Update="Views\Templates\TemplateInfoView.axaml.cs">
       <DependentUpon>TemplateInfoView.axaml</DependentUpon>
     </Compile>
     <Compile Update="Views\HomeView.axaml.cs">
       <DependentUpon>HomeView.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\SidebarView.axaml.cs">
+      <DependentUpon>SidebarView.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Templates\TemplateListView.axaml.cs">
+      <DependentUpon>TemplateListView.axaml</DependentUpon>
     </Compile>
   </ItemGroup>
 </Project>
