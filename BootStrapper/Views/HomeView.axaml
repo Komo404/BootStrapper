@@ -12,7 +12,8 @@
     </Design.DataContext>
             
             <Grid Background="Black">
-                <TextBlock  Text="{Binding HomeViewMainTEXT}" />
+                <TextBlock Text="{Binding HomeViewMainTEXT}" />
                 <Button Content="{Binding HomeViewMainTEXT}" Command="{Binding GoToProjectCreateCommand}" />
             </Grid>
+
 </UserControl>

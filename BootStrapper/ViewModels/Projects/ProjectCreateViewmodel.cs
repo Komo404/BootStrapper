@@ -4,23 +4,21 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace BootStrapper.ViewModels.Projects
+namespace BootStrapper.ViewModels.Projects;
+
+public partial class ProjectCreateViewModel : ViewModelBase
 {
+    public string ProjectCreateMainTEXT { get; set; } = "Hello from PROJECT CREATE";
+    private readonly NavigationService _navigation;
 
-    public partial class ProjectCreateViewModel : ViewModelBase
+    public ProjectCreateViewModel (NavigationService navigation)
     {
-        public string ProjectCreateMainTEXT { get; set; } = "Hello from PROJECT CREATE";
-        private readonly NavigationService _navigation;
+        _navigation = navigation;
+    }
 
-        public ProjectCreateViewModel (NavigationService navigation)
-        {
-            _navigation = navigation;
-        }
-
-        [RelayCommand]
-        private void GoToHome()
-        {
-            _navigation.CurrentView = new HomeViewModel(_navigation);
-        }
+    [RelayCommand]
+    private void GoToHome()
+    {
+        _navigation.CurrentView = new HomeViewModel(_navigation);
     }
 }
