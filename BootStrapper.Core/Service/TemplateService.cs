@@ -8,35 +8,43 @@ namespace BootStrapper.Core.Service;
 
 public class TemplateService
 {
-
-    List<Template> GetAllTemplates(string templateFolderPath) // Scan Templates Directory 
+    public List<TemplateManifest> GetAllTemplates(string templatesFolderPath) // Scan Templates Directory 
     {
-        // Lógica: 1. Ler todos os manifest JSON
-        string[] manifests = Directory.GetFiles(templateFolderPath, "*.json");
+        List<TemplateManifest> templates = new List<TemplateManifest>();
 
-        List<Template> templates = new List<Template>();
+        // 1. Ler todos os manifest JSON
+        string[] templatefolders = Directory.GetDirectories(templatesFolderPath);
+        List<string> tempList = new List<string>();
 
-        // 2. Para cada arquivo, desserializar
-        foreach (string manifest in manifests)
+        foreach (string folder in templatefolders)
         {
-            Template template = ManifestService.ReadManifest<Template>(manifest);
+            string manifestPath = Path.Combine(folder, $"{Path.GetFileName(folder)}.json");
+            if (File.Exists(manifestPath))
+            {
+                tempList.Add(manifestPath);
+            }
+        }
+
+        foreach (string manifest in tempList) // Ler cada manifest e chamar ReadManifest para ler
+        {
+            TemplateManifest template = ManifestService.ReadManifest<TemplateManifest>(manifest);
             templates.Add(template);
         }
 
         return templates;
     }
 
-    List<Template> GetTemplateByTag(string templateFolderPath, string tag) // Scan Templates Directory, filtra por tag e retorna os templates daquela tag
+    public List<TemplateManifest> GetTemplateByTag(string templatesFolderPath, string tag) // Scan Templates Directory, filtra por tag e retorna os templates daquela tag
     {
-        List<Template> allTemplates = GetAllTemplates(templateFolderPath);
+        List<TemplateManifest> allTemplates = GetAllTemplates(templatesFolderPath);
         return allTemplates.FindAll(template => template.Tags.Contains(tag));
     }
 
-    Template GetTemplateById(string templateFolderPath, Guid templateId) // Scan Templates Directory, filtra por ID e retorna o template correspondente
+    public TemplateManifest GetTemplateById(string templateFolderPath, Guid templateId) // Scan Templates Directory, filtra por ID e retorna o template correspondente
     {
-        List<Template> allTemplates = GetAllTemplates(templateFolderPath);
+        List<TemplateManifest> allTemplates = GetAllTemplates(templateFolderPath);
 
-        Template? foundTemplate = allTemplates.Find(template => template.Id == templateId);
+        TemplateManifest? foundTemplate = allTemplates.Find(template => template.Id == templateId);
 
         if (foundTemplate != null) {
             return foundTemplate;
@@ -45,9 +53,9 @@ public class TemplateService
         throw new Exception($"Template with ID {templateId} not found.");
     }
 
-    void CreateTemplate(string creationPath, Template templateInfo) 
+    public void CreateTemplate(string templatesFolderPath, TemplateManifest templateInfo) 
     {
-        Template newTemplate = new Template
+        TemplateManifest newTemplateManifest = new TemplateManifest
         {
             Id = Guid.NewGuid(),
             Name = templateInfo.Name,
@@ -57,15 +65,24 @@ public class TemplateService
             maxUnityVersion = templateInfo.maxUnityVersion,
             minUnityVersion = templateInfo.minUnityVersion,
             Tags = new List<string>(),
-            ScriptStructure = new List<Script>()
+            TemplatePath = Path.Combine(templatesFolderPath, templateInfo.Name.ToString())
         };
 
-        ManifestService.WriteManifest(creationPath, newTemplate);
+        string manifestPath = Path.Combine(newTemplateManifest.TemplatePath, $"{newTemplateManifest.Name}.json");
+        string scriptsFolderPath = Path.Combine(newTemplateManifest.TemplatePath, "Scripts"); 
+
+        Directory.CreateDirectory(newTemplateManifest.TemplatePath); // Cria pasta do template
+
+        ManifestService.WriteManifest(manifestPath, newTemplateManifest);
+
+        Directory.CreateDirectory(scriptsFolderPath); // Cria pasta de scripts 
+
+
     }
 
-    void DeleteTemplate(string templateFolderPath, Guid templateId)
+    public void DeleteTemplate(string templatePath, Guid templateId)
     {
-        Template template = GetTemplateById(templateFolderPath, templateId);
+        TemplateManifest template = GetTemplateById(templatePath, templateId);
 
         if (Directory.Exists(template.TemplatePath))
         {
@@ -73,20 +90,31 @@ public class TemplateService
         }
     }
 
-    void UpdateTemplateManifest (string templatePath, Template templateInfo) 
+    public void UpdateTemplateManifest (string templatePath, TemplateManifest templateInfo)
     {
-        Template updatedManifest = new Template
-        {
-            Name = templateInfo.Name,
-            Description = templateInfo.Description,
-            Version = templateInfo.Version,
-            CreationDate = DateTime.Now,
-            maxUnityVersion = templateInfo.maxUnityVersion,
-            minUnityVersion = templateInfo.minUnityVersion,
-            Tags = new List<string>(),
-            ScriptStructure = new List<Script>()
-        };
+        TemplateManifest updatedManifest = GetTemplateById(templatePath, templateInfo.Id); // não precisa ser criado um novo TemplateManifest, é só atualizar o templateInfo e passar ele para o WriteManifest
+        updatedManifest.Name = templateInfo.Name;
+        updatedManifest.Description = templateInfo.Description;
+        updatedManifest.Version = templateInfo.Version;
+        updatedManifest.minUnityVersion = templateInfo.minUnityVersion;
+        updatedManifest.maxUnityVersion = templateInfo.maxUnityVersion;
+        updatedManifest.Tags = templateInfo.Tags;
 
         ManifestService.WriteManifest(templatePath, updatedManifest);
     }
+
+    public void UpdateTemplateScripts(string templatePath, List<string> newScripts)
+    {
+        string scriptsFolderPath = Path.Combine(templatePath, "Scripts");
+        if (!Directory.Exists(scriptsFolderPath))
+        {
+            Directory.CreateDirectory(scriptsFolderPath);
+        }
+        foreach (string script in newScripts)
+        {
+            string scriptPath = Path.Combine(scriptsFolderPath, $"{script}.cs");
+            File.WriteAllText(scriptPath, $"// Script: {script}");
+        }
+    }
 }
+    

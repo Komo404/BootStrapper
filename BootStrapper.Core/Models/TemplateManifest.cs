@@ -1,6 +1,6 @@
 ﻿namespace BootStrapper.Core.Models
 {
-    public class Template
+    public class TemplateManifest
     {
         // Manifest
         public Guid Id { get; set; }
@@ -11,10 +11,7 @@
         public required string minUnityVersion { get; set; }
         public required string maxUnityVersion { get; set; }
         public List<string> Tags { get; set; } = new(); // Ex: "Audio, Input System, etc"
+        public string TemplatePath { get; set; } 
 
-        // FileSystem
-        public List<Script> ScriptStructure { get; set; }
-        public string TemplatePath { get; set; }
-        public string ManifestPath { get; set; }
     }
 }
