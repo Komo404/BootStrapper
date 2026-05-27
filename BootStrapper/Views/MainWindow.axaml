@@ -11,7 +11,7 @@
         Icon="/Assets/avalonia-logo.ico"
         Title="BootStrapper">
 
-    <Grid ColumnDefinitions="Auto,*">
+    <Grid ColumnDefinitions="Auto,*" Background="#171717">
         <view:SidebarView Grid.Column="0" DataContext="{Binding Sidebar}"/>
         <ContentControl Grid.Column="1" Content="{Binding Navigation.CurrentView}" />
     </Grid>

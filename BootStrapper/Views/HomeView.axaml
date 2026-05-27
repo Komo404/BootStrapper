@@ -2,17 +2,55 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             mc:Ignorable="d" Width="700" Height="400"
              xmlns:vm="clr-namespace:BootStrapper.ViewModels"
              x:Class="BootStrapper.Views.HomeView"
              x:DataType="vm:HomeViewModel">
 
-    <UserControl.Styles>
-
-    </UserControl.Styles>
-
     <Grid Background="#171717">
 
+        <StackPanel Margin="30" Spacing="20">
+
+            <StackPanel Spacing="2">
+
+                <TextBlock Text="Home" FontSize="28" Foreground="White"/>
+                <TextBlock Text="Recent Projects" Foreground="#BDBDBD"/>
+
+            </StackPanel>
+
+            <StackPanel Spacing="10">
+
+                <Border Background="#2B2D3D" CornerRadius="10" Padding="14">
+
+                    <Grid ColumnDefinitions="*,Auto">
+
+                        <StackPanel Spacing="4">
+                            <TextBlock Text="Project 1" FontSize="16" Foreground="White"/>
+                            <TextBlock Text="Description Project 1" Foreground="#CFCFCF" FontSize="13"/>
+                        </StackPanel>
+
+                        <Button Grid.Column="1" Content="Open" Width="70" Foreground="White" HorizontalContentAlignment="Center" VerticalAlignment="Center"/>
+
+                    </Grid>
+
+                </Border>
+
+                <Border Background="#2B2D3D" CornerRadius="10" Padding="14">
+
+                    <Grid ColumnDefinitions="*,Auto">
+
+                        <StackPanel Spacing="4">
+                            <TextBlock Text="Project 2" FontSize="16" Foreground="White"/>
+                            <TextBlock Text="Description Project 2" Foreground="#CFCFCF" FontSize="13"/>
+                        </StackPanel>
+
+                        <Button Grid.Column="1" Content="Open" Width="70" Foreground="White" HorizontalContentAlignment="Center" VerticalAlignment="Center"/>
+
+                    </Grid>
+
+                </Border>
+            </StackPanel>
+        </StackPanel>
     </Grid>
 
 </UserControl>

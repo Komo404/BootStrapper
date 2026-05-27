@@ -2,16 +2,204 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             mc:Ignorable="d" Width="900" Height="600"
              xmlns:vm="clr-namespace:BootStrapper.ViewModels.Templates"
              x:Class="BootStrapper.Views.Templates.TemplateListView"
              x:DataType="vm:TemplateListViewModel">
 
-    <UserControl.Styles>
+    <Grid Background="#171717" RowDefinitions="Auto,*,Auto">
 
-    </UserControl.Styles>
+        <!-- HEADER -->
+        <Grid Grid.Row="0" ColumnDefinitions="*,Auto" Margin="10, 10, 10, 10">
 
-    <Grid Background="#171717">
+            <StackPanel Spacing="4">
+                <TextBlock Text="Templates" FontSize="28" FontWeight="SemiBold" Foreground="White"/>
+                <TextBlock Text="Manage and organize your project templates" Foreground="#A0A0A0"/>
+            </StackPanel>
+
+            <Button Grid.Column="1"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Content="+ New Template"
+                    Width="140"
+                    Height="35"
+                    Foreground="White"
+                    HorizontalAlignment="Right"/>
+        </Grid>
+
+        <!-- TEMPLATE LIST -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Margin="15, 10, 10, 10">
+            <WrapPanel Orientation="Horizontal" ItemWidth="320" ItemHeight="230">
+
+                <!-- CARD -->
+                <Border Width="290"
+                        Height="210"
+                        Margin="0,0,20,20"
+                        Background="#37345D"
+                        CornerRadius="12"
+                        Padding="18">
+
+                    <Grid RowDefinitions="Auto,Auto,*,Auto">
+
+                        <!-- TOP -->
+                        <Grid Grid.Row="0" ColumnDefinitions="*,Auto">
+
+                            <TextBlock Text="FishNet Multiplayer"
+                                       FontSize="18"
+                                       FontWeight="SemiBold"
+                                       Foreground="White"/>
+
+                            <Border Grid.Column="1"
+                                    Background="#626262"
+                                    Padding="8,4"
+                                    CornerRadius="6">
+
+                                <TextBlock Text="v1.0.0" FontSize="11" Foreground="White"/>
+
+                            </Border>
+
+                        </Grid>
+
+                        <!-- DESCRIPTION -->
+                        <TextBlock Grid.Row="1"
+                                   Margin="0,12,0,0"
+                                   Text="FishNet multiplayer setup with Steam integration and lobby system."
+                                   TextWrapping="Wrap"
+                                   MaxHeight="42"
+                                   Foreground="#D4D4D4"/>
+
+                        <!-- TAGS -->
+                        <WrapPanel Grid.Row="2" Margin="0,18,0,0" HorizontalAlignment="Left">
+
+                            <Border Background="#626262"
+                                    CornerRadius="6"
+                                    Padding="8,4"
+                                    Margin="0,0,8,8">
+
+                                <TextBlock Text="Multiplayer" FontSize="11" Foreground="White"/>
+
+                            </Border>
+
+                            <Border Background="#626262"
+                                    CornerRadius="6"
+                                    Padding="8,4"
+                                    Margin="0,0,8,8">
+
+                                <TextBlock Text="Steam" FontSize="11" Foreground="White"/>
+                            </Border>
+
+                            <Border Background="#626262"
+                                    CornerRadius="6"
+                                    Padding="8,4"
+                                    Margin="0,0,8,8">
+
+                                <TextBlock Text="P2P" FontSize="11" Foreground="White"/>
+                            </Border>
+
+                        </WrapPanel>
+
+                        <!-- FOOTER -->
+                        <Grid Grid.Row="3" ColumnDefinitions="*,*">
+
+                            <Button Content="Open" Margin="0,0,8,0" HorizontalAlignment="Left" Foreground="White"/>
+                            <Button Grid.Column="1" Content="Delete" HorizontalAlignment="Right" Background="#8B2E2E" Foreground="White"/>
+
+                        </Grid>
+                    </Grid>
+                </Border>
+
+                <!-- CARD 2-->
+                <Border Width="290"
+                        Height="210"
+                        Margin="0,0,20,20"
+                        Background="#37345D"
+                        CornerRadius="12"
+                        Padding="18">
+
+                    <Grid RowDefinitions="Auto,Auto,*,Auto">
+
+                        <Grid Grid.Row="0"
+                              ColumnDefinitions="*,Auto">
+
+                            <TextBlock Text="Third Person Camera"
+                                       FontSize="18"
+                                       FontWeight="SemiBold"
+                                       Foreground="White"/>
+
+                            <Border Grid.Column="1"
+                                    Background="#626262"
+                                    Padding="8,4"
+                                    CornerRadius="6">
+
+                                <TextBlock Text="v2.3.1" FontSize="11" Foreground="White"/>
+
+                            </Border>
+
+                        </Grid>
+
+                        <TextBlock Grid.Row="1"
+                                   Margin="0,12,0,0"
+                                   Text="Camera controller with smooth follow, zoom and collision handling."
+                                   TextWrapping="Wrap"
+                                   MaxHeight="42"
+                                   Foreground="#D4D4D4"/>
+
+                        <WrapPanel Grid.Row="2" Margin="0,18,0,0">
+
+                            <Border Background="#626262"
+                                    CornerRadius="6"
+                                    Padding="8,4"
+                                    Margin="0,0,8,8">
+
+                                <TextBlock Text="Camera"
+                                           FontSize="11"
+                                           Foreground="White"/>
+
+                            </Border>
+
+                            <Border Background="#626262"
+                                    CornerRadius="6"
+                                    Padding="8,4"
+                                    Margin="0,0,8,8">
+
+                                <TextBlock Text="3D" FontSize="11" Foreground="White"/>
+                            </Border>
+                        </WrapPanel>
+
+                        <Grid Grid.Row="3"
+                              ColumnDefinitions="*,*"
+                              Margin="0,15,0,0">
+
+                            <Button Content="Open"
+                                    Margin="0,0,8,0"
+                                    Foreground="White"/>
+
+                            <Button Grid.Column="1"
+                                    Content="Delete"
+                                    Background="#8B2E2E"
+                                    Foreground="White"/>
+
+                        </Grid>
+
+                    </Grid>
+
+                </Border>
+
+            </WrapPanel>
+
+        </ScrollViewer>
+
+        <!-- FOOTER -->
+        <Grid Grid.Row="2" Margin="30, 20, 20, 15" ColumnDefinitions="*,Auto">
+
+            <TextBlock Text="2 templates loaded" VerticalAlignment="Center" Foreground="#8E8E8E"/>
+
+            <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="10">
+                <Button Content="Refresh" HorizontalContentAlignment="Center" Width="90" Foreground="White"/>
+                <Button Content="Import" HorizontalContentAlignment="Center" Width="90" Foreground="White"/>
+            </StackPanel>
+
+        </Grid>
 
     </Grid>
 

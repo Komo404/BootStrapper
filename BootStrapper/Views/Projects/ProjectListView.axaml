@@ -2,17 +2,78 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             mc:Ignorable="d" Width="700"
              xmlns:vm="clr-namespace:BootStrapper.ViewModels.Projects"
              x:Class="BootStrapper.Views.Projects.ProjectListView"
              x:DataType="vm:ProjectListViewModel">
 
-    <UserControl.Styles>
-
-    </UserControl.Styles>
-
     <Grid Background="#171717">
+        <StackPanel Margin="30" Spacing="18">
 
+            <StackPanel Spacing="2">
+                <TextBlock Text="Projects" FontSize="28" Foreground="White"/>
+                <TextBlock Text="Saved Unity projects" Foreground="#BDBDBD"/>
+            </StackPanel>
+
+
+            <StackPanel Spacing="10">
+
+                <!-- ============= Primeiro Card ============== -->
+                <Border Background="#2B2D3D" CornerRadius="10" Padding="14">
+
+                    <Grid ColumnDefinitions="55,*,Auto" ColumnSpacing="14">
+
+                        <Border Width="55" Height="55" Background="#37345D" CornerRadius="8">
+                            <TextBlock Text="◉" FontSize="20" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+
+
+                        <StackPanel Grid.Column="1" Spacing="4" VerticalAlignment="Center">
+
+                            <TextBlock Text="Project 1" FontSize="16" FontWeight="SemiBold" Foreground="White"/>
+                            <TextBlock Text="Description Project 1" FontSize="13" Foreground="#CFCFCF"/>
+                            <TextBlock Text="Unity Version" FontSize="12" Foreground="#9CA3AF"/>
+                            <TextBlock Text="Tags" FontSize="12" Foreground="#9CA3AF"/>
+                            <TextBlock Text="Project/Path" FontSize="12" Foreground="#9CA3AF"/>
+
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                            <Button Content="Open" Width="70" HorizontalContentAlignment="Center" Foreground="White"/>
+                            <Button Content="Delete" Width="70" HorizontalContentAlignment="Center" Foreground="White"/>
+                        </StackPanel>
+
+                    </Grid>
+                </Border>
+
+                <!-- ============= Segundo Card ============== -->
+                <Border Background="#2B2D3D" CornerRadius="10" Padding="14">
+
+                    <Grid ColumnDefinitions="55,*,Auto" ColumnSpacing="14">
+
+                        <Border Width="55" Height="55" Background="#37345D" CornerRadius="8">
+                            <TextBlock Text="◉" FontSize="20" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+
+
+                        <StackPanel Grid.Column="1" Spacing="4" VerticalAlignment="Center">
+
+                            <TextBlock Text="Project 2" FontSize="16" FontWeight="SemiBold" Foreground="White"/>
+                            <TextBlock Text="Description Project 2" FontSize="13" Foreground="#CFCFCF"/>
+                            <TextBlock Text="Unity Version" FontSize="12" Foreground="#9CA3AF"/>
+                            <TextBlock Text="Tags" FontSize="12" Foreground="#9CA3AF"/>
+                            <TextBlock Text="Project/Path" FontSize="12" Foreground="#9CA3AF"/>
+
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                            <Button Content="Open" Width="70" HorizontalContentAlignment="Center" Foreground="White"/>
+                            <Button Content="Delete" Width="70" HorizontalContentAlignment="Center" Foreground="White"/>
+                        </StackPanel>
+
+                    </Grid>
+                </Border>
+            </StackPanel>
+        </StackPanel>
     </Grid>
-
 </UserControl>

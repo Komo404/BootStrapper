@@ -3,9 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:templates="using:BootStrapper.ViewModels.Templates"
-             mc:Ignorable="d"
-             d:DesignWidth="800"
-             d:DesignHeight="450"
+             mc:Ignorable="d" Height="600"
              xmlns:vm="clr-namespace:BootStrapper.ViewModels.Templates"
              x:Class="BootStrapper.Views.Templates.TemplateCreate"
              x:DataType="vm:TemplateCreateViewModel">
@@ -22,36 +20,34 @@
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center">
 
-            <Grid RowDefinitions="Auto,*,Auto" ColumnDefinitions="*,*" RowSpacing="18" ColumnSpacing="20">
+            <Grid RowDefinitions="Auto,*,Auto" MinHeight="400" ColumnDefinitions="*,*" RowSpacing="18" ColumnSpacing="50">
 
                 <StackPanel Grid.Row="0" Grid.ColumnSpan="2" Spacing="6">
-
                     <TextBlock Text="Create Template" FontSize="24" Foreground="White"/>
-
                     <TextBlock Text="Define the new template and the basic file structure" FontSize="14" Foreground="#D6D6D6"/>
                 </StackPanel>
 
                 <StackPanel Grid.Row="1" Grid.Column="0" Spacing="12">
 
                     <TextBlock Text="Name" Foreground="White"/>
-                    <TextBox Watermark="Template name" />
+                    <TextBox PlaceholderText="Template name" />
 
                     <TextBlock Text="Description" Foreground="White"/>
-                    <TextBox Watermark="Template description"
+                    <TextBox PlaceholderText="Template description"
                              AcceptsReturn="True"
                              Height="88" />
 
                     <TextBlock Text="Tags" Foreground="White"/>
-                    <TextBox Watermark="Audio, Input, UI, etc" />
+                    <TextBox PlaceholderText="Audio, Input, UI, etc" />
 
                 </StackPanel>
 
-                <StackPanel Grid.Row="1" Grid.Column="1" Spacing="12">
-
+                <!--Right Side-->
+                <StackPanel Grid.Row="1" Grid.Column="1" Spacing="10">
                     <TextBlock Text="Unity Version" Foreground="White"/>
                     <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
-                        <TextBox Grid.Column="0" Watermark="Min version" />
-                        <TextBox Grid.Column="1" Watermark="Max version" />
+                        <TextBox Grid.Column="0" PlaceholderText="Min version" />
+                        <TextBox Grid.Column="1" PlaceholderText="Max version" />
                     </Grid>
 
                     <TextBlock Text="Files" Foreground="White"/>
@@ -68,13 +64,10 @@
 
                     <TextBlock Text="Path preview" Foreground="White"/>
                     <TextBlock Text="Templates/NewTemplate/" Foreground="#D6D6D6"/>
-
                 </StackPanel>
 
-                <StackPanel Grid.Row="2" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="12">
-
+                <StackPanel Grid.Row="2" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="10">
                     <Button Content="Cancel" Background="Transparent" Foreground="White" BorderBrush="White" BorderThickness="1" />
-
                     <Button Content="Create Template" Foreground="White"/>
                 </StackPanel>
 
