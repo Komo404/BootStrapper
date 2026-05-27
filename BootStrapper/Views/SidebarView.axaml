@@ -2,7 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d"
+             mc:Ignorable="d" 
              xmlns:vm="clr-namespace:BootStrapper.ViewModels"
              x:Class="BootStrapper.Views.SidebarView"
              x:DataType="vm:SidebarViewModel">
@@ -13,9 +13,7 @@
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Foreground" Value="White"/>
-            <Setter Property="Height" Value="48"/>
-            <Setter Property="HorizontalContentAlignment" Value="Left"/>
-            <Setter Property="Padding" Value="12,0"/>
+            <Setter Property="Height" Value="45"/>
         </Style>
 
         <Style Selector="Button.sidebar:pointerover"> <!-- Hover -->
@@ -26,33 +24,65 @@
             <Setter Property="IsVisible" Value="False"/>
         </Style>
 
-        <Style Selector="Border:pointerover TextBlock.menuText"> <!-- Mostrar texto quando sidebar hover -->
+        <Style Selector="Border#SidebarBorder:pointerover TextBlock.menuText"> <!-- Mostrar texto quando sidebar hover -->
             <Setter Property="IsVisible" Value="True"/>
         </Style>
 
     </UserControl.Styles>
 
-    <Border x:Name="SidebarBorder"
-            Width="70"
-            Background="#1E1E1E">
+    <Border x:Name="SidebarBorder" Width="65" Background="#2B2D3D">
 
         <Border.Styles>
             <Style Selector="Border:pointerover">
-                <Setter Property="Width" Value="220"/>
+                <Setter Property="Width" Value="200"/>
             </Style>
         </Border.Styles>
 
         <StackPanel Margin="10">
-            <Button Classes="sidebar">
+            <Button Classes="sidebar" Command="{Binding GoToHomeCommand}">
                 <StackPanel Orientation="Horizontal">
 
-                    <TextBlock Text="◉"
-                               Width="32"
-                               FontSize="18"/>
+                    <TextBlock Text="IconHouse" Width="32" FontSize="18"/>
+                    <TextBlock Text="HomeView" Classes="menuText" VerticalAlignment="Center"/>
 
-                    <TextBlock Text="Home"
-                               Classes="menuText"
-                               VerticalAlignment="Center"/>
+                </StackPanel>
+            </Button>
+
+            <StackPanel Margin="0, 150, 0, 150" Spacing="15">
+                <Button Classes="sidebar" Command="{Binding GoToProjectCreateCommand}">
+                    <StackPanel Orientation="Horizontal">
+
+                        <TextBlock Text="IconNewProject" Width="32" FontSize="18"/>
+                        <TextBlock Text="Create Project" Classes="menuText" VerticalAlignment="Center"/>
+
+                    </StackPanel>
+                </Button>
+
+                <Button Classes="sidebar" Command="{Binding GoToTemplateListCommand}">
+                    <StackPanel Orientation="Horizontal">
+
+                        <TextBlock Text="IconAllTemplates" Width="32" FontSize="18"/>
+                        <TextBlock Text="Template List" Classes="menuText" VerticalAlignment="Center"/>
+
+                    </StackPanel>
+                </Button>
+
+                <Button Classes="sidebar" Command="{Binding GoToProjectListCommand}">
+                    <StackPanel Orientation="Horizontal">
+
+                        <TextBlock Text="IconProjects" Width="32" FontSize="18"/>
+                        <TextBlock Text="Project List" Classes="menuText" VerticalAlignment="Center"/>
+
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+
+            <Button Classes="sidebar" Width="45" Command="{Binding GoToCreditsCommand}" HorizontalAlignment="Center">
+                <StackPanel Orientation="Horizontal">
+
+                    <TextBlock Text="IconCredits" FontSize="18"/>
+                    <TextBlock Text="Credits" Classes="menuText" VerticalAlignment="Center"/>
+
                 </StackPanel>
             </Button>
         </StackPanel>

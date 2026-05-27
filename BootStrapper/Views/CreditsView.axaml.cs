@@ -2,11 +2,11 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 
-namespace BootStrapper;
+namespace BootStrapper.Views;
 
-public partial class ProjectList : UserControl
+public partial class CreditsView : UserControl
 {
-    public ProjectList()
+    public CreditsView()
     {
         InitializeComponent();
     }

@@ -2,17 +2,35 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             mc:Ignorable="d"
              xmlns:vm="clr-namespace:BootStrapper.ViewModels.Projects"
              x:Class="BootStrapper.Views.Projects.ProjectCreateView"
              x:DataType="vm:ProjectCreateViewModel">
 
-    <Design.DataContext>
-        <vm:ProjectCreateViewModel></vm:ProjectCreateViewModel>
-    </Design.DataContext>
 
-    <Grid Background="Black">
-        <TextBlock  Text="{Binding ProjectCreateMainTEXT}" />
-        <Button Content="{Binding ProjectCreateMainTEXT}" Command="{Binding GoToHomeCommand}" />
-    </Grid>
+
+    <Grid Background="#171717">
+        <Border Width="450" Height="330" Padding="20" BorderBrush="White" BorderThickness="1" CornerRadius="10" Background="#37345D">
+            <Grid ColumnDefinitions="220, *">
+                <StackPanel Spacing="20">
+                    <TextBlock Text="New Unity Project"  FontSize="16" Foreground="White" />
+                    <TextBlock Text="Project name" Foreground="White" />
+                    <TextBlock Text="Description" Foreground="White" />
+                    <TextBlock Text="Unity Version" Foreground="White" />
+                    <TextBlock Text="Tags" Foreground="White" />
+                    <TextBlock Text="Author" Foreground="White" />
+                    <Button Content="Create Project" HorizontalAlignment="Center" Foreground="White" Command="{Binding GoToProjectCreateCommand}"> </Button>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1">
+                    <TextBlock Foreground="White" HorizontalAlignment="Center" Margin="5" Text="TEMPLATES" />
+                    <Border Background="#626262" HorizontalAlignment="Center" Width="150" Height="200" Padding="16" />
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="20">
+                        <Button Content="New" Margin="10, 0, 40, 0" Foreground="White" HorizontalAlignment="Left"></Button>
+                        <TextBlock Text="1/?" Foreground="White" Margin="10" HorizontalAlignment="Right"/>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid> 
 </UserControl>

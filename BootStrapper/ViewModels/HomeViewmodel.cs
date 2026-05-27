@@ -10,7 +10,7 @@ namespace BootStrapper.ViewModels;
 public partial class HomeViewModel : ViewModelBase
 {
     public string HomeViewMainTEXT { get; set; } = "Hello from HomeView";
-    private readonly NavigationService _navigation;
+    private readonly NavigationService? _navigation;
 
     public HomeViewModel(NavigationService navigation)
     {
@@ -22,6 +22,9 @@ public partial class HomeViewModel : ViewModelBase
     [RelayCommand]
     private void GoToProjectCreate()
     {
+        if (_navigation is null)
+            throw new InvalidOperationException("NavigationService não foi inicializado");
+
         _navigation.CurrentView = new ProjectCreateViewModel(_navigation);
     }
 }

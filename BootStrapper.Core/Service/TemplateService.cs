@@ -40,9 +40,9 @@ public class TemplateService
         return allTemplates.FindAll(template => template.Tags.Contains(tag));
     }
 
-    public TemplateManifest GetTemplateById(string templateFolderPath, Guid templateId) // Scan Templates Directory, filtra por ID e retorna o template correspondente
+    public TemplateManifest GetTemplateById(string templatesFolderPath, Guid templateId) // Scan Templates Directory, filtra por ID e retorna o template correspondente
     {
-        List<TemplateManifest> allTemplates = GetAllTemplates(templateFolderPath);
+        List<TemplateManifest> allTemplates = GetAllTemplates(templatesFolderPath);
 
         TemplateManifest? foundTemplate = allTemplates.Find(template => template.Id == templateId);
 
@@ -62,10 +62,11 @@ public class TemplateService
             Description = templateInfo.Description,
             Version = "1.0.0",
             CreationDate = DateTime.Now,
-            maxUnityVersion = templateInfo.maxUnityVersion,
-            minUnityVersion = templateInfo.minUnityVersion,
+            MaxUnityVersion = templateInfo.MaxUnityVersion,
+            MinUnityVersion = templateInfo.MinUnityVersion,
             Tags = new List<string>(),
-            TemplatePath = Path.Combine(templatesFolderPath, templateInfo.Name.ToString())
+            TemplatePath = Path.Combine(templatesFolderPath, templateInfo.Id.ToString()),
+            ManifestPath = Path.Combine(templatesFolderPath, templateInfo.Id.ToString(), $"{templateInfo.Name}.json")
         };
 
         string manifestPath = Path.Combine(newTemplateManifest.TemplatePath, $"{newTemplateManifest.Name}.json");
@@ -90,17 +91,18 @@ public class TemplateService
         }
     }
 
-    public void UpdateTemplateManifest (string templatePath, TemplateManifest templateInfo)
+    public void UpdateTemplateManifest (string templatesFolderPath, TemplateManifest templateInfo)
     {
-        TemplateManifest updatedManifest = GetTemplateById(templatePath, templateInfo.Id); // não precisa ser criado um novo TemplateManifest, é só atualizar o templateInfo e passar ele para o WriteManifest
+        TemplateManifest updatedManifest = GetTemplateById(templatesFolderPath, templateInfo.Id); // não precisa ser criado um novo TemplateManifest, é só atualizar o templateInfo e passar ele para o WriteManifest
         updatedManifest.Name = templateInfo.Name;
         updatedManifest.Description = templateInfo.Description;
         updatedManifest.Version = templateInfo.Version;
-        updatedManifest.minUnityVersion = templateInfo.minUnityVersion;
-        updatedManifest.maxUnityVersion = templateInfo.maxUnityVersion;
+        updatedManifest.MinUnityVersion = templateInfo.MinUnityVersion;
+        updatedManifest.MaxUnityVersion = templateInfo.MaxUnityVersion;
         updatedManifest.Tags = templateInfo.Tags;
+        updatedManifest.ManifestPath = Path.Combine(templatesFolderPath, templateInfo.Id.ToString(), $"{templateInfo.Name}.json");
 
-        ManifestService.WriteManifest(templatePath, updatedManifest);
+        ManifestService.WriteManifest(templateInfo.ManifestPath, updatedManifest);
     }
 
     public void UpdateTemplateScripts(string templatePath, List<string> newScripts)

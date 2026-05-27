@@ -17,8 +17,9 @@ public partial class ProjectCreateViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    private void GoToHome()
+    private void GoToProjectCreate()
     {
-        _navigation.CurrentView = new HomeViewModel(_navigation);
+        _navigation.CurrentView = new ProjectCreateViewModel(_navigation);
     }
+
 }

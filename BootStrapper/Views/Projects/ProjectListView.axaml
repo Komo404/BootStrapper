@@ -3,6 +3,16 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="BootStrapper.ProjectList">
-  Welcome to Avalonia!
+             xmlns:vm="clr-namespace:BootStrapper.ViewModels.Projects"
+             x:Class="BootStrapper.Views.Projects.ProjectListView"
+             x:DataType="vm:ProjectListViewModel">
+
+    <UserControl.Styles>
+
+    </UserControl.Styles>
+
+    <Grid Background="#171717">
+
+    </Grid>
+
 </UserControl>

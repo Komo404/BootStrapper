@@ -7,13 +7,12 @@
              x:Class="BootStrapper.Views.HomeView"
              x:DataType="vm:HomeViewModel">
 
-    <Design.DataContext>
-        <vm:HomeViewModel />
-    </Design.DataContext>
-            
-            <Grid Background="Black">
-                <TextBlock Text="{Binding HomeViewMainTEXT}" />
-                <Button Content="{Binding HomeViewMainTEXT}" Command="{Binding GoToProjectCreateCommand}" />
-            </Grid>
+    <UserControl.Styles>
+
+    </UserControl.Styles>
+
+    <Grid Background="#171717">
+
+    </Grid>
 
 </UserControl>

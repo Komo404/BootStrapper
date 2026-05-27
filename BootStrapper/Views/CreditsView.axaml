@@ -1,0 +1,81 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" 
+             xmlns:vm="clr-namespace:BootStrapper.ViewModels"
+             x:Class="BootStrapper.Views.CreditsView"
+             x:DataType="vm:CreditsViewModel">
+
+    <Grid Background="#171717">
+
+        <Border Width="400" Height="500"
+                Padding="30" CornerRadius="16"
+                Background="#37345D"
+                BorderBrush="White"
+                BorderThickness=".58"> <!--número mágico??-->
+
+            <StackPanel Spacing="20">
+
+                <TextBlock Text="Credits" FontSize="32" Foreground="White"/>
+
+                <Separator Background="#2D4A7A"/>
+
+                <StackPanel Spacing="6">
+                    <TextBlock Text="Created By" FontSize="20" FontWeight="SemiBold" Foreground="White"/>
+                    <TextBlock Text="Miguel Komori" FontSize="18" Foreground="White"/>
+                </StackPanel>
+
+                <StackPanel Spacing="12">
+                    <TextBlock Text="Stacks" FontSize="20" FontWeight="SemiBold" Foreground="White"/>
+
+                    <Border Background="#626262" Padding="16">
+
+                        <StackPanel Spacing="10">
+
+                            <Grid ColumnDefinitions="140,*">
+                                <TextBlock Text="Framework:" FontWeight="Bold" Foreground="#CBD5E1"/>
+                                <TextBlock Grid.Column="1" Text="Avalonia (MVVM Arch)" Foreground="White"/>
+                            </Grid>
+
+                            <Grid ColumnDefinitions="140,*">
+                                <TextBlock Text="SGDB:" FontWeight="Bold" Foreground="#CBD5E1"/>
+                                <TextBlock Grid.Column="1" Text="SQLite + EF Core" Foreground="White"/>
+                            </Grid>
+
+                            <Grid ColumnDefinitions="140,*">
+                                <TextBlock Text="Tests:" FontWeight="Bold" Foreground="#CBD5E1"/>
+                                <TextBlock Grid.Column="1" Text="xUnit" Foreground="White"/>
+                            </Grid>
+
+                            <Grid ColumnDefinitions="140,*">
+                                <TextBlock Text="CI/CD:" FontWeight="Bold" Foreground="#CBD5E1"/>
+                                <TextBlock Grid.Column="1" Text="Github Actions" Foreground="White"/>
+                            </Grid>
+
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+
+                <!-- Linguagens -->
+                <StackPanel Spacing="12">
+
+                    <TextBlock Text="Languages" FontSize="20" FontWeight="SemiBold" Foreground="White"/>
+
+                    <WrapPanel ItemHeight="35" ItemWidth="100" Orientation="Horizontal" Margin="0,5,0,0">
+
+                        <Border Background="#626262" CornerRadius="8" Padding="10,10" Margin="0,0,10,0">
+                            <TextBlock Text="C#" Foreground="White" HorizontalAlignment="Center"/>
+                        </Border>
+
+                        <Border Background="#626262" CornerRadius="8" Padding="10,10">
+                            <TextBlock Text="XAML" Foreground="White" HorizontalAlignment="Center"/>
+                        </Border>
+
+                    </WrapPanel>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+    </Grid>
+
+</UserControl>

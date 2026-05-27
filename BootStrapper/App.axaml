@@ -3,7 +3,6 @@
              x:Class="BootStrapper.App"
              xmlns:local="using:BootStrapper"
              RequestedThemeVariant="Default">
-             <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
 
     <Application.DataTemplates>
         <local:ViewLocator/>
@@ -11,8 +10,8 @@
   
     <Application.Styles>
         <FluentTheme />
-        <StyleInclude Source="avares://BootStraapper/Styles/Buttons.axaml"/>
-        <StyleInclude Source="avares://BootStraapper/Styles/Colors.axaml"/>
+        <StyleInclude Source="avares://BootStrapper/Styles/Buttons.axaml"/>
+        <StyleInclude Source="avares://BootStrapper/Styles/Colors.axaml"/>
     </Application.Styles>
 
     <Application.Resources>

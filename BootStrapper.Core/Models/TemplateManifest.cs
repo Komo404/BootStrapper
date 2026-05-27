@@ -8,10 +8,10 @@
         public required string Description { get; set; }
         public required string Version { get; set; }
         public DateTime CreationDate { get; set; } = DateTime.Now;
-        public required string minUnityVersion { get; set; }
-        public required string maxUnityVersion { get; set; }
+        public required string MinUnityVersion { get; set; }
+        public required string MaxUnityVersion { get; set; }
         public List<string> Tags { get; set; } = new(); // Ex: "Audio, Input System, etc"
-        public string TemplatePath { get; set; } 
-
+        public required string TemplatePath { get; set; } 
+        public required string ManifestPath { get; set; }
     }
 }

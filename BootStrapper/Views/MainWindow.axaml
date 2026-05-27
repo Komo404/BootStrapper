@@ -11,10 +11,8 @@
         Icon="/Assets/avalonia-logo.ico"
         Title="BootStrapper">
 
-    <Design.DataContext> <vm:MainWindowViewModel/> </Design.DataContext>
-
-    <Grid ColumnDefinitions="200,*">
-        <view:SidebarView Grid.Column="0"/>
+    <Grid ColumnDefinitions="Auto,*">
+        <view:SidebarView Grid.Column="0" DataContext="{Binding Sidebar}"/>
         <ContentControl Grid.Column="1" Content="{Binding Navigation.CurrentView}" />
     </Grid>
 </Window>

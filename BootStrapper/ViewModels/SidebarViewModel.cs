@@ -10,7 +10,7 @@ namespace BootStrapper.ViewModels;
 
 public partial class SidebarViewModel: ViewModelBase
 {
-    private readonly NavigationService _navigation;
+    private readonly NavigationService? _navigation;
 
     public SidebarViewModel(NavigationService navigation)
     {
@@ -19,35 +19,44 @@ public partial class SidebarViewModel: ViewModelBase
 
     public SidebarViewModel() { }
 
-    public string HomeView { get; set; } = "HomeView";
-    public string ProjectCreate { get; set; } = "Project Create";
-    public string TemplateView { get; set; } = "Template View";
-    public string ProjectList { get; set; } = "Project List";
-    public string Credits { get; set; } = "Credits";
-
     [RelayCommand]
     private void GoToHome()
     {
+        Console.WriteLine("GoToHome");
+        if (_navigation is null)
+            throw new InvalidOperationException("NavigationService não foi inicializado");
         _navigation.CurrentView = new HomeViewModel(_navigation);
     }
     [RelayCommand]
     private void GoToProjectCreate()
     {
+        Console.WriteLine("GoTo2");
+        if (_navigation is null)
+            throw new InvalidOperationException("NavigationService não foi inicializado");
         _navigation.CurrentView = new ProjectCreateViewModel(_navigation);
     }
     [RelayCommand]
-    private void GoToTemplateInfo()
+    private void GoToTemplateList()
     {
-        _navigation.CurrentView = new TemplateInfoViewModel(_navigation);
+        Console.WriteLine("GoTo3");
+        if (_navigation is null)
+            throw new InvalidOperationException("NavigationService não foi inicializado");
+        _navigation.CurrentView = new TemplateListViewModel(_navigation);
     }
     [RelayCommand]
     private void GoToProjectList()
     {
+        Console.WriteLine("GoTo4");
+        if (_navigation is null)
+            throw new InvalidOperationException("NavigationService não foi inicializado");
         _navigation.CurrentView = new ProjectListViewModel(_navigation);
     }
     [RelayCommand]
     private void GoToCredits()
     {
-        _navigation.CurrentView = new ProjectCreateViewModel(_navigation);
+        Console.WriteLine("GoTo5");
+        if (_navigation is null)
+            throw new InvalidOperationException("NavigationService não foi inicializado");
+        _navigation.CurrentView = new CreditsViewModel(_navigation);
     }
 }

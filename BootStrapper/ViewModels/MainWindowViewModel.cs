@@ -12,9 +12,13 @@ namespace BootStrapper.ViewModels
 
         public NavigationService Navigation { get; }
 
+        public SidebarViewModel Sidebar { get; }
+
         public MainWindowViewModel()
         {
             Navigation = new NavigationService();
+
+            Sidebar = new SidebarViewModel(Navigation);
 
             Navigation.CurrentView = new HomeViewModel(Navigation);
         }

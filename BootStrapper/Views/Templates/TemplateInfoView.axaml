@@ -2,18 +2,17 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:templates="using:BootStrapper.ViewModels.Templates"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              xmlns:vm="clr-namespace:BootStrapper.ViewModels.Templates"
              x:Class="BootStrapper.Views.Templates.TemplateInfoView"
              x:DataType="vm:TemplateInfoViewModel">
 
-    <Design.DataContext>
-        <vm:TemplateInfoViewModel></vm:TemplateInfoViewModel>
-    </Design.DataContext>
+    <UserControl.Styles>
 
-    <Grid>
-        <TextBlock Text="{Binding TemplateInfoMainTEXT}" />
+    </UserControl.Styles>
+
+    <Grid Background="#171717">
+
     </Grid>
 
 </UserControl>

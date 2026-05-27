@@ -36,8 +36,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Views\Projects\ProjectList.axaml.cs">
-      <DependentUpon>ProjectList.axaml</DependentUpon>
+    <Compile Update="Views\Projects\ProjectListView.axaml.cs">
+      <DependentUpon>ProjectListView.axaml</DependentUpon>
     </Compile>
     <Compile Update="Views\Projects\ProjectCreateView.axaml.cs">
       <DependentUpon>ProjectCreateView.axaml</DependentUpon>
@@ -59,6 +59,9 @@
     </Compile>
     <Compile Update="Views\Templates\TemplateListView.axaml.cs">
       <DependentUpon>TemplateListView.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\CreditsView.axaml.cs">
+      <DependentUpon>CreditsView.axaml</DependentUpon>
     </Compile>
   </ItemGroup>
 </Project>

@@ -6,5 +6,13 @@
              xmlns:vm="clr-namespace:BootStrapper.ViewModels.Templates"
              x:Class="BootStrapper.Views.Templates.TemplateListView"
              x:DataType="vm:TemplateListViewModel">
-  Welcome to Avalonia!
+
+    <UserControl.Styles>
+
+    </UserControl.Styles>
+
+    <Grid Background="#171717">
+
+    </Grid>
+
 </UserControl>
