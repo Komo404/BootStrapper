@@ -10,6 +10,7 @@ public partial class ProjectCreateViewModel : ViewModelBase
 {
     public string ProjectCreateMainTEXT { get; set; } = "Hello from PROJECT CREATE";
     private readonly NavigationService _navigation;
+    private readonly BootStrapper.Core.Service.pRO _templateService;
 
     public ProjectCreateViewModel (NavigationService navigation)
     {
@@ -20,6 +21,12 @@ public partial class ProjectCreateViewModel : ViewModelBase
     private void GoToProjectCreate()
     {
         _navigation.CurrentView = new ProjectCreateViewModel(_navigation);
+    }
+
+    [RelayCommand]
+    private void CreateProject()
+    {
+        _templateService.CreateProject(); // TODO
     }
 
 }

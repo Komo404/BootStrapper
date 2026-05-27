@@ -5,7 +5,7 @@ using System.Text;
 
 namespace BootStrapper.Core.Service;
 
-internal class ProjectService
+public class ProjectService
 {
     void CreateProject(UserConfig config)
     {

@@ -19,7 +19,7 @@
                     <TextBlock Text="Unity Version" Foreground="White" />
                     <TextBlock Text="Tags" Foreground="White" />
                     <TextBlock Text="Author" Foreground="White" />
-                    <Button Content="Create Project" HorizontalAlignment="Center" Foreground="White" Command="{Binding GoToProjectCreateCommand}"> </Button>
+                    <Button Content="Create Project" HorizontalAlignment="Center" Foreground="White" Command="{Binding CreateProjectCommand}"> </Button>
                 </StackPanel>
 
                 <StackPanel Grid.Column="1">
