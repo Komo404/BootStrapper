@@ -1,4 +1,5 @@
 ﻿using BootStrapper.Views;
+using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -16,4 +17,10 @@ public partial class TemplateListViewModel : ViewModelBase
     }
 
     public TemplateListViewModel() { }
+
+    [RelayCommand]
+    private void GoToTemplateCreate()
+    {
+        _navigation.CurrentView = new TemplateCreateViewModel(_navigation);
+    }
 }

@@ -4,9 +4,9 @@ using Avalonia.Markup.Xaml;
 
 namespace BootStrapper.Views.Templates;
 
-public partial class TemplateCreate : UserControl
+public partial class TemplateCreateView : UserControl
 {
-    public TemplateCreate()
+    public TemplateCreateView()
     {
         InitializeComponent();
     }

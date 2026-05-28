@@ -7,6 +7,7 @@
              x:Class="BootStrapper.Views.Templates.TemplateInfoView"
              x:DataType="vm:TemplateInfoViewModel">
 
+
     <Grid Background="#171717" RowDefinitions="Auto,*,Auto">
 
         <!-- HEADER -->
@@ -42,16 +43,17 @@
 
                 <StackPanel Grid.Column="1" HorizontalAlignment="Right" Spacing="10">
 
-                    <Border Background="#626262" Padding="10,5" CornerRadius="6">
+                    <Border Background="#626262" MaxWidth="67" Padding="10,5" CornerRadius="6">
                         <TextBlock Text="v1.0.0" Foreground="White"/>
                     </Border>
 
-                    <Button Content="Delete Template" Background="#8B2E2E" Foreground="White"/>
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                         <Button Content="Open" Foreground="White"/> <!--Open IDE or Open in Explorer?-->
+                         <Button Content="Delete" Background="#8B2E2E" Foreground="White"/>
+                    </StackPanel>
 
                 </StackPanel>
-
             </Grid>
-
         </Border>
 
         <!-- Manifest + Template Structure + File Preview 1 por 2 -->
@@ -168,9 +170,9 @@
                                  TextWrapping="NoWrap"
                                  FontFamily="Consolas"
                                  Background="#2B2D3D"
-                                 Foreground="White" 
+                                 Foreground="White"
                                  Height="300"
-                                 Text="using UnityEngine;&#x0a;&#x0a;public class Clas1 : MonoBehaviour&#x0a;{&#x0a;&#x0a;}" />
+                                 Text="using UnityEngine;&#x0a;&#x0a;public class Class1 : MonoBehaviour&#x0a;{&#x0a;&#x0a;}" />
 
 
                     </StackPanel>
@@ -179,5 +181,4 @@
         </Grid>
 
     </Grid>
-
 </UserControl>

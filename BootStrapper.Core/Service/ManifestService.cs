@@ -9,7 +9,7 @@ public class ManifestService
 {
     public static void WriteManifest<T>(string manifestPath, T obj) // Fluxo: Serializa um OBJETO para JSON e gera um arquivo manifest.json no path recebido
     {
-        string manifest = SerializeObject<T>(obj); // Resultado: String JSON
+        string manifest = JsonSerializer.Serialize(obj); // Resultado: String JSON
 
         if (manifest != null)
         {
@@ -25,21 +25,7 @@ public class ManifestService
         }
 
         string manifest = File.ReadAllText(manifestpath);
-        T manifestJSON = DeserializeJson<T>(manifest);
+        T manifestJSON = JsonSerializer.Deserialize<T>(manifest) ?? throw new JsonException("Erro ao desserializar");
         return manifestJSON; 
-    }
-
-    static string SerializeObject<T>(T item)
-    {
-        string serialized = JsonSerializer.Serialize(item);
-        return serialized;
-    }
-
-    static T DeserializeJson<T>(string json)
-    {
-        T? deserialized = JsonSerializer.Deserialize<T>(json);
-        if (deserialized != null)
-            return deserialized;
-        else throw new JsonException("Erro ao desserializar o JSON");
     }
 }

@@ -20,11 +20,11 @@ public partial class HomeViewModel : ViewModelBase
     public HomeViewModel() { }
 
     [RelayCommand]
-    private void GoToProjectCreate()
+    private void GoToProjectInfo()
     {
         if (_navigation is null)
             throw new InvalidOperationException("NavigationService não foi inicializado");
 
-        _navigation.CurrentView = new ProjectCreateViewModel(_navigation);
+        _navigation.CurrentView = new ProjectInfoViewModel(_navigation);
     }
 }

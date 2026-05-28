@@ -10,7 +10,6 @@ namespace BootStrapper.Core.Data;
 public class AppDbContext : DbContext
 {
     public DbSet<Project> Projects { get; set; }
-    public DbSet<UserConfig> UserConfigs { get; set; }
 
     private static readonly ValueConverter<string[], string> JsonConverter = new ValueConverter<string[], string>(
         templates => System.Text.Json.JsonSerializer.Serialize(templates, (System.Text.Json.JsonSerializerOptions?)null),

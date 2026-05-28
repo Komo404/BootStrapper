@@ -21,6 +21,7 @@
                     HorizontalContentAlignment="Center"
                     VerticalContentAlignment="Center"
                     Content="+ New Template"
+                    Command="{Binding GoToTemplateCreateCommand}"
                     Width="140"
                     Height="35"
                     Foreground="White"

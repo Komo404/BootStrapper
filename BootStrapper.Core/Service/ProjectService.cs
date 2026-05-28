@@ -1,43 +1,90 @@
 ﻿using BootStrapper.Core.Models;
 using System;
 using System.Collections.Generic;
+using System.Reflection.Metadata;
 using System.Text;
 
 namespace BootStrapper.Core.Service;
 
 public class ProjectService
 {
-    void CreateProject(UserConfig config)
+    public void CreateProject(UserConfig config, Project projectInfo)
     {
-        // Lógica para criar um projeto com base na configuração fornecida
-        // Chama? a criação de arquivos, pastas, etc.
+        if (config.ProjectsFolder == null)
+            throw new DirectoryNotFoundException("Projects Folder is null");
+
+        Directory.CreateDirectory(projectInfo.Path); // Nome do projeto deve estar no path
+
+        string manifestPath = Path.Combine(projectInfo.Path, "manifest.json");
+        File.Create(manifestPath).Close();
+        ManifestService.WriteManifest(manifestPath, projectInfo);
+
+        string scriptsFolderPath = Path.Combine(projectInfo.Path, "Scripts");
+        Directory.CreateDirectory(scriptsFolderPath);
     }
 
-    void DeleteProject(string projectPath)
+    public void DeleteProject(string projectPath)
     {
-        // Lógica para excluir um projeto com base no caminho fornecido
+        if (!Directory.Exists(projectPath))
+            throw new ArgumentNullException("Project is not existent");
+
+        Directory.Delete(projectPath, true);
     }
 
-    void UpdateProject(string projectPath, UserConfig newConfig)
+    public void UpdateProject(UserConfig config, string projectPath, Project projectInfo)
     {
-        // Lógica para atualizar um projeto existente com base no caminho e na nova configuração fornecida
+        if (!Directory.Exists(projectPath))
+            throw new ArgumentNullException("Project is not existent");
+
+        string projectManifestPath = Path.Combine(projectPath, "manifest.json");
+
+        ManifestService.WriteManifest(projectManifestPath, projectInfo);
+
+        string scriptsFolderPath = Path.Combine(projectPath, "Scripts");
+        // TODO: Atualiza os arquivos do projeto, caso haja templates novos
     }
 
-    void GetProject(string projectPath)
+    public static Project GetProject(UserConfig config, string projectPath)
     {
-        // Lógica para obter as informações de um projeto com base no caminho fornecido
-        // leitura de arquivos, pastas, etc.
+        if (!Directory.Exists(projectPath))
+            throw new ArgumentNullException("Project is not existent");
+
+        List<Project> projects = ListProjects(config.ProjectsFolder);
+
+        foreach (Project project in projects)
+        {
+            if (project.Path == projectPath)
+                return project;
+        }
+
+        throw new Exception("Não achou o projeto");
     }
 
-    void ListProjects(string projectFolderPath)
+    public static List<Project> ListProjects(string projectsFolderPath)
     {
-        // Lógica para listar todos os projetos disponíveis
-        // leitura de um diretório específico onde os projetos estão
+        string[] folders = Directory.GetDirectories(projectsFolderPath);
+        List<Project> projects = new List<Project>();
+
+        foreach (string folder in folders)
+        {
+            string manifestPath = Path.Combine(folder, "manifest.json");
+            Project project = ManifestService.ReadManifest<Project>(manifestPath);
+            projects.Add(project);
+        }
+
+        return projects;
     }
 
-    void GetProjectHistory(string projectPath)
+    public string[] GetProjectHistory(UserConfig config, string projectPath)
     {
-        // Lógica para obter o histórico de mudanças de um projeto com base no caminho fornecido
-        // consulta do banco de dados
+        Project project = GetProject(config, config.ProjectsFolder);
+        String[] changeHistory;
+        if (project.ChangeHistory != null)
+        {
+            changeHistory = project.ChangeHistory;
+            return changeHistory;
+        }
+
+        throw new Exception("Project doesn't have change history");
     }
 }

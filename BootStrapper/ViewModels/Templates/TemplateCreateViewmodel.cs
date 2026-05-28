@@ -21,4 +21,10 @@ public partial class TemplateCreateViewModel : ViewModelBase
     {
         _navigation.CurrentView = new HomeViewModel(_navigation);
     }
+
+    [RelayCommand]
+    private void GoToTemplateInfo()
+    {
+        _navigation.CurrentView = new TemplateInfoViewModel(_navigation);
+    }
 }

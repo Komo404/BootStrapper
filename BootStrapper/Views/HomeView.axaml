@@ -29,8 +29,10 @@
                             <TextBlock Text="Description Project 1" Foreground="#CFCFCF" FontSize="13"/>
                         </StackPanel>
 
-                        <Button Grid.Column="1" Content="Open" Width="70" Foreground="White" HorizontalContentAlignment="Center" VerticalAlignment="Center"/>
-
+                        <StackPanel Grid.Column="1"  Spacing="15" Orientation="Horizontal">
+                            <Button  Content="Open In Unity" Width="110" Foreground="White" HorizontalContentAlignment="Center" VerticalAlignment="Center"/>
+                            <Button  Content="Edit" Width="70" Command="{Binding GoToProjectInfoCommand}" Foreground="White" HorizontalContentAlignment="Center" VerticalAlignment="Center"/>
+                        </StackPanel>
                     </Grid>
 
                 </Border>
@@ -44,8 +46,10 @@
                             <TextBlock Text="Description Project 2" Foreground="#CFCFCF" FontSize="13"/>
                         </StackPanel>
 
-                        <Button Grid.Column="1" Content="Open" Width="70" Foreground="White" HorizontalContentAlignment="Center" VerticalAlignment="Center"/>
-
+                        <StackPanel Grid.Column="1"  Spacing="15" Orientation="Horizontal">
+                            <Button  Content="Open In Unity" Width="110" Foreground="White" HorizontalContentAlignment="Center" VerticalAlignment="Center"/>
+                            <Button  Content="Edit" Width="70" Command="{Binding GoToProjectInfoCommand}" Foreground="White" HorizontalContentAlignment="Center" VerticalAlignment="Center"/>
+                        </StackPanel>
                     </Grid>
 
                 </Border>

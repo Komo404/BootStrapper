@@ -14,21 +14,15 @@ public class TemplateService
 
         // 1. Ler todos os manifest JSON
         string[] templatefolders = Directory.GetDirectories(templatesFolderPath);
-        List<string> tempList = new List<string>();
 
         foreach (string folder in templatefolders)
         {
             string manifestPath = Path.Combine(folder, $"{Path.GetFileName(folder)}.json");
             if (File.Exists(manifestPath))
             {
-                tempList.Add(manifestPath);
+                TemplateManifest template = ManifestService.ReadManifest<TemplateManifest>(manifestPath);
+                templates.Add(template);
             }
-        }
-
-        foreach (string manifest in tempList) // Ler cada manifest e chamar ReadManifest para ler
-        {
-            TemplateManifest template = ManifestService.ReadManifest<TemplateManifest>(manifest);
-            templates.Add(template);
         }
 
         return templates;
@@ -55,9 +49,12 @@ public class TemplateService
 
     public void CreateTemplate(string templatesFolderPath, TemplateManifest templateInfo) 
     {
-        TemplateManifest newTemplateManifest = new TemplateManifest
+        var manifestId = Guid.NewGuid();
+        var manifestPath = Path.Combine(templatesFolderPath, manifestId.ToString(), "manifest.json");
+
+        var newTemplateManifest = new TemplateManifest
         {
-            Id = Guid.NewGuid(),
+            Id = manifestId,
             Name = templateInfo.Name,
             Description = templateInfo.Description,
             Version = "1.0.0",
@@ -65,19 +62,16 @@ public class TemplateService
             MaxUnityVersion = templateInfo.MaxUnityVersion,
             MinUnityVersion = templateInfo.MinUnityVersion,
             Tags = new List<string>(),
-            TemplatePath = Path.Combine(templatesFolderPath, templateInfo.Id.ToString()),
-            ManifestPath = Path.Combine(templatesFolderPath, templateInfo.Id.ToString(), $"{templateInfo.Name}.json")
+            TemplatePath = Path.Combine(templatesFolderPath, manifestId.ToString()),
+            ManifestPath = manifestPath
         };
-
-        string manifestPath = Path.Combine(newTemplateManifest.TemplatePath, $"{newTemplateManifest.Name}.json");
-        string scriptsFolderPath = Path.Combine(newTemplateManifest.TemplatePath, "Scripts"); 
 
         Directory.CreateDirectory(newTemplateManifest.TemplatePath); // Cria pasta do template
 
-        ManifestService.WriteManifest(manifestPath, newTemplateManifest);
+        ManifestService.WriteManifest(newTemplateManifest.ManifestPath, newTemplateManifest); // Cria manifest Json
 
+        string scriptsFolderPath = Path.Combine(newTemplateManifest.TemplatePath, "Scripts");
         Directory.CreateDirectory(scriptsFolderPath); // Cria pasta de scripts 
-
 
     }
 
@@ -94,13 +88,14 @@ public class TemplateService
     public void UpdateTemplateManifest (string templatesFolderPath, TemplateManifest templateInfo)
     {
         TemplateManifest updatedManifest = GetTemplateById(templatesFolderPath, templateInfo.Id); // não precisa ser criado um novo TemplateManifest, é só atualizar o templateInfo e passar ele para o WriteManifest
+        
         updatedManifest.Name = templateInfo.Name;
         updatedManifest.Description = templateInfo.Description;
         updatedManifest.Version = templateInfo.Version;
         updatedManifest.MinUnityVersion = templateInfo.MinUnityVersion;
         updatedManifest.MaxUnityVersion = templateInfo.MaxUnityVersion;
         updatedManifest.Tags = templateInfo.Tags;
-        updatedManifest.ManifestPath = Path.Combine(templatesFolderPath, templateInfo.Id.ToString(), $"{templateInfo.Name}.json");
+        updatedManifest.ManifestPath = Path.Combine(templatesFolderPath, templateInfo.Id.ToString(), $"manifest.json");
 
         ManifestService.WriteManifest(templateInfo.ManifestPath, updatedManifest);
     }
@@ -108,10 +103,12 @@ public class TemplateService
     public void UpdateTemplateScripts(string templatePath, List<string> newScripts)
     {
         string scriptsFolderPath = Path.Combine(templatePath, "Scripts");
+
         if (!Directory.Exists(scriptsFolderPath))
         {
             Directory.CreateDirectory(scriptsFolderPath);
         }
+
         foreach (string script in newScripts)
         {
             string scriptPath = Path.Combine(scriptsFolderPath, $"{script}.cs");
@@ -119,4 +116,3 @@ public class TemplateService
         }
     }
 }
-    

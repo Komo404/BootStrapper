@@ -2,10 +2,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:templates="using:BootStrapper.ViewModels.Templates"
              mc:Ignorable="d" Height="600"
              xmlns:vm="clr-namespace:BootStrapper.ViewModels.Templates"
-             x:Class="BootStrapper.Views.Templates.TemplateCreate"
+             x:Class="BootStrapper.Views.Templates.TemplateCreateView"
              x:DataType="vm:TemplateCreateViewModel">
 
     <Grid Background="#171717">
@@ -24,7 +23,7 @@
 
                 <StackPanel Grid.Row="0" Grid.ColumnSpan="2" Spacing="6">
                     <TextBlock Text="Create Template" FontSize="24" Foreground="White"/>
-                    <TextBlock Text="Define the new template and the basic file structure" FontSize="14" Foreground="#D6D6D6"/>
+                    <TextBlock Text="Insert the new template infos and the basic file structure" FontSize="14" Foreground="#D6D6D6"/>
                 </StackPanel>
 
                 <StackPanel Grid.Row="1" Grid.Column="0" Spacing="12">
@@ -67,8 +66,8 @@
                 </StackPanel>
 
                 <StackPanel Grid.Row="2" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="10">
-                    <Button Content="Cancel" Background="Transparent" Foreground="White" BorderBrush="White" BorderThickness="1" />
-                    <Button Content="Create Template" Foreground="White"/>
+                    <Button Content="Cancel" Command="{Binding GoToHomeCommand}" Background="Transparent" Foreground="White" BorderBrush="White" BorderThickness="1" />
+                    <Button Content="Create Template" Command="{Binding GoToTemplateInfoCommand}" Foreground="White"/>
                 </StackPanel>
 
             </Grid>
