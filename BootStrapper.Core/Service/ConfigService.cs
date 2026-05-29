@@ -3,33 +3,64 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace BootStrapper.Core.Service
+namespace BootStrapper.Core.Service;
+
+public static class ConfigService
 {
-    public static class ConfigService
+    public static UserConfig LoadConfig(string configFilePath)
     {
+        if (!File.Exists(configFilePath))
+            CreateDefaultConfig(configFilePath);
 
-        public static UserConfig LoadConfig(string configFilePath)
-        {
-            if (string.IsNullOrEmpty(configFilePath))
-                throw new ArgumentNullException(nameof(configFilePath), "Config file path cannot be null or empty.");
-            if (!File.Exists(configFilePath))
-                throw new FileNotFoundException("Config file not found.", configFilePath);
+        if (string.IsNullOrEmpty(configFilePath))
+            throw new ArgumentNullException(nameof(configFilePath), "Config file path null or empty");
 
-            string json = File.ReadAllText(configFilePath);
-            UserConfig config = System.Text.Json.JsonSerializer.Deserialize<UserConfig>(json) ?? throw new Exception("Failed to deserialize config.");
-            return config;
+        string json = File.ReadAllText(configFilePath);
+        UserConfig config = System.Text.Json.JsonSerializer.Deserialize<UserConfig>(json) ?? throw new Exception("Failed to deserialize config.");
+        return config;
+    }
+
+    public static void SaveConfig(UserConfig config, string configFilePath)
+    {
+        if (config == null) {
+            CreateDefaultConfig(configFilePath);
         }
 
-        public static void SaveConfig(UserConfig config, string configFilePath)
-        {
-            if (config == null)
-                throw new ArgumentNullException(nameof(config), "Config cannot be null.");
-            if (string.IsNullOrEmpty(configFilePath))
-                throw new ArgumentNullException(nameof(configFilePath), "Config file path cannot be null or empty.");
-
-            string json = System.Text.Json.JsonSerializer.Serialize(config);
-            File.WriteAllText(configFilePath, json);
+        if (string.IsNullOrEmpty(configFilePath)) {
+            throw new ArgumentNullException(nameof(configFilePath), "Config file path cannot be null or empty.");
         }
+
+        string? directory = Path.GetDirectoryName(configFilePath);
+
+        if (!Directory.Exists(directory))
+        {
+            Directory.CreateDirectory(directory);
+        }
+
+        string json = System.Text.Json.JsonSerializer.Serialize(config);
+        File.WriteAllText(configFilePath, json);
+    }
+
+    public static void CreateDefaultConfig(string configFilePath)
+    {
+        if (string.IsNullOrEmpty(configFilePath))
+            throw new ArgumentNullException(nameof(configFilePath), "Config file path cannot be null or empty.");
+
+        UserConfig defaultConfig = new UserConfig
+        {
+            UnityPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "Unity", "Hub", "Editor", "6000.4.5f1", "Editor", "Unity.exe"),
+            Theme = "Dark",
+            ProjectsFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "BootStrapperProjects"),
+            TemplatesFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "BootStrapperTemplates"),
+            AutoUpdateEnabled = true
+        };
+
+        if (!Directory.Exists(defaultConfig.ProjectsFolder))
+            Directory.CreateDirectory(defaultConfig.ProjectsFolder);
+        if (!Directory.Exists(defaultConfig.TemplatesFolder))
+            Directory.CreateDirectory(defaultConfig.TemplatesFolder);
+
+        SaveConfig(defaultConfig, configFilePath);
 
     }
 }

@@ -8,16 +8,21 @@ namespace BootStrapper.Core.Service;
 
 public class TemplateService
 {
-    public List<TemplateManifest> GetAllTemplates(string templatesFolderPath) // Scan Templates Directory 
+    /// <summary>
+    ///     Get the Directories from the templates folder path
+    /// </summary>
+    /// <param name="templatesFolderPath"></param>
+    /// <returns>List of Type TemplateManifest</returns>
+    public static List<TemplateManifest> GetAllTemplates(UserConfig config)
     {
         List<TemplateManifest> templates = new List<TemplateManifest>();
 
         // 1. Ler todos os manifest JSON
-        string[] templatefolders = Directory.GetDirectories(templatesFolderPath);
+        string[] templatefolders = Directory.GetDirectories(config.TemplatesFolder);
 
         foreach (string folder in templatefolders)
         {
-            string manifestPath = Path.Combine(folder, $"{Path.GetFileName(folder)}.json");
+            string manifestPath = Path.Combine(folder, $"manifest.json");
             if (File.Exists(manifestPath))
             {
                 TemplateManifest template = ManifestService.ReadManifest<TemplateManifest>(manifestPath);
@@ -28,15 +33,28 @@ public class TemplateService
         return templates;
     }
 
-    public List<TemplateManifest> GetTemplateByTag(string templatesFolderPath, string tag) // Scan Templates Directory, filtra por tag e retorna os templates daquela tag
+    /// <summary>
+    ///     Get the  Directories from the templates folder path, filter by tag and returns the template of that tag
+    /// </summary>
+    /// <param name="config"></param>
+    /// <param name="tag"></param>
+    /// <returns></returns>
+    public static List<TemplateManifest> GetTemplateByTag(UserConfig config, string tag)
     {
-        List<TemplateManifest> allTemplates = GetAllTemplates(templatesFolderPath);
+        List<TemplateManifest> allTemplates = GetAllTemplates(config);
         return allTemplates.FindAll(template => template.Tags.Contains(tag));
     }
 
-    public TemplateManifest GetTemplateById(string templatesFolderPath, Guid templateId) // Scan Templates Directory, filtra por ID e retorna o template correspondente
+    /// <summary>
+    ///     Get the Directories from the templates folder path, filter by Id and  returns the template of that Id
+    /// </summary>
+    /// <param name="config"></param>
+    /// <param name="templateId"></param>
+    /// <returns></returns>
+    /// <exception cref="Exception"></exception>
+    public static TemplateManifest GetTemplateById(UserConfig config, Guid templateId)
     {
-        List<TemplateManifest> allTemplates = GetAllTemplates(templatesFolderPath);
+        List<TemplateManifest> allTemplates = GetAllTemplates(config);
 
         TemplateManifest? foundTemplate = allTemplates.Find(template => template.Id == templateId);
 
@@ -47,10 +65,10 @@ public class TemplateService
         throw new Exception($"Template with ID {templateId} not found.");
     }
 
-    public void CreateTemplate(string templatesFolderPath, TemplateManifest templateInfo) 
+    public static void CreateTemplate(UserConfig config, TemplateManifest templateInfo) 
     {
         var manifestId = Guid.NewGuid();
-        var manifestPath = Path.Combine(templatesFolderPath, manifestId.ToString(), "manifest.json");
+        var manifestPath = Path.Combine(config.TemplatesFolder, manifestId.ToString(), "manifest.json");
 
         var newTemplateManifest = new TemplateManifest
         {
@@ -62,7 +80,7 @@ public class TemplateService
             MaxUnityVersion = templateInfo.MaxUnityVersion,
             MinUnityVersion = templateInfo.MinUnityVersion,
             Tags = new List<string>(),
-            TemplatePath = Path.Combine(templatesFolderPath, manifestId.ToString()),
+            TemplatePath = Path.Combine(config.TemplatesFolder, manifestId.ToString()),
             ManifestPath = manifestPath
         };
 
@@ -75,19 +93,22 @@ public class TemplateService
 
     }
 
-    public void DeleteTemplate(string templatePath, Guid templateId)
+    public static async Task DeleteTemplate(UserConfig config, Guid templateId)
     {
-        TemplateManifest template = GetTemplateById(templatePath, templateId);
+        TemplateManifest template = GetTemplateById(config, templateId);
 
-        if (Directory.Exists(template.TemplatePath))
+        await Task.Run(() =>
         {
-            Directory.Delete(template.TemplatePath, true);
-        }
+            if (Directory.Exists(template.TemplatePath))
+            {
+                Directory.Delete(template.TemplatePath, true);
+            }
+        });
     }
 
-    public void UpdateTemplateManifest (string templatesFolderPath, TemplateManifest templateInfo)
+    public static void UpdateTemplateManifest (UserConfig config, TemplateManifest templateInfo)
     {
-        TemplateManifest updatedManifest = GetTemplateById(templatesFolderPath, templateInfo.Id); // não precisa ser criado um novo TemplateManifest, é só atualizar o templateInfo e passar ele para o WriteManifest
+        TemplateManifest updatedManifest = GetTemplateById(config, templateInfo.Id); // não precisa ser criado um novo TemplateManifest, é só atualizar o templateInfo e passar ele para o WriteManifest
         
         updatedManifest.Name = templateInfo.Name;
         updatedManifest.Description = templateInfo.Description;
@@ -95,14 +116,14 @@ public class TemplateService
         updatedManifest.MinUnityVersion = templateInfo.MinUnityVersion;
         updatedManifest.MaxUnityVersion = templateInfo.MaxUnityVersion;
         updatedManifest.Tags = templateInfo.Tags;
-        updatedManifest.ManifestPath = Path.Combine(templatesFolderPath, templateInfo.Id.ToString(), $"manifest.json");
+        updatedManifest.ManifestPath = Path.Combine(config.TemplatesFolder, templateInfo.Id.ToString(), $"manifest.json");
 
         ManifestService.WriteManifest(templateInfo.ManifestPath, updatedManifest);
     }
 
-    public void UpdateTemplateScripts(string templatePath, List<string> newScripts)
+    public static void UpdateTemplateScripts(TemplateManifest template, List<string> newScripts)
     {
-        string scriptsFolderPath = Path.Combine(templatePath, "Scripts");
+        string scriptsFolderPath = Path.Combine(template.TemplatePath, "Scripts");
 
         if (!Directory.Exists(scriptsFolderPath))
         {

@@ -8,7 +8,7 @@ namespace BootStrapper.Core.Service;
 
 public class ProjectService
 {
-    public void CreateProject(UserConfig config, Project projectInfo)
+    public static void CreateProject(UserConfig config, Project projectInfo)
     {
         if (config.ProjectsFolder == null)
             throw new DirectoryNotFoundException("Projects Folder is null");
@@ -23,7 +23,7 @@ public class ProjectService
         Directory.CreateDirectory(scriptsFolderPath);
     }
 
-    public void DeleteProject(string projectPath)
+    public static void DeleteProject(string projectPath)
     {
         if (!Directory.Exists(projectPath))
             throw new ArgumentNullException("Project is not existent");
@@ -31,7 +31,7 @@ public class ProjectService
         Directory.Delete(projectPath, true);
     }
 
-    public void UpdateProject(UserConfig config, string projectPath, Project projectInfo)
+    public static void UpdateProject(UserConfig config, string projectPath, Project projectInfo)
     {
         if (!Directory.Exists(projectPath))
             throw new ArgumentNullException("Project is not existent");
@@ -49,7 +49,7 @@ public class ProjectService
         if (!Directory.Exists(projectPath))
             throw new ArgumentNullException("Project is not existent");
 
-        List<Project> projects = ListProjects(config.ProjectsFolder);
+        List<Project> projects = ListProjects(config);
 
         foreach (Project project in projects)
         {
@@ -60,13 +60,18 @@ public class ProjectService
         throw new Exception("Não achou o projeto");
     }
 
-    public static List<Project> ListProjects(string projectsFolderPath)
+    public static List<Project> ListProjects(UserConfig config)
     {
-        string[] folders = Directory.GetDirectories(projectsFolderPath);
+
+        string[] folders = Directory.GetDirectories(config.ProjectsFolder);
         List<Project> projects = new List<Project>();
 
         foreach (string folder in folders)
         {
+            if (!Directory.Exists(folder))
+                continue;
+            else if (!File.Exists(Path.Combine(folder, "manifest.json")))
+                continue;
             string manifestPath = Path.Combine(folder, "manifest.json");
             Project project = ManifestService.ReadManifest<Project>(manifestPath);
             projects.Add(project);
@@ -75,9 +80,9 @@ public class ProjectService
         return projects;
     }
 
-    public string[] GetProjectHistory(UserConfig config, string projectPath)
+    public static string[] GetProjectHistory(UserConfig config, string projectPath)
     {
-        Project project = GetProject(config, config.ProjectsFolder);
+        Project project = GetProject(config, projectPath);
         String[] changeHistory;
         if (project.ChangeHistory != null)
         {

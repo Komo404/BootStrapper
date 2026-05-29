@@ -7,8 +7,6 @@
              x:Class="BootStrapper.Views.Projects.ProjectCreateView"
              x:DataType="vm:ProjectCreateViewModel">
 
-
-
     <Grid Background="#171717">
         <Border Width="500" Height="570" BorderBrush="White" BorderThickness="1" CornerRadius="10" Background="#37345D">
             <Grid ColumnDefinitions="220, *">

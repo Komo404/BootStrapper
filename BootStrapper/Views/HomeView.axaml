@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" Width="700" Height="400"
              xmlns:vm="clr-namespace:BootStrapper.ViewModels"
+             xmlns:models="clr-namespace:BootStrapper.Core.Models;assembly=BootStrapper.Core"
              x:Class="BootStrapper.Views.HomeView"
              x:DataType="vm:HomeViewModel">
 
@@ -21,38 +22,32 @@
             <StackPanel Spacing="10">
 
                 <Border Background="#2B2D3D" CornerRadius="10" Padding="14">
-
                     <Grid ColumnDefinitions="*,Auto">
 
-                        <StackPanel Spacing="4">
-                            <TextBlock Text="Project 1" FontSize="16" Foreground="White"/>
-                            <TextBlock Text="Description Project 1" Foreground="#CFCFCF" FontSize="13"/>
-                        </StackPanel>
+                     <ItemsControl ItemsSource="{Binding RecentProjects}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="models:Project">
+                                <Grid ColumnDefinitions="*,Auto">
 
-                        <StackPanel Grid.Column="1"  Spacing="15" Orientation="Horizontal">
-                            <Button  Content="Open In Unity" Width="110" Foreground="White" HorizontalContentAlignment="Center" VerticalAlignment="Center"/>
-                            <Button  Content="Edit" Width="70" Command="{Binding GoToProjectInfoCommand}" Foreground="White" HorizontalContentAlignment="Center" VerticalAlignment="Center"/>
-                        </StackPanel>
+                                    <StackPanel Spacing="4">
+                                        <TextBlock Text="{Binding Name}" FontSize="16" Foreground="White"/>
+                                        <TextBlock Text="{Binding UnityVersion}" Foreground="#CFCFCF" FontSize="13"/>
+                                        </StackPanel>
+
+                                    <StackPanel Grid.Column="1"  Spacing="15" Orientation="Horizontal">
+                                        <Button  Content="Open In Unity" Width="110" Command="{Binding $parent[ItemsControl].DataContext.OpenUnityCommand}" CommandParameter="{Binding}" Foreground="White" HorizontalContentAlignment="Center" VerticalAlignment="Center"/>
+                                        <Button  Content="Edit" Width="70" Command="{Binding $parent[ItemsControl].DataContext.GoToProjectInfoCommand}" CommandParameter="{Binding}"  Foreground="White" HorizontalContentAlignment="Center" VerticalAlignment="Center"/>
+                                    </StackPanel>
+
+                                    </Grid>
+
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
                     </Grid>
-
                 </Border>
 
-                <Border Background="#2B2D3D" CornerRadius="10" Padding="14">
-
-                    <Grid ColumnDefinitions="*,Auto">
-
-                        <StackPanel Spacing="4">
-                            <TextBlock Text="Project 2" FontSize="16" Foreground="White"/>
-                            <TextBlock Text="Description Project 2" Foreground="#CFCFCF" FontSize="13"/>
-                        </StackPanel>
-
-                        <StackPanel Grid.Column="1"  Spacing="15" Orientation="Horizontal">
-                            <Button  Content="Open In Unity" Width="110" Foreground="White" HorizontalContentAlignment="Center" VerticalAlignment="Center"/>
-                            <Button  Content="Edit" Width="70" Command="{Binding GoToProjectInfoCommand}" Foreground="White" HorizontalContentAlignment="Center" VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </Grid>
-
-                </Border>
             </StackPanel>
         </StackPanel>
     </Grid>

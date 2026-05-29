@@ -4,7 +4,7 @@ using System.Text;
 
 namespace BootStrapper.Core.Service
 {
-    public class UpdateService
+    public class BundlerService
     {
     }
 }

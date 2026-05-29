@@ -1,23 +1,22 @@
-﻿using BootStrapper.ViewModels.Projects;
+﻿using BootStrapper.Core.Models;
+using BootStrapper.ViewModels.Projects;
 using BootStrapper.ViewModels.Templates;
 using BootStrapper.Views;
 using CommunityToolkit.Mvvm.Input;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace BootStrapper.ViewModels;
 
 public partial class SidebarViewModel: ViewModelBase
 {
     private readonly NavigationService? _navigation;
+    private readonly UserConfig? _config;
 
-    public SidebarViewModel(NavigationService navigation)
+    public SidebarViewModel(NavigationService navigation, UserConfig config)
     {
         _navigation = navigation;
+        _config = config ?? throw new ArgumentNullException(nameof(config));
     }
-
-    public SidebarViewModel() { }
 
     [RelayCommand]
     private void GoToHome()
@@ -25,7 +24,7 @@ public partial class SidebarViewModel: ViewModelBase
         Console.WriteLine("GoToHome");
         if (_navigation is null)
             throw new InvalidOperationException("NavigationService não foi inicializado");
-        _navigation.CurrentView = new HomeViewModel(_navigation);
+        _navigation.CurrentView = new HomeViewModel(_navigation, _config);
     }
     [RelayCommand]
     private void GoToProjectCreate()
@@ -41,7 +40,7 @@ public partial class SidebarViewModel: ViewModelBase
         Console.WriteLine("GoTo3");
         if (_navigation is null)
             throw new InvalidOperationException("NavigationService não foi inicializado");
-        _navigation.CurrentView = new TemplateListViewModel(_navigation);
+        _navigation.CurrentView = new TemplateListViewModel(_navigation, _config);
     }
     [RelayCommand]
     private void GoToProjectList()

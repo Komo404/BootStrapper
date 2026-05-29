@@ -7,7 +7,6 @@
              x:Class="BootStrapper.Views.Templates.TemplateInfoView"
              x:DataType="vm:TemplateInfoViewModel">
 
-
     <Grid Background="#171717" RowDefinitions="Auto,*,Auto">
 
         <!-- HEADER -->
@@ -73,7 +72,7 @@
 
                         <StackPanel Spacing="4">
                             <TextBlock Text="Name" Foreground="White"/>
-                            <TextBox Text="Template Name"/>
+                            <TextBox Text="{Binding TemplateName}"/>
                         </StackPanel>
 
                         <StackPanel Spacing="4">
@@ -81,17 +80,17 @@
                             <TextBox AcceptsReturn="True"
                                      Height="90"
                                      TextWrapping="Wrap"
-                                     Text="Description."/>
+                                     Text="{Binding TemplateDesc}"/>
                         </StackPanel>
 
                         <StackPanel Spacing="4">
                             <TextBlock Text="Min Unity Version" Foreground="White"/>
-                            <TextBox Text="2022.3"/>
+                            <TextBox Text="{Binding TemplateMinUnityV}"/>
                         </StackPanel>
 
                         <StackPanel Spacing="4">
                             <TextBlock Text="Max Unity Version" Foreground="White"/>
-                            <TextBox Text="6000.0"/>
+                            <TextBox Text="{Binding TemplateMaxUnityV}"/>
                         </StackPanel>
 
                         <StackPanel Spacing="4">

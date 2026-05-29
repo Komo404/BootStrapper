@@ -1,30 +1,43 @@
-﻿using BootStrapper.ViewModels.Projects;
+﻿using BootStrapper.Core.Models;
+using BootStrapper.Core.Service;
+using BootStrapper.ViewModels.Projects;
 using BootStrapper.Views;
 using CommunityToolkit.Mvvm.Input;
 using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Collections.ObjectModel;
 
 namespace BootStrapper.ViewModels;
 
 public partial class HomeViewModel : ViewModelBase
 {
-    public string HomeViewMainTEXT { get; set; } = "Hello from HomeView";
     private readonly NavigationService? _navigation;
+    private readonly UserConfig? _config;
+    public ObservableCollection<Project> RecentProjects { get; set; }
 
-    public HomeViewModel(NavigationService navigation)
+    public HomeViewModel(NavigationService navigation, UserConfig config)
     {
         _navigation = navigation;
+        _config = config ?? throw new ArgumentNullException(nameof(config));
+
+        var projects = ProjectService.ListProjects(_config);
+        RecentProjects = new ObservableCollection<Project>(projects);
     }
 
-    public HomeViewModel() { }
-
     [RelayCommand]
-    private void GoToProjectInfo()
+    private void GoToProjectInfo(Project project)
     {
         if (_navigation is null)
             throw new InvalidOperationException("NavigationService não foi inicializado");
 
-        _navigation.CurrentView = new ProjectInfoViewModel(_navigation);
+        _navigation.CurrentView = new ProjectInfoViewModel(_navigation, project);
+    }
+
+    [RelayCommand]
+    private void OpenUnity(Project project)
+    {
+        if (_navigation is null)
+            throw new InvalidOperationException("NavigationService não foi inicializado");
+
+        _navigation.CurrentView = new ProjectInfoViewModel(_navigation, project);
     }
 }

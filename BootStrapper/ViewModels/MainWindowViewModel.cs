@@ -1,27 +1,26 @@
-﻿using BootStrapper.ViewModels.Projects;
+﻿using BootStrapper.Core.Models;
+using BootStrapper.ViewModels.Projects;
 using BootStrapper.ViewModels.Templates;
 using BootStrapper.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.ComponentModel;
 
-namespace BootStrapper.ViewModels
+namespace BootStrapper.ViewModels;
+
+public partial class MainWindowViewModel : ViewModelBase
 {
-    public partial class MainWindowViewModel : ViewModelBase
+    public NavigationService Navigation { get; }
+
+    public SidebarViewModel Sidebar { get; }
+
+    public MainWindowViewModel(UserConfig config)
     {
+        Navigation = new NavigationService();
 
-        public NavigationService Navigation { get; }
+        Sidebar = new SidebarViewModel(Navigation, config);
 
-        public SidebarViewModel Sidebar { get; }
-
-        public MainWindowViewModel()
-        {
-            Navigation = new NavigationService();
-
-            Sidebar = new SidebarViewModel(Navigation);
-
-            Navigation.CurrentView = new HomeViewModel(Navigation);
-        }
-
+        Navigation.CurrentView = new HomeViewModel(Navigation, config);
     }
+
 }

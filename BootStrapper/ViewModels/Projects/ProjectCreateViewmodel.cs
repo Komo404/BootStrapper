@@ -9,7 +9,6 @@ namespace BootStrapper.ViewModels.Projects;
 public partial class ProjectCreateViewModel : ViewModelBase
 {
     private readonly NavigationService _navigation;
-    private readonly BootStrapper.Core.Service.ProjectService _templateService;
 
     public ProjectCreateViewModel (NavigationService navigation)
     {
@@ -25,7 +24,6 @@ public partial class ProjectCreateViewModel : ViewModelBase
     [RelayCommand]
     private void CreateProject()
     {
-        //_templateService.CreateProject(); TODO
     }
 
 }

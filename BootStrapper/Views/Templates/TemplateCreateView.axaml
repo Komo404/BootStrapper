@@ -28,7 +28,7 @@
 
                 <StackPanel Grid.Row="1" Grid.Column="0" Spacing="12">
 
-                    <TextBlock Text="Name" Foreground="White"/>
+                    <TextBlock Text="Template Name" Foreground="White"/>
                     <TextBox PlaceholderText="Template name" />
 
                     <TextBlock Text="Description" Foreground="White"/>
