@@ -47,8 +47,12 @@
                     </Border>
 
                     <StackPanel Orientation="Horizontal" Spacing="10">
-                        <Button Content="Open" Foreground="White"/>
-                        <Button Content="Delete" Background="#8B2E2E" Foreground="White"/>
+                        <Button Content="Open" 
+                                Command="{Binding OpenProjectCommand}"
+                                Foreground="White"/>
+                        <Button Content="Delete"
+                                Command="{Binding DeleteProjectCommand}"
+                                Background="#8B2E2E" Foreground="White"/>
                     </StackPanel>
                 </StackPanel>
 
@@ -104,7 +108,9 @@
                             <TextBox Text="Komori"/>
                         </StackPanel>
 
-                        <Button Content="Open Project Folder" Margin="0,10,0,0" Foreground="White"/>
+                        <Button Content="Open Project Folder" 
+                                Command="{Binding OpenProjectFolderCommand}"
+                                Margin="0,10,0,0" Foreground="White"/>
                         <Button Content="Update Project" Margin="0,40,0,0" HorizontalAlignment="Center" Foreground="White"/>
 
                     </StackPanel>

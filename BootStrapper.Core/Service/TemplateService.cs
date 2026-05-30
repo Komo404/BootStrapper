@@ -65,32 +65,23 @@ public class TemplateService
         throw new Exception($"Template with ID {templateId} not found.");
     }
 
-    public static void CreateTemplate(UserConfig config, TemplateManifest templateInfo) 
+    public static void CreateTemplate(UserConfig config, TemplateManifest templateInfo)
     {
-        var manifestId = Guid.NewGuid();
-        var manifestPath = Path.Combine(config.TemplatesFolder, manifestId.ToString(), "manifest.json");
+        if (templateInfo == null) throw new ArgumentNullException(nameof(templateInfo));
+        if (config == null) throw new ArgumentNullException(nameof(config));
 
-        var newTemplateManifest = new TemplateManifest
-        {
-            Id = manifestId,
-            Name = templateInfo.Name,
-            Description = templateInfo.Description,
-            Version = "1.0.0",
-            CreationDate = DateTime.Now,
-            MaxUnityVersion = templateInfo.MaxUnityVersion,
-            MinUnityVersion = templateInfo.MinUnityVersion,
-            Tags = new List<string>(),
-            TemplatePath = Path.Combine(config.TemplatesFolder, manifestId.ToString()),
-            ManifestPath = manifestPath
-        };
+        templateInfo.Id = Guid.NewGuid();
+        templateInfo.CreationDate = DateTime.Now;
+        templateInfo.Tags = new List<string>();
+        templateInfo.TemplatePath = Path.Combine(config.TemplatesFolder, templateInfo.Id.ToString());
+        templateInfo.ManifestPath = Path.Combine(templateInfo.TemplatePath, "manifest.json");
 
-        Directory.CreateDirectory(newTemplateManifest.TemplatePath); // Cria pasta do template
+        Directory.CreateDirectory(templateInfo.TemplatePath); // Cria pasta do template
 
-        ManifestService.WriteManifest(newTemplateManifest.ManifestPath, newTemplateManifest); // Cria manifest Json
+        ManifestService.WriteManifest(templateInfo.ManifestPath, templateInfo); // Cria manifest Json
 
-        string scriptsFolderPath = Path.Combine(newTemplateManifest.TemplatePath, "Scripts");
-        Directory.CreateDirectory(scriptsFolderPath); // Cria pasta de scripts 
-
+        string scriptsFolderPath = Path.Combine(templateInfo.TemplatePath, "Scripts");
+        Directory.CreateDirectory(scriptsFolderPath); // Cria pasta de scripts
     }
 
     public static async Task DeleteTemplate(UserConfig config, Guid templateId)
@@ -113,7 +104,7 @@ public class TemplateService
         updatedManifest.Name = templateInfo.Name;
         updatedManifest.Description = templateInfo.Description;
         updatedManifest.Version = templateInfo.Version;
-        updatedManifest.MinUnityVersion = templateInfo.MinUnityVersion;
+        updatedManifest.UnityVersion = templateInfo.UnityVersion;
         updatedManifest.MaxUnityVersion = templateInfo.MaxUnityVersion;
         updatedManifest.Tags = templateInfo.Tags;
         updatedManifest.ManifestPath = Path.Combine(config.TemplatesFolder, templateInfo.Id.ToString(), $"manifest.json");
@@ -135,5 +126,10 @@ public class TemplateService
             string scriptPath = Path.Combine(scriptsFolderPath, $"{script}.cs");
             File.WriteAllText(scriptPath, $"// Script: {script}");
         }
+    }
+
+    public static void OpenTemplateFolder()
+    {
+
     }
 }

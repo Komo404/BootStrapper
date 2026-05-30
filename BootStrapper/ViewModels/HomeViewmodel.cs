@@ -29,7 +29,7 @@ public partial class HomeViewModel : ViewModelBase
         if (_navigation is null)
             throw new InvalidOperationException("NavigationService não foi inicializado");
 
-        _navigation.CurrentView = new ProjectInfoViewModel(_navigation, project);
+        _navigation.CurrentView = new ProjectInfoViewModel(_navigation, project, _config);
     }
 
     [RelayCommand]
@@ -38,6 +38,6 @@ public partial class HomeViewModel : ViewModelBase
         if (_navigation is null)
             throw new InvalidOperationException("NavigationService não foi inicializado");
 
-        _navigation.CurrentView = new ProjectInfoViewModel(_navigation, project);
+        UnityService.OpenUnityProject(_config, project);
     }
 }

@@ -12,17 +12,33 @@
             <Grid ColumnDefinitions="220, *">
                 <StackPanel Spacing="20" Margin="20, 20, 0, 0">
                     <TextBlock Text="New Unity Project"  FontSize="16" Foreground="White" />
-                    <TextBlock Text="Project name" Foreground="White"/>
-                    <TextBox PlaceholderText="Project name" />
-                    <TextBlock Text="Description" Foreground="White" />
-                    <TextBox PlaceholderText="Description" />
+
+                    <TextBlock Text="Project Name" Foreground="White"/>
+                    <TextBox Text="{Binding Name}" PlaceholderText="Project name" Background="Gray"/>
+
+                    <TextBlock Text="Project Name" Foreground="White" />
+                    <TextBox Text="{Binding Description}" PlaceholderText="Description" Background="Gray" />
+
                     <TextBlock Text="Unity Version" Foreground="White" />
-                    <TextBox PlaceholderText="Unity Version" />
+                    <TextBox Text="{Binding UnityVersion}" PlaceholderText="Unity Version" Background="Gray"/>
+
                     <TextBlock Text="Tags" Foreground="White" />
-                    <TextBox PlaceholderText="Tags" />
+                    <DropDownButton Content="Tags" Background="Gray">
+                        <DropDownButton.Flyout>
+                            <MenuFlyout Placement="Bottom">
+                                <MenuItem Header="Tag1"/>
+                                <MenuItem Header="Tag2"/>
+                                <MenuItem Header="Tag3"/>
+                            </MenuFlyout>
+                        </DropDownButton.Flyout>
+                    </DropDownButton>
+
                     <TextBlock Text="Author" Foreground="White" />
-                    <TextBox PlaceholderText="Author name" />
-                    <Button Content="Create Project" HorizontalAlignment="Center" Foreground="White" Command="{Binding CreateProjectCommand}" />
+                    <TextBox Text="{Binding Author}" PlaceholderText="Author name" Background="Gray"/>
+
+                    <Button Content="Create Project" Command="{Binding CreateProjectCommand}" 
+                            HorizontalAlignment="Center"
+                            Background="DarkBlue" Foreground="White" />
                 </StackPanel>
 
                 <StackPanel Grid.Column="5" Margin="26, 15, 10, 0">

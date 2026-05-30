@@ -47,7 +47,9 @@
                     </Border>
 
                     <StackPanel Orientation="Horizontal" Spacing="10">
-                         <Button Content="Open" Foreground="White"/> <!--Open IDE or Open in Explorer?-->
+                         <Button Content="Open Template Folder"
+                                 Command="{Binding OpenTemplateFolderCommand}"
+                                 Foreground="White"/>
                          <Button Content="Delete" Background="#8B2E2E" Foreground="White"/>
                     </StackPanel>
 
@@ -72,7 +74,7 @@
 
                         <StackPanel Spacing="4">
                             <TextBlock Text="Name" Foreground="White"/>
-                            <TextBox Text="{Binding TemplateName}"/>
+                            <TextBox Text="{Binding Name}"/>
                         </StackPanel>
 
                         <StackPanel Spacing="4">
@@ -80,17 +82,17 @@
                             <TextBox AcceptsReturn="True"
                                      Height="90"
                                      TextWrapping="Wrap"
-                                     Text="{Binding TemplateDesc}"/>
+                                     Text="{Binding Desc}"/>
                         </StackPanel>
 
                         <StackPanel Spacing="4">
-                            <TextBlock Text="Min Unity Version" Foreground="White"/>
-                            <TextBox Text="{Binding TemplateMinUnityV}"/>
+                            <TextBlock Text="Unity Version" Foreground="White"/>
+                            <TextBox Text="{Binding UnityV}"/>
                         </StackPanel>
 
                         <StackPanel Spacing="4">
                             <TextBlock Text="Max Unity Version" Foreground="White"/>
-                            <TextBox Text="{Binding TemplateMaxUnityV}"/>
+                            <TextBox Text="{Binding MaxUnityV}"/>
                         </StackPanel>
 
                         <StackPanel Spacing="4">
@@ -100,11 +102,14 @@
 
                         <StackPanel Spacing="4">
                             <TextBlock Text="Author" Foreground="White"/>
-                            <TextBox Text="Komori"/>
+                            <TextBox Text="{Binding Author}" PlaceholderText="Author"/>
                         </StackPanel>
 
                         <Button Content="Open Template Folder" Margin="0,10,0,0" Foreground="White"/>
-                        <Button Content="Update Template" Margin="0,40,0,0" HorizontalAlignment="Center" Foreground="White"/>
+                        <Button Content="Update Template" 
+                                Command="{Binding UpdateTemplateCommand}"
+                                Margin="0,40,0,0" 
+                                HorizontalAlignment="Center" Foreground="White"/>
 
                     </StackPanel>
 

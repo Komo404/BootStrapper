@@ -13,6 +13,8 @@ public class ProjectService
         if (config.ProjectsFolder == null)
             throw new DirectoryNotFoundException("Projects Folder is null");
 
+        projectInfo.Path = Path.Combine(config.ProjectsFolder, projectInfo.Id.ToString());
+
         Directory.CreateDirectory(projectInfo.Path); // Nome do projeto deve estar no path
 
         string manifestPath = Path.Combine(projectInfo.Path, "manifest.json");
@@ -23,12 +25,12 @@ public class ProjectService
         Directory.CreateDirectory(scriptsFolderPath);
     }
 
-    public static void DeleteProject(string projectPath)
+    public static void DeleteProject(Project project)
     {
-        if (!Directory.Exists(projectPath))
+        if (!Directory.Exists(project.Path))
             throw new ArgumentNullException("Project is not existent");
 
-        Directory.Delete(projectPath, true);
+        Directory.Delete(project.Path, true);
     }
 
     public static void UpdateProject(UserConfig config, string projectPath, Project projectInfo)
@@ -91,5 +93,10 @@ public class ProjectService
         }
 
         throw new Exception("Project doesn't have change history");
+    }
+
+    public static void OpenProjectFolder()
+    {
+
     }
 }

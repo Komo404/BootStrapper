@@ -32,7 +32,7 @@ public partial class SidebarViewModel: ViewModelBase
         Console.WriteLine("GoTo2");
         if (_navigation is null)
             throw new InvalidOperationException("NavigationService não foi inicializado");
-        _navigation.CurrentView = new ProjectCreateViewModel(_navigation);
+        _navigation.CurrentView = new ProjectCreateViewModel(_navigation, _config);
     }
     [RelayCommand]
     private void GoToTemplateList()
@@ -48,7 +48,7 @@ public partial class SidebarViewModel: ViewModelBase
         Console.WriteLine("GoTo4");
         if (_navigation is null)
             throw new InvalidOperationException("NavigationService não foi inicializado");
-        _navigation.CurrentView = new ProjectListViewModel(_navigation);
+        _navigation.CurrentView = new ProjectListViewModel(_navigation, _config);
     }
     [RelayCommand]
     private void GoToCredits()

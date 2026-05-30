@@ -1,19 +1,21 @@
-﻿using System;
+﻿using BootStrapper.Core.Models;
+using System;
 using System.Collections.Generic;
 using System.Text;
+using System.IO;
 
 namespace BootStrapper.Core.Service;
 
-public class UnityService
+public static class UnityService
 {
-    public void CreateUnityProject(string unityPath, string projectPath)
+    public static void CreateUnityProject(UserConfig config, Project project)
     {
-        if (string.IsNullOrEmpty(unityPath))
-            throw new ArgumentNullException(nameof(unityPath), "Unity path cannot be null or empty.");
-        if (string.IsNullOrEmpty(projectPath))
-            throw new ArgumentNullException(nameof(projectPath), "Project path cannot be null or empty.");
+        if (string.IsNullOrEmpty(config.UnitySelectedPath))
+            throw new ArgumentNullException(nameof(config.UnitySelectedPath), "Unity path cannot be null or empty.");
+        if (string.IsNullOrEmpty(project.Path))
+            throw new ArgumentNullException(nameof(project.Path), "Project path cannot be null or empty.");
         
-        string command = $"\"{unityPath}\" -createProject \"{projectPath}\""; // Cria um projeto Unity
+        string command = $"\"{config.UnitySelectedPath}\" -createProject \"{project.Path}\""; // Cria um projeto Unity
 
         try
         {
@@ -25,14 +27,14 @@ public class UnityService
         }
     }
 
-    public void OpenUnityProject(string unityPath, string projectPath)
+    public static void OpenUnityProject(UserConfig config, Project project)
     {
-        if (string.IsNullOrEmpty(unityPath))
-            throw new ArgumentNullException(nameof(unityPath), "Unity path cannot be null or empty.");
-        if (string.IsNullOrEmpty(projectPath))
-            throw new ArgumentNullException(nameof(projectPath), "Project path cannot be null or empty.");
+        if (string.IsNullOrEmpty(config.UnitySelectedPath))
+            throw new ArgumentNullException(nameof(config.UnitySelectedPath), "Unity path cannot be null or empty.");
+        if (string.IsNullOrEmpty(project.Path))
+            throw new ArgumentNullException(nameof(project.Path), "Project path cannot be null or empty.");
        
-        string command = $"\"{unityPath}\" -projectPath \"{projectPath}\""; // Abrir um projeto Unity
+        string command = $"\"{config.UnitySelectedPath}\" -projectPath \"{project.Path}\""; // Abrir um projeto Unity
 
         try {
             System.Diagnostics.Process.Start("cmd.exe", $"/C {command}");
@@ -41,27 +43,40 @@ public class UnityService
             throw new Exception("Failed to open Unity project.", ex);
         }
     }
-
-    public void GetUnityVersion(string unityPath)
+    public static List<string> GetUnityVersions ()
     {
-        if (string.IsNullOrEmpty(unityPath))
-            throw new ArgumentNullException(nameof(unityPath), "Unity path cannot be null or empty.");
+        string unityHubPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "Unity", "Hub", "Editor");
 
-        string command = $"\"{unityPath}\" -version"; // Versão unity
-        try {
-            System.Diagnostics.Process.Start("cmd.exe", $"/C {command}");
+        if (!Directory.Exists(unityHubPath))
+            throw new DirectoryNotFoundException($"Unity Hub directory not found at the specified path: {unityHubPath}");
+
+        List<string> unityVersions = new List<string>();
+        string[] versionDirectories = Directory.GetDirectories(unityHubPath);
+        foreach (string versionDir in versionDirectories)
+        {
+            string versionName = Path.GetFileName(versionDir);
+            unityVersions.Add(versionName);
         }
-        catch (Exception ex) {
-            throw new Exception("Failed to get Unity version.", ex);
-        }
+        return unityVersions;
     }
 
-    public string GetUnityPath()
+    public static List<string> GetUnityPaths()
     {
-        string unityPath = @"C:\Program Files\Unity\Hub\Editor\2021.3.0f1\Editor\Unity.exe"; // Eu não sei o que estou fazendo
-        if (!File.Exists(unityPath))
-            throw new FileNotFoundException("Unity executable not found at the specified path.", unityPath);
+        string unityHubPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "Unity", "Hub", "Editor");
 
-        return unityPath;
+        if (!Directory.Exists(unityHubPath))
+            throw new DirectoryNotFoundException($"Unity Hub directory not found at the specified path: {unityHubPath}");
+
+        List<string> unityPaths = new List<string>();
+        string[] versionDirectories = Directory.GetDirectories(unityHubPath);
+        foreach (string versionDir in versionDirectories)
+        {
+            string unityExePath = Path.Combine(versionDir, "Editor", "Unity.exe");
+            if (File.Exists(unityExePath))
+            {
+                unityPaths.Add(unityExePath);
+            }
+        }
+        return unityPaths;
     }
 }

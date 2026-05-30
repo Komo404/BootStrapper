@@ -29,10 +29,10 @@
                 <StackPanel Grid.Row="1" Grid.Column="0" Spacing="12">
 
                     <TextBlock Text="Template Name" Foreground="White"/>
-                    <TextBox PlaceholderText="Template name" />
+                    <TextBox Text="{Binding Name}" PlaceholderText="Template name" />
 
-                    <TextBlock Text="Description" Foreground="White"/>
-                    <TextBox PlaceholderText="Template description"
+                    <TextBlock Text="Template Description" Foreground="White"/>
+                    <TextBox Text="{Binding Description}" PlaceholderText="Template description"
                              AcceptsReturn="True"
                              Height="88" />
 
@@ -44,10 +44,7 @@
                 <!--Right Side-->
                 <StackPanel Grid.Row="1" Grid.Column="1" Spacing="10">
                     <TextBlock Text="Unity Version" Foreground="White"/>
-                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
-                        <TextBox Grid.Column="0" PlaceholderText="Min version" />
-                        <TextBox Grid.Column="1" PlaceholderText="Max version" />
-                    </Grid>
+                        <TextBox Grid.Column="0" Text="{Binding UnityVersion}" PlaceholderText="Unity version" />
 
                     <TextBlock Text="Files" Foreground="White"/>
                     <Border Height="130"
@@ -67,7 +64,7 @@
 
                 <StackPanel Grid.Row="2" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="10">
                     <Button Content="Cancel" Command="{Binding GoToHomeCommand}" Background="Transparent" Foreground="White" BorderBrush="White" BorderThickness="1" />
-                    <Button Content="Create Template" Command="{Binding GoToTemplateInfoCommand}" Foreground="White"/>
+                    <Button Content="Create Template" Command="{Binding CreateTemplateCommand}" Foreground="White"/>
                 </StackPanel>
 
             </Grid>

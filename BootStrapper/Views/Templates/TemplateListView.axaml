@@ -108,8 +108,17 @@
                                     <!-- FOOTER -->
                                     <Grid Grid.Row="3" ColumnDefinitions="*,*">
 
-                                        <Button Content="Open" Margin="0,0,8,0" HorizontalAlignment="Left" Foreground="White"/>
-                                        <Button Grid.Column="1" Content="Delete" Command="{Binding $parent[ItemsControl].DataContext.DeleteTemplateCommand}" HorizontalAlignment="Right" Background="#8B2E2E" Foreground="White"/>
+                                        <Button Content="Open" 
+                                                Command="{Binding $parent[ItemsControl].DataContext.GoToTemplateInfoCommand}"
+                                                CommandParameter="{Binding}"
+                                                Margin="0,0,8,0" HorizontalAlignment="Left" Foreground="White"/>
+                                        
+                                        <Button Grid.Column="1" 
+                                                Content="Delete" 
+                                                Command="{Binding $parent[ItemsControl].DataContext.DeleteTemplateCommand}" 
+                                                CommandParameter="{Binding}"
+                                                HorizontalAlignment="Right" Background="#8B2E2E" 
+                                                Foreground="White"/>
 
                                     </Grid>
                                 </Grid>

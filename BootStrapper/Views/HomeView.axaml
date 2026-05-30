@@ -35,8 +35,17 @@
                                         </StackPanel>
 
                                     <StackPanel Grid.Column="1"  Spacing="15" Orientation="Horizontal">
-                                        <Button  Content="Open In Unity" Width="110" Command="{Binding $parent[ItemsControl].DataContext.OpenUnityCommand}" CommandParameter="{Binding}" Foreground="White" HorizontalContentAlignment="Center" VerticalAlignment="Center"/>
-                                        <Button  Content="Edit" Width="70" Command="{Binding $parent[ItemsControl].DataContext.GoToProjectInfoCommand}" CommandParameter="{Binding}"  Foreground="White" HorizontalContentAlignment="Center" VerticalAlignment="Center"/>
+
+                                        <Button  Content="Open In Unity" Width="110" 
+                                                 Command="{Binding $parent[ItemsControl].DataContext.OpenUnityCommand}" 
+                                                 CommandParameter="{Binding}" Foreground="White" 
+                                                 HorizontalContentAlignment="Center" VerticalAlignment="Center"/>
+
+                                        <Button  Content="Edit" Width="70" 
+                                                 Command="{Binding $parent[ItemsControl].DataContext.GoToProjectInfoCommand}" 
+                                                 CommandParameter="{Binding}"  Foreground="White" 
+                                                 HorizontalContentAlignment="Center" VerticalAlignment="Center"/>
+
                                     </StackPanel>
 
                                     </Grid>

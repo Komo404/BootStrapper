@@ -20,7 +20,7 @@ public static class ConfigService
         return config;
     }
 
-    public static void SaveConfig(UserConfig config, string configFilePath)
+    public static void SaveConfig(string configFilePath, UserConfig config)
     {
         if (config == null) {
             CreateDefaultConfig(configFilePath);
@@ -46,9 +46,12 @@ public static class ConfigService
         if (string.IsNullOrEmpty(configFilePath))
             throw new ArgumentNullException(nameof(configFilePath), "Config file path cannot be null or empty.");
 
+        List<string> unityPaths = UnityService.GetUnityPaths();
+
         UserConfig defaultConfig = new UserConfig
         {
-            UnityPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "Unity", "Hub", "Editor", "6000.4.5f1", "Editor", "Unity.exe"),
+            UnitySelectedPath = null,
+            UnityPaths = unityPaths,
             Theme = "Dark",
             ProjectsFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "BootStrapperProjects"),
             TemplatesFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "BootStrapperTemplates"),
@@ -60,7 +63,7 @@ public static class ConfigService
         if (!Directory.Exists(defaultConfig.TemplatesFolder))
             Directory.CreateDirectory(defaultConfig.TemplatesFolder);
 
-        SaveConfig(defaultConfig, configFilePath);
+        SaveConfig(configFilePath, defaultConfig);
 
     }
 }
