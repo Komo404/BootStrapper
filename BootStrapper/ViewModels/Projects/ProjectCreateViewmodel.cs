@@ -1,5 +1,6 @@
 ﻿using BootStrapper.Core.Models;
 using BootStrapper.Core.Service;
+using BootStrapper.ViewModels.Templates;
 using BootStrapper.Views;
 using CommunityToolkit.Mvvm.Input;
 using System;
@@ -17,19 +18,32 @@ public partial class ProjectCreateViewModel : ViewModelBase
     public string Path { get; set; }
     public string UnityVersion { get; set; }
     public string[] Tags { get; set; }
-    public string[] Templates { get; set; }
+
+    public List<TemplateManifest> Templates { get; }
+    public string[] TemplatesAdded { get; set; }
+    public string TotalTemplates { get; }
     public string Author { get; set; }
 
     public ProjectCreateViewModel(NavigationService navigation, UserConfig config)
     {
         _navigation = navigation;
         _config = config;
+
+        Templates = TemplateService.GetAllTemplates(_config);
+        TotalTemplates= $"Total Templates: {Templates.Count}";
     }
+
 
     [RelayCommand]
     private void GoToProjectCreate()
     {
         _navigation.CurrentView = new ProjectCreateViewModel(_navigation, _config);
+    }
+
+    [RelayCommand]
+    private void GoToTemplateCreate()
+    {
+        _navigation.CurrentView = new TemplateCreateViewModel(_navigation, _config);
     }
 
     [RelayCommand]
@@ -44,7 +58,7 @@ public partial class ProjectCreateViewModel : ViewModelBase
             Path = Path,
             UnityVersion = UnityVersion,
             Author = Author,
-            Templates = Templates,
+            Templates = TemplatesAdded,
             ChangeHistory = Array.Empty<string>()
         };
 

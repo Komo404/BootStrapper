@@ -19,6 +19,7 @@ public partial class TemplateInfoViewModel : ViewModelBase
     public string UnityV => _template.UnityVersion;
     public string MaxUnityV => _template.MaxUnityVersion;
     public string Author => _template.Author;
+    public string Tags => _template.Tags != null ? string.Join(", ", _template.Tags) : string.Empty;
 
     public TemplateInfoViewModel(NavigationService navigation, TemplateManifest template, UserConfig config)
     {
@@ -48,4 +49,11 @@ public partial class TemplateInfoViewModel : ViewModelBase
 
     [RelayCommand]
     private void OpenTemplateFolder() => TemplateService.OpenTemplateFolder();
+
+    [RelayCommand]
+    private void DeleteTemplate()
+    {
+        TemplateService.DeleteTemplate(_config, _template.Id);
+        _navigation.CurrentView = new TemplateListViewModel(_navigation, _config);
+    }
 }

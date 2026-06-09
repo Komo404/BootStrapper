@@ -8,6 +8,10 @@
              x:Class="BootStrapper.Views.Projects.ProjectListView"
              x:DataType="vm:ProjectListViewModel">
 
+    <Design.DataContext>
+        <vm:ProjectListViewModel/>
+    </Design.DataContext>
+
     <Grid Background="#171717">
         <StackPanel Margin="30" Spacing="18">
 
@@ -26,7 +30,7 @@
                         <DataTemplate x:DataType="models:Project">
                            
 
-                            <Border Background="#2B2D3D" CornerRadius="10" Padding="14">
+                            <Border Background="#2B2D3D" Margin="5" CornerRadius="10" Padding="14">
 
                                 <Grid ColumnDefinitions="55,*,Auto" ColumnSpacing="14">
 
@@ -37,11 +41,10 @@
 
                                     <StackPanel Grid.Column="1" Spacing="4" VerticalAlignment="Center">
 
-                                        <TextBlock Text="Project 1" FontSize="16" FontWeight="SemiBold" Foreground="White"/>
-                                        <TextBlock Text="Description Project 1" FontSize="13" Foreground="#CFCFCF"/>
-                                        <TextBlock Text="Unity Version" FontSize="12" Foreground="#9CA3AF"/>
-                                        <TextBlock Text="Tags" FontSize="12" Foreground="#9CA3AF"/>
-                                        <TextBlock Text="Project/Path" FontSize="12" Foreground="#9CA3AF"/>
+                                        <TextBlock Text="{Binding Name}" FontSize="16" FontWeight="SemiBold" Foreground="White"/>
+                                        <TextBlock Text="{Binding Description}" FontSize="13" Foreground="#CFCFCF"/>
+                                        <TextBlock Text="{Binding UnityVersion}" FontSize="12" Foreground="#9CA3AF"/>
+                                        <TextBlock Text="{Binding Path}" FontSize="12" Foreground="#9CA3AF"/>
 
                                     </StackPanel>
 
@@ -53,7 +56,7 @@
                                                 HorizontalContentAlignment="Center" 
                                                 Foreground="White"/>
                                         
-                                        <Button Content="Delete" 
+                                        <Button Content="Delete"
                                                 Width="70" 
                                                 Command="{Binding $parent[ItemsControl].DataContext.DeleteProjectCommand}"
                                                 CommandParameter="{Binding}"

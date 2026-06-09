@@ -7,6 +7,9 @@
              xmlns:models="clr-namespace:BootStrapper.Core.Models;assembly=BootStrapper.Core"
              x:Class="BootStrapper.Views.HomeView"
              x:DataType="vm:HomeViewModel">
+    <Design.DataContext>
+        <vm:HomeViewModel/>
+    </Design.DataContext>
 
     <Grid Background="#171717">
 
@@ -19,44 +22,35 @@
 
             </StackPanel>
 
-            <StackPanel Spacing="10">
-
-                <Border Background="#2B2D3D" CornerRadius="10" Padding="14">
-                    <Grid ColumnDefinitions="*,Auto">
-
-                     <ItemsControl ItemsSource="{Binding RecentProjects}">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate x:DataType="models:Project">
+            <StackPanel>
+                <ItemsControl ItemsSource="{Binding RecentProjects}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="models:Project">
+                            <Border Background="#2B2D3D" CornerRadius="10" Padding="10" Margin="0, 10, 0, 0">
                                 <Grid ColumnDefinitions="*,Auto">
 
-                                    <StackPanel Spacing="4">
+                                    <StackPanel Spacing="5">
                                         <TextBlock Text="{Binding Name}" FontSize="16" Foreground="White"/>
                                         <TextBlock Text="{Binding UnityVersion}" Foreground="#CFCFCF" FontSize="13"/>
                                         </StackPanel>
 
                                     <StackPanel Grid.Column="1"  Spacing="15" Orientation="Horizontal">
-
                                         <Button  Content="Open In Unity" Width="110" 
-                                                 Command="{Binding $parent[ItemsControl].DataContext.OpenUnityCommand}" 
-                                                 CommandParameter="{Binding}" Foreground="White" 
-                                                 HorizontalContentAlignment="Center" VerticalAlignment="Center"/>
+                                                    Command="{Binding $parent[ItemsControl].DataContext.OpenUnityCommand}" 
+                                                    CommandParameter="{Binding}" Foreground="White" 
+                                                    HorizontalContentAlignment="Center" VerticalAlignment="Center"/>
 
                                         <Button  Content="Edit" Width="70" 
-                                                 Command="{Binding $parent[ItemsControl].DataContext.GoToProjectInfoCommand}" 
-                                                 CommandParameter="{Binding}"  Foreground="White" 
-                                                 HorizontalContentAlignment="Center" VerticalAlignment="Center"/>
+                                                    Command="{Binding $parent[ItemsControl].DataContext.GoToProjectInfoCommand}" 
+                                                    CommandParameter="{Binding}"  Foreground="White" 
+                                                    HorizontalContentAlignment="Center" VerticalAlignment="Center"/>
 
                                     </StackPanel>
-
-                                    </Grid>
-
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-
-                    </Grid>
-                </Border>
-
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
             </StackPanel>
         </StackPanel>
     </Grid>

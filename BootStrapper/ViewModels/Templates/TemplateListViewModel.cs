@@ -25,6 +25,13 @@ public partial class TemplateListViewModel : ViewModelBase
         TemplateList = new ObservableCollection<TemplateManifest>(_templates);
     }
 
+    public TemplateListViewModel()
+    {
+        TemplateList = new ObservableCollection<TemplateManifest>
+        {
+            
+        };
+    }
     [RelayCommand]
     private void GoToTemplateCreate()
     {

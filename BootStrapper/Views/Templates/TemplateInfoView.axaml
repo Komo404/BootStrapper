@@ -24,17 +24,13 @@
 
                     <StackPanel Orientation="Horizontal" Spacing="8">
 
-                        <Border Background="#626262" CornerRadius="6" Padding="8,3">
-                            <TextBlock Text="TAG1" Foreground="White"/>
-                        </Border>
+                        <ItemsControl ItemsSource="{Binding Tags}">
+                            
 
-                        <Border Background="#626262" CornerRadius="6" Padding="8,3">
-                            <TextBlock Text="TAG2" Foreground="White"/>
-                        </Border>
-
-                        <Border Background="#626262" CornerRadius="6" Padding="8,3">
-                            <TextBlock Text="TAG3" Foreground="White"/>
-                        </Border>
+                            <Border Background="#626262" CornerRadius="6" Padding="8,3">
+                                <TextBlock Text="TAG1" Foreground="White"/>
+                            </Border>
+                        </ItemsControl>
 
                     </StackPanel>
 
@@ -50,7 +46,8 @@
                          <Button Content="Open Template Folder"
                                  Command="{Binding OpenTemplateFolderCommand}"
                                  Foreground="White"/>
-                         <Button Content="Delete" Background="#8B2E2E" Foreground="White"/>
+
+                         <Button Content="Delete" Command="{Binding DeleteTemplateCommand}" Background="#8B2E2E" Foreground="White"/>
                     </StackPanel>
 
                 </StackPanel>
@@ -96,8 +93,19 @@
                         </StackPanel>
 
                         <StackPanel Spacing="4">
-                            <TextBlock Text="Tags" Foreground="White"/>
-                            <TextBox Text="Multiplayer, Steam, P2P"/>
+                            <TextBlock Text="Tags" Foreground="White" />
+                            <ItemsControl ItemsSource="{Binding Tags}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+
+                                        <StackPanel Background="Gray">
+                                            <TextBox Text="{Binding .}" />
+                                        </StackPanel>
+
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        
                         </StackPanel>
 
                         <StackPanel Spacing="4">

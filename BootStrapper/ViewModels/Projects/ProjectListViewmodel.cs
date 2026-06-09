@@ -3,6 +3,7 @@ using BootStrapper.Core.Service;
 using BootStrapper.Views;
 using BootStrapper.Views.Projects;
 using CommunityToolkit.Mvvm.Input;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
@@ -22,6 +23,49 @@ public partial class ProjectListViewModel : ViewModelBase
 
         _projects = ProjectService.ListProjects(config);
         ProjectList = new ObservableCollection<Project>(_projects);
+    }
+
+    public ProjectListViewModel()
+    {
+        ProjectList = new ObservableCollection<Project>
+        {
+            new Project
+            {
+                Name = "Mock1",
+                UnityVersion = "6000.0",
+                Description = "",
+                Author = "",
+                Path = "",
+                Templates = Array.Empty<string>(),
+                ChangeHistory = Array.Empty<string>(),
+                CreationDate = DateTime.Now,
+                Id = Guid.NewGuid()
+            },
+            new Project
+            {
+                Name = "Mock2",
+                UnityVersion = "2022.3",
+                Description = "",
+                Author = "",
+                Path = "",
+                Templates = Array.Empty<string>(),
+                ChangeHistory = Array.Empty<string>(),
+                CreationDate = DateTime.Now,
+                Id = Guid.NewGuid()
+            },
+            new Project
+            {
+                Name = "Mock3",
+                UnityVersion = "2022.3",
+                Description = "",
+                Author = "",
+                Path = "",
+                Templates = Array.Empty<string>(),
+                ChangeHistory = Array.Empty<string>(),
+                CreationDate = DateTime.Now,
+                Id = Guid.NewGuid()
+            }
+        };
     }
 
     [RelayCommand]

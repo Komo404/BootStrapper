@@ -4,11 +4,10 @@ using System.Text;
 
 namespace BootStrapper.Core.Models;
 
-public class Script
+public class TemplateNode
 {
     public string Name { get; set; }
-
+    public bool IsFolder { get; set; }
     public string? RelativePath { get; set; }
-
-    public List<Script> Children { get; set; } = new();
+    public List<TemplateNode> Children { get; set; } = new();
 }

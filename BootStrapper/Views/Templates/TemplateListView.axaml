@@ -6,7 +6,12 @@
              xmlns:vm="clr-namespace:BootStrapper.ViewModels.Templates"
              xmlns:models="clr-namespace:BootStrapper.Core.Models;assembly=BootStrapper.Core"
              x:Class="BootStrapper.Views.Templates.TemplateListView"
+             d:DataContext="{d:DesignInstance type=vm:MainWindowViewModel, IsDesignTimeCreatable=True}"
              x:DataType="vm:TemplateListViewModel">
+
+    <Design.DataContext>
+        <vm:TemplateListViewModel/>
+    </Design.DataContext>
 
     <Grid Background="#171717" RowDefinitions="Auto,*,Auto">
 
@@ -61,7 +66,7 @@
                                                 Padding="8,4"
                                                 CornerRadius="6">
 
-                                            <TextBlock Text="v1.0.0" FontSize="11" Foreground="White"/>
+                                            <TextBlock Text="{Binding Version}" FontSize="11" Foreground="White"/>
 
                                         </Border>
 
@@ -83,24 +88,7 @@
                                                 Padding="8,4"
                                                 Margin="0,0,8,8">
 
-                                            <TextBlock Text="Multiplayer" FontSize="11" Foreground="White"/>
-
-                                        </Border>
-
-                                        <Border Background="#626262"
-                                                CornerRadius="6"
-                                                Padding="8,4"
-                                                Margin="0,0,8,8">
-
-                                            <TextBlock Text="Steam" FontSize="11" Foreground="White"/>
-                                        </Border>
-
-                                        <Border Background="#626262"
-                                                CornerRadius="6"
-                                                Padding="8,4"
-                                                Margin="0,0,8,8">
-
-                                            <TextBlock Text="P2P" FontSize="11" Foreground="White"/>
+                                            <TextBlock Text="{Binding Tags}" FontSize="11" Foreground="White"/>
                                         </Border>
 
                                     </WrapPanel>

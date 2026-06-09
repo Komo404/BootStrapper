@@ -6,6 +6,9 @@
              xmlns:vm="clr-namespace:BootStrapper.ViewModels.Projects"
              x:Class="BootStrapper.Views.Projects.ProjectInfoView"
              x:DataType="vm:ProjectInfoViewModel">
+    <Design.DataContext>
+        <vm:ProjectInfoViewModel/>
+    </Design.DataContext>
 
     <Grid Background="#171717" RowDefinitions="Auto,*,Auto">
 
@@ -18,33 +21,12 @@
 
             <Grid ColumnDefinitions="*,Auto">
 
-                <StackPanel Spacing="8">
-
-                    <TextBlock Text="PROJECT NAME" FontSize="24" FontWeight="SemiBold" Foreground="White"/>
-
-                    <StackPanel Orientation="Horizontal" Spacing="8">
-
-                        <Border Background="#626262" CornerRadius="6" Padding="8,3">
-                            <TextBlock Text="TEMPLATE 1" Foreground="White"/>
-                        </Border>
-
-                        <Border Background="#626262" CornerRadius="6" Padding="8,3">
-                            <TextBlock Text="TEMPLATE 2" Foreground="White"/>
-                        </Border>
-
-                        <Border Background="#626262" CornerRadius="6" Padding="8,3">
-                            <TextBlock Text="TEMPLATE 3" Foreground="White"/>
-                        </Border>
-
-                    </StackPanel>
-
+                <StackPanel>
+                    <TextBlock Text="Project Name" FontSize="24" FontWeight="SemiBold" Foreground="White"/>
                 </StackPanel>
 
-                <StackPanel Grid.Column="1" HorizontalAlignment="Right" Spacing="10">
 
-                    <Border Background="#626262" Padding="10,5" CornerRadius="6">
-                        <TextBlock Text="v1.0.0" Foreground="White"/>
-                    </Border>
+                <StackPanel Grid.Column="1" HorizontalAlignment="Right" Spacing="10">
 
                     <StackPanel Orientation="Horizontal" Spacing="10">
                         <Button Content="Open" 
@@ -77,7 +59,7 @@
 
                         <StackPanel Spacing="4">
                             <TextBlock Text="Name" Foreground="White"/>
-                            <TextBox Text="Template Name"/>
+                            <TextBox Text="{Binding Name}"/>
                         </StackPanel>
 
                         <StackPanel Spacing="4">
@@ -85,27 +67,36 @@
                             <TextBox AcceptsReturn="True"
                                      Height="90"
                                      TextWrapping="Wrap"
-                                     Text="Description."/>
+                                     Text="{Binding Description}"/>
                         </StackPanel>
 
                         <StackPanel Spacing="4">
                             <TextBlock Text="Unity Version" Foreground="White"/>
-                            <TextBox Text="6000.0"/>
+                            <TextBox Text="{Binding UVersion}"/>
                         </StackPanel>
 
                         <StackPanel Spacing="4">
-                            <TextBlock Text="Tempates" Foreground="White"/>
+                            <TextBlock Text="Templates" Foreground="White"/>
                             <StackPanel Orientation="Horizontal">
-                                <TextBox HorizontalContentAlignment="Center" Text="Multiplayer"/>
-                                <TextBox HorizontalContentAlignment="Center" Text="Steam, P2P"/>
-                                <TextBox HorizontalContentAlignment="Center" Text="P2P"/>
-                                <TextBox Text="Other"/>
+
+                                <ItemsControl ItemsSource="{Binding Templates}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+
+                                            <Border Background="#626262" CornerRadius="6" Padding="8,3">
+                                                <TextBlock Text="{Binding .}" HorizontalAlignment="Center" Foreground="White"/>
+                                            </Border>
+
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+
                             </StackPanel>
                         </StackPanel>
 
                         <StackPanel Spacing="4">
                             <TextBlock Text="Author" Foreground="White"/>
-                            <TextBox Text="Komori"/>
+                            <TextBox Text="{Binding Author}"/>
                         </StackPanel>
 
                         <Button Content="Open Project Folder" 

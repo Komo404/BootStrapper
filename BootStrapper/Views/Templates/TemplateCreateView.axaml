@@ -3,14 +3,19 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" Height="600"
+             xmlns:models="clr-namespace:BootStrapper.Core.Models;assembly=BootStrapper.Core"
              xmlns:vm="clr-namespace:BootStrapper.ViewModels.Templates"
              x:Class="BootStrapper.Views.Templates.TemplateCreateView"
              x:DataType="vm:TemplateCreateViewModel">
 
+    <Design.DataContext>
+        <vm:TemplateCreateViewModel/>
+    </Design.DataContext>
+
     <Grid Background="#171717">
 
         <Border Width="620"
-                Height="430"
+                Height="450"
                 Padding="24"
                 CornerRadius="12"
                 Background="#37345D"
@@ -37,7 +42,32 @@
                              Height="88" />
 
                     <TextBlock Text="Tags" Foreground="White"/>
-                    <TextBox PlaceholderText="Audio, Input, UI, etc" />
+
+                    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+
+                        <ItemsControl ItemsSource="{Binding Tags}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Background="#CCCC"
+                                            Margin="4"
+                                            Padding="8,4">
+                                        <TextBlock Text="{Binding .}" Foreground="White"/>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                </ScrollViewer>
+
+                    <TextBlock Text="Template Author" Foreground="White"/>
+                    <TextBox Text="{Binding Author}" PlaceholderText="Template Author"
+                             AcceptsReturn="True"/>
 
                 </StackPanel>
 
@@ -51,15 +81,23 @@
                             Background="#626262"
                             CornerRadius="8"
                             Padding="12">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
                         <StackPanel Spacing="8">
-                            <TextBlock Text="Scripts/" Foreground="White"/>
                             <TextBlock Text="Manifest.json" Foreground="White"/>
                             <TextBlock Text="README.md" Foreground="White"/>
-                        </StackPanel>
-                    </Border>
+                            <TextBlock Text="Scripts/" Foreground="White"/>
 
-                    <TextBlock Text="Path preview" Foreground="White"/>
-                    <TextBlock Text="Templates/NewTemplate/" Foreground="#D6D6D6"/>
+                            <ItemsControl ItemsSource="{Binding TemplateScripts}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate x:DataType="models:TemplateNode">
+                                         <TextBlock Text=" {Binding .}" Foreground="White"/>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+
+                        </StackPanel>
+                    </ScrollViewer>
+                    </Border>
                 </StackPanel>
 
                 <StackPanel Grid.Row="2" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="10">

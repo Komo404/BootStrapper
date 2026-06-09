@@ -8,7 +8,7 @@
              x:DataType="vm:ProjectCreateViewModel">
 
     <Grid Background="#171717">
-        <Border Width="500" Height="570" BorderBrush="White" BorderThickness="1" CornerRadius="10" Background="#37345D">
+        <Border Width="500" Height="500" BorderBrush="White" BorderThickness="1" CornerRadius="10" Background="#37345D">
             <Grid ColumnDefinitions="220, *">
                 <StackPanel Spacing="20" Margin="20, 20, 0, 0">
                     <TextBlock Text="New Unity Project"  FontSize="16" Foreground="White" />
@@ -16,22 +16,11 @@
                     <TextBlock Text="Project Name" Foreground="White"/>
                     <TextBox Text="{Binding Name}" PlaceholderText="Project name" Background="Gray"/>
 
-                    <TextBlock Text="Project Name" Foreground="White" />
+                    <TextBlock Text="Project Description" Foreground="White" />
                     <TextBox Text="{Binding Description}" PlaceholderText="Description" Background="Gray" />
 
                     <TextBlock Text="Unity Version" Foreground="White" />
                     <TextBox Text="{Binding UnityVersion}" PlaceholderText="Unity Version" Background="Gray"/>
-
-                    <TextBlock Text="Tags" Foreground="White" />
-                    <DropDownButton Content="Tags" Background="Gray">
-                        <DropDownButton.Flyout>
-                            <MenuFlyout Placement="Bottom">
-                                <MenuItem Header="Tag1"/>
-                                <MenuItem Header="Tag2"/>
-                                <MenuItem Header="Tag3"/>
-                            </MenuFlyout>
-                        </DropDownButton.Flyout>
-                    </DropDownButton>
 
                     <TextBlock Text="Author" Foreground="White" />
                     <TextBox Text="{Binding Author}" PlaceholderText="Author name" Background="Gray"/>
@@ -41,13 +30,43 @@
                             Background="DarkBlue" Foreground="White" />
                 </StackPanel>
 
-                <StackPanel Grid.Column="5" Margin="26, 15, 10, 0">
-                    <TextBlock Foreground="White" HorizontalAlignment="Center" Margin="5, 10, 0, 10" Text="TEMPLATES" />
-                    <Border Background="#626262" HorizontalAlignment="Center" Padding="110" />
+                <!--List of Templates-->
+                <StackPanel Grid.Column="5" Margin="30, 35, 0, 0">
+                    <TextBlock Foreground="White" HorizontalAlignment="Center" Margin="5, 10, 0, 10" Text="All Templates" />
+                    <Border Background="#626262" HorizontalAlignment="Center" 
+                            Padding="10" 
+                            MaxWidth="200" MinWidth="185" MaxHeight="300" >
+
+                        <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+
+                            <ItemsControl ItemsSource="{Binding Templates}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+
+                                        <TextBox Foreground="White" Background="Pink" Text="{Binding .}"></TextBox>
+
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+
+                        </ScrollViewer>
+
+                    </Border>
 
                     <StackPanel Orientation="Horizontal" Margin="0, 10, 0, 0" HorizontalAlignment="Center" Spacing="20">
-                        <Button Content="New" Margin="10, 0, 40, 0" Foreground="White" HorizontalAlignment="Left"></Button>
-                        <TextBlock Text="1/?" Foreground="White" Margin="10" HorizontalAlignment="Right"/>
+                        <Button Content="Create Template" Command="{Binding GoToTemplateCreateCommand}"
+                                Foreground="White" 
+                                HorizontalAlignment="Left"></Button>
+                        
+                        
+                        <TextBlock>
+                            <TextBlock.Text>
+                                <MultiBinding>
+                                    <Binding Path="TemplatesAdded" />
+                                    <Binding Path="TotalTemplates" />
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
                     </StackPanel>
 
                 </StackPanel>

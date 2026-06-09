@@ -23,6 +23,49 @@ public partial class HomeViewModel : ViewModelBase
         RecentProjects = new ObservableCollection<Project>(projects);
     }
 
+    public HomeViewModel()
+    {
+        RecentProjects = new ObservableCollection<Project>
+        {
+            new Project
+            {
+                Name = "Mock1",
+                UnityVersion = "",
+                Description = "",
+                Author = "",
+                Path = "",
+                Templates = Array.Empty<string>(),
+                ChangeHistory = Array.Empty<string>(),
+                CreationDate = DateTime.Now,         
+                Id = Guid.NewGuid()                   
+            },
+            new Project
+            {
+                Name = "Mock2",
+                UnityVersion = "",
+                Description = "",
+                Author = "",
+                Path = "",
+                Templates = Array.Empty<string>(),
+                ChangeHistory = Array.Empty<string>(),
+                CreationDate = DateTime.Now,
+                Id = Guid.NewGuid()
+            },
+            new Project
+            {
+                Name = "Mock3",
+                UnityVersion = "",
+                Description = "",
+                Author = "",
+                Path = "",
+                Templates = Array.Empty<string>(),
+                ChangeHistory = Array.Empty<string>(),
+                CreationDate = DateTime.Now,
+                Id = Guid.NewGuid()
+            }
+        };
+    }
+
     [RelayCommand]
     private void GoToProjectInfo(Project project)
     {
