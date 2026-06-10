@@ -6,7 +6,6 @@
              xmlns:vm="clr-namespace:BootStrapper.ViewModels.Templates"
              xmlns:models="clr-namespace:BootStrapper.Core.Models;assembly=BootStrapper.Core"
              x:Class="BootStrapper.Views.Templates.TemplateListView"
-             d:DataContext="{d:DesignInstance type=vm:MainWindowViewModel, IsDesignTimeCreatable=True}"
              x:DataType="vm:TemplateListViewModel">
 
     <Design.DataContext>
@@ -35,21 +34,29 @@
         </Grid>
 
         <!-- TEMPLATE LIST -->
-        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Margin="15, 10, 10, 10">
-            <WrapPanel Orientation="Horizontal" ItemWidth="320" ItemHeight="230">
+                <ScrollViewer Grid.Row="1"
+                              VerticalScrollBarVisibility="Auto"
+                              Margin="5,10,10,10">
 
+                    <ItemsControl ItemsSource="{Binding TemplateList}">
 
-                <!-- CARD DINAMICO-->
-                <ItemsControl ItemsSource="{Binding TemplateList}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate x:DataType="models:TemplateManifest">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel Orientation="Horizontal"
+                                           ItemWidth="320"
+                                           ItemHeight="230"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
 
-                            <Border Width="290"
-                                    Height="210"
-                                    Margin="0,0,20,20"
-                                    Background="#37345D"
-                                    CornerRadius="12"
-                                    Padding="18">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="models:TemplateManifest">
+
+                                <Border Width="290"
+                                        Height="210"
+                                        Margin="0,0,20,10"
+                                        Background="#37345D"
+                                        CornerRadius="12"
+                                        Padding="18">
 
                                 <Grid RowDefinitions="Auto,Auto,*,Auto">
 
@@ -83,13 +90,26 @@
                                     <!-- TAGS -->
                                     <WrapPanel Grid.Row="2" Margin="0,18,0,0" HorizontalAlignment="Left">
 
-                                        <Border Background="#626262"
-                                                CornerRadius="6"
-                                                Padding="8,4"
-                                                Margin="0,0,8,8">
+                                            <ItemsControl ItemsSource="{Binding Tags}">
 
-                                            <TextBlock Text="{Binding Tags}" FontSize="11" Foreground="White"/>
-                                        </Border>
+                                                <ItemsControl.ItemsPanel>
+                                                    <ItemsPanelTemplate>
+                                                        <StackPanel Orientation="Horizontal" Spacing="5"/>
+                                                    </ItemsPanelTemplate>
+                                                </ItemsControl.ItemsPanel>
+
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <Border Background="#626262"
+                                                                CornerRadius="6"
+                                                                Padding="8,4"
+                                                                Margin="0,0,8,8">
+                                                        <TextBlock Text="{Binding .}" FontSize="11" Foreground="White"/>
+                                                        </Border>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+
 
                                     </WrapPanel>
 
@@ -111,19 +131,15 @@
                                     </Grid>
                                 </Grid>
                             </Border>
-
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
-
-            </WrapPanel>
-
         </ScrollViewer>
 
         <!-- FOOTER -->
         <Grid Grid.Row="2" Margin="30, 20, 20, 15" ColumnDefinitions="*,Auto">
 
-            <TextBlock Text="2 templates loaded" VerticalAlignment="Center" Foreground="#8E8E8E"/>
+            <TextBlock Text="{Binding TemplateList.Count} templates loaded" VerticalAlignment="Center" Foreground="#8E8E8E"/>
 
             <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="10">
                 <Button Content="Refresh" HorizontalContentAlignment="Center" Width="90" Foreground="White"/>

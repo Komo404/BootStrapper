@@ -22,7 +22,7 @@
             <Grid ColumnDefinitions="*,Auto">
 
                 <StackPanel>
-                    <TextBlock Text="Project Name" FontSize="24" FontWeight="SemiBold" Foreground="White"/>
+                    <TextBlock Text="{Binding Name}" FontSize="24" FontWeight="SemiBold" Foreground="White"/>
                 </StackPanel>
 
 
@@ -80,11 +80,18 @@
                             <StackPanel Orientation="Horizontal">
 
                                 <ItemsControl ItemsSource="{Binding Templates}">
+
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <WrapPanel Orientation="Horizontal" ItemSpacing=" 10"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
 
                                             <Border Background="#626262" CornerRadius="6" Padding="8,3">
-                                                <TextBlock Text="{Binding .}" HorizontalAlignment="Center" Foreground="White"/>
+                                                <TextBlock Text="{Binding Name}" HorizontalAlignment="Center" Foreground="White"/>
                                             </Border>
 
                                         </DataTemplate>
@@ -144,7 +151,6 @@
                         <StackPanel Orientation="Horizontal" Spacing="10">
                             <Button Content="Open" Foreground="White"/>
                             <Button Content="Remove" Foreground="White"/>
-                            <Button Content="Refresh" Foreground="White"/>
                         </StackPanel>
 
                     </StackPanel>

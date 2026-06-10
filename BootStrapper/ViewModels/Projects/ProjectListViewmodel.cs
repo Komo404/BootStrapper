@@ -33,11 +33,11 @@ public partial class ProjectListViewModel : ViewModelBase
             {
                 Name = "Mock1",
                 UnityVersion = "6000.0",
-                Description = "",
-                Author = "",
-                Path = "",
-                Templates = Array.Empty<string>(),
-                ChangeHistory = Array.Empty<string>(),
+                Description = "Mock Description",
+                Author = "Komori",
+                Path = "C:",
+                Templates = [],
+                ChangeHistory = [],
                 CreationDate = DateTime.Now,
                 Id = Guid.NewGuid()
             },
@@ -45,11 +45,11 @@ public partial class ProjectListViewModel : ViewModelBase
             {
                 Name = "Mock2",
                 UnityVersion = "2022.3",
-                Description = "",
+                Description = "Description 2",
                 Author = "",
                 Path = "",
-                Templates = Array.Empty<string>(),
-                ChangeHistory = Array.Empty<string>(),
+                Templates = [],
+                ChangeHistory = [],
                 CreationDate = DateTime.Now,
                 Id = Guid.NewGuid()
             },
@@ -57,11 +57,11 @@ public partial class ProjectListViewModel : ViewModelBase
             {
                 Name = "Mock3",
                 UnityVersion = "2022.3",
-                Description = "",
+                Description = "Third one",
                 Author = "",
                 Path = "",
-                Templates = Array.Empty<string>(),
-                ChangeHistory = Array.Empty<string>(),
+                Templates = [],
+                ChangeHistory = [],
                 CreationDate = DateTime.Now,
                 Id = Guid.NewGuid()
             }
@@ -78,5 +78,6 @@ public partial class ProjectListViewModel : ViewModelBase
     private void DeleteProject(Project project)
     {
         ProjectService.DeleteProject(project);
+        ProjectList.Remove(project);
     }
 }

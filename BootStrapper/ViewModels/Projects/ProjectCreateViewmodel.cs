@@ -13,16 +13,14 @@ public partial class ProjectCreateViewModel : ViewModelBase
 {
     private readonly NavigationService _navigation;
     private readonly UserConfig _config;
-    public string Name { get; set; }
-    public string Description { get; set; }
-    public string Path { get; set; }
-    public string UnityVersion { get; set; }
-    public string[] Tags { get; set; }
-
-    public List<TemplateManifest> Templates { get; }
-    public string[] TemplatesAdded { get; set; }
-    public string TotalTemplates { get; }
-    public string Author { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public string Description { get; set; } = string.Empty;
+    public string Path { get; set; } = string.Empty;
+    public string UnityVersion { get; set; } = string.Empty;
+    public string[] Tags { get; set; } = [];
+    public List<TemplateManifest> Templates { get; } = [];
+    public List<TemplateNode> TemplatesAdded { get; set; } = [];
+    public string Author { get; set; } = string.Empty;
 
     public ProjectCreateViewModel(NavigationService navigation, UserConfig config)
     {
@@ -30,9 +28,50 @@ public partial class ProjectCreateViewModel : ViewModelBase
         _config = config;
 
         Templates = TemplateService.GetAllTemplates(_config);
-        TotalTemplates= $"Total Templates: {Templates.Count}";
     }
 
+    public ProjectCreateViewModel() {
+        Templates = new List<TemplateManifest>()
+        {
+                new TemplateManifest
+                {
+                    Name = "Mock1",
+                    Description = "",
+                    Version = "1.0",
+                    UnityVersion = "2022.3",
+                    MaxUnityVersion = "2023.0",
+                    Author = "",
+                    Tags = new List<string>(),
+                    TemplatePath = "",
+                    ManifestPath = "",
+                },
+                new TemplateManifest
+                {
+                    Name = "Mock2",
+                    Description = "",
+                    Version = "1.0",
+                    UnityVersion = "2022.3",
+                    MaxUnityVersion = "2023.0",
+                    Author = "",
+                    Tags = new List<string>(),
+                    TemplatePath = "",
+                    ManifestPath = "",
+                },
+                new TemplateManifest
+                {
+                    Name = "Mock3",
+                    Description = "",
+                    Version = "1.0",
+                    UnityVersion = "2022.3",
+                    MaxUnityVersion = "2023.0",
+                    Author = "",
+                    Tags = new List<string>(),
+                    TemplatePath = "",
+                    ManifestPath = "",
+                }
+
+        };
+    }
 
     [RelayCommand]
     private void GoToProjectCreate()

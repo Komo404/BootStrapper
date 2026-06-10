@@ -16,7 +16,7 @@ public partial class ProjectInfoViewModel : ViewModelBase
     public string Description { get; private set; }
     public string UVersion { get; private set; }
     public string Author { get; private set; }
-    public string[] Templates { get; private set; }
+    public List<TemplateNode> Templates { get; private set; }
 
     public ProjectInfoViewModel(NavigationService navigation, Project project, UserConfig config)
     {
@@ -33,12 +33,24 @@ public partial class ProjectInfoViewModel : ViewModelBase
 
     public ProjectInfoViewModel()
     {
-
-        Templates = new[]
+        Name = "Mock Project";
+        Description = "Description";
+        UVersion = "UVers";
+        Author = "Komori";
+        Templates = new List<TemplateNode>
         {
-            "Template1",
-            "Template2",
-            "Template3"
+            new TemplateNode
+            {
+                Name = "Teste"
+            },
+            new TemplateNode
+            {
+                Name = "Teste 2"
+            },
+            new TemplateNode
+            {
+                Name = "Teste 3"
+            },
         };
     }
 
@@ -46,7 +58,11 @@ public partial class ProjectInfoViewModel : ViewModelBase
     private void OpenProject() => UnityService.OpenUnityProject(_config, _project);
 
     [RelayCommand]
-    private void DeleteProject() => ProjectService.DeleteProject(_project);
+    private void DeleteProject()
+    {
+        ProjectService.DeleteProject(_project);
+        _navigation.CurrentView = new ProjectListViewModel(_navigation, _config);
+    }
 
     [RelayCommand]
     private void OpenProjectFolder() => ProjectService.OpenProjectFolder();

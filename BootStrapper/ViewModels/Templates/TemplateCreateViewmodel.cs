@@ -12,12 +12,12 @@ public partial class TemplateCreateViewModel : ViewModelBase
     private readonly NavigationService _navigation;
     private readonly UserConfig _config;
     public List<TemplateNode> TemplateScripts {  get; set; }
-    public string Name { get; set; }
-    public string Description { get; set; }
-    public List<string> Tags { get; set; }
-    public string Version { get; set; } 
-    public string UnityVersion { get; set; }
-    public string Author { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public string Description { get; set; } = string.Empty;
+    public List<string> Tags { get; set; } = [];
+    public string Version { get; set; } = string.Empty;
+    public string UnityVersion { get; set; } = string.Empty;
+    public string Author { get; set; } = string.Empty;
 
     public TemplateCreateViewModel(NavigationService navigation, UserConfig config)
     {

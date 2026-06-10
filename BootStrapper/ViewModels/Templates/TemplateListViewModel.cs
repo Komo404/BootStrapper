@@ -29,7 +29,30 @@ public partial class TemplateListViewModel : ViewModelBase
     {
         TemplateList = new ObservableCollection<TemplateManifest>
         {
-            
+            new TemplateManifest
+            {
+                Name = "Mock1",
+                Description = "Desc 1",
+                Version = "1.0",
+                UnityVersion = "2022",
+                MaxUnityVersion = "2023",
+                Author = "",
+                Tags = [],
+                TemplatePath = "",
+                ManifestPath = "",
+            },
+            new TemplateManifest
+            {
+                Name = "Mock2",
+                Description = "Desc 2",
+                Version = "1.0",
+                UnityVersion = "2022",
+                MaxUnityVersion = "2023",
+                Author = "",
+                Tags = ["TAG 1", "TAG 2", "TAG 3"],
+                TemplatePath = "C:",
+                ManifestPath = "C:",
+            },
         };
     }
     [RelayCommand]

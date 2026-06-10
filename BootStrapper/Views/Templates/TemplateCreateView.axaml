@@ -39,13 +39,14 @@
                     <TextBlock Text="Template Description" Foreground="White"/>
                     <TextBox Text="{Binding Description}" PlaceholderText="Template description"
                              AcceptsReturn="True"
-                             Height="88" />
+                             Height="65" />
 
                     <TextBlock Text="Tags" Foreground="White"/>
 
                     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
 
                         <ItemsControl ItemsSource="{Binding Tags}">
+
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <StackPanel Orientation="Horizontal"/>
@@ -54,7 +55,8 @@
 
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <Border Background="#CCCC"
+                                    <Border Background="#6CCC"
+                                            CornerRadius="5"
                                             Margin="4"
                                             Padding="8,4">
                                         <TextBlock Text="{Binding .}" Foreground="White"/>
@@ -90,7 +92,7 @@
                             <ItemsControl ItemsSource="{Binding TemplateScripts}">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate x:DataType="models:TemplateNode">
-                                         <TextBlock Text=" {Binding .}" Foreground="White"/>
+                                         <TextBlock Text="{Binding Name}" Foreground="White"/>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>

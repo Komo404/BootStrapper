@@ -4,14 +4,15 @@ using BootStrapper.ViewModels.Projects;
 using BootStrapper.Views;
 using CommunityToolkit.Mvvm.Input;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace BootStrapper.ViewModels;
 
 public partial class HomeViewModel : ViewModelBase
 {
-    private readonly NavigationService? _navigation;
-    private readonly UserConfig? _config;
+    private readonly NavigationService _navigation;
+    private readonly UserConfig _config;
     public ObservableCollection<Project> RecentProjects { get; set; }
 
     public HomeViewModel(NavigationService navigation, UserConfig config)
@@ -30,24 +31,36 @@ public partial class HomeViewModel : ViewModelBase
             new Project
             {
                 Name = "Mock1",
-                UnityVersion = "",
-                Description = "",
-                Author = "",
-                Path = "",
-                Templates = Array.Empty<string>(),
-                ChangeHistory = Array.Empty<string>(),
-                CreationDate = DateTime.Now,         
-                Id = Guid.NewGuid()                   
+                UnityVersion = "6000f",
+                Description = "Description",
+                Author = "author",
+                Path = "C:",
+                Templates = new List<TemplateNode>
+                {
+                    new TemplateNode
+                    {
+                        Name= "Node1",
+                        IsFolder = true,
+                    },
+                    new TemplateNode
+                    {
+                        Name= "Node2",
+                        IsFolder = false
+                    }
+                },
+                ChangeHistory = [],
+                CreationDate = DateTime.Now,
+                Id = Guid.NewGuid()
             },
             new Project
             {
                 Name = "Mock2",
-                UnityVersion = "",
-                Description = "",
-                Author = "",
-                Path = "",
-                Templates = Array.Empty<string>(),
-                ChangeHistory = Array.Empty<string>(),
+                UnityVersion = "UV",
+                Description = "DESC",
+                Author = "Komori",
+                Path = "/path",
+                Templates = [],
+                ChangeHistory = [],
                 CreationDate = DateTime.Now,
                 Id = Guid.NewGuid()
             },
@@ -58,8 +71,8 @@ public partial class HomeViewModel : ViewModelBase
                 Description = "",
                 Author = "",
                 Path = "",
-                Templates = Array.Empty<string>(),
-                ChangeHistory = Array.Empty<string>(),
+                Templates = [],
+                ChangeHistory = [],
                 CreationDate = DateTime.Now,
                 Id = Guid.NewGuid()
             }

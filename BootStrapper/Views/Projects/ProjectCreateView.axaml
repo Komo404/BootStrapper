@@ -7,33 +7,38 @@
              x:Class="BootStrapper.Views.Projects.ProjectCreateView"
              x:DataType="vm:ProjectCreateViewModel">
 
+    <Design.DataContext>
+        <vm:ProjectCreateViewModel />
+    </Design.DataContext>
+
     <Grid Background="#171717">
         <Border Width="500" Height="500" BorderBrush="White" BorderThickness="1" CornerRadius="10" Background="#37345D">
             <Grid ColumnDefinitions="220, *">
-                <StackPanel Spacing="20" Margin="20, 20, 0, 0">
-                    <TextBlock Text="New Unity Project"  FontSize="16" Foreground="White" />
+                <StackPanel Spacing="17" Margin="20, 20, 0, 0">
+                    <TextBlock Text="New Unity Project" Margin="0, 0, 0, 15"  FontSize="16" Foreground="White" />
 
                     <TextBlock Text="Project Name" Foreground="White"/>
-                    <TextBox Text="{Binding Name}" PlaceholderText="Project name" Background="Gray"/>
+                    <TextBox Text="{Binding Name}" PlaceholderText="Project name"/>
 
                     <TextBlock Text="Project Description" Foreground="White" />
-                    <TextBox Text="{Binding Description}" PlaceholderText="Description" Background="Gray" />
+                    <TextBox Text="{Binding Description}" PlaceholderText="Description"/>
 
                     <TextBlock Text="Unity Version" Foreground="White" />
-                    <TextBox Text="{Binding UnityVersion}" PlaceholderText="Unity Version" Background="Gray"/>
+                    <TextBox Text="{Binding UnityVersion}" PlaceholderText="Unity Version"/>
 
                     <TextBlock Text="Author" Foreground="White" />
-                    <TextBox Text="{Binding Author}" PlaceholderText="Author name" Background="Gray"/>
+                    <TextBox Text="{Binding Author}" PlaceholderText="Author name"/>
 
-                    <Button Content="Create Project" Command="{Binding CreateProjectCommand}" 
+                    <Button Content="Create Project" Foreground="White"
+                            Command="{Binding CreateProjectCommand}" 
                             HorizontalAlignment="Center"
-                            Background="DarkBlue" Foreground="White" />
+                            />
                 </StackPanel>
 
                 <!--List of Templates-->
                 <StackPanel Grid.Column="5" Margin="30, 35, 0, 0">
                     <TextBlock Foreground="White" HorizontalAlignment="Center" Margin="5, 10, 0, 10" Text="All Templates" />
-                    <Border Background="#626262" HorizontalAlignment="Center" 
+                    <Border Background="#414161" HorizontalAlignment="Center" 
                             Padding="10" 
                             MaxWidth="200" MinWidth="185" MaxHeight="300" >
 
@@ -42,9 +47,7 @@
                             <ItemsControl ItemsSource="{Binding Templates}">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-
-                                        <TextBox Foreground="White" Background="Pink" Text="{Binding .}"></TextBox>
-
+                                        <TextBox Margin="0, 0, 0, 5" Foreground="White" Background="#4CCC" Text="{Binding Name}"></TextBox>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
@@ -53,20 +56,20 @@
 
                     </Border>
 
-                    <StackPanel Orientation="Horizontal" Margin="0, 10, 0, 0" HorizontalAlignment="Center" Spacing="20">
+                    <StackPanel Orientation="Horizontal" Margin="37, 10, 0, 30" Spacing="20">
                         <Button Content="Create Template" Command="{Binding GoToTemplateCreateCommand}"
-                                Foreground="White" 
+                                Foreground="White"
                                 HorizontalAlignment="Left"></Button>
                         
-                        
-                        <TextBlock>
+                        <TextBlock Foreground="White" VerticalAlignment="Center">
                             <TextBlock.Text>
-                                <MultiBinding>
-                                    <Binding Path="TemplatesAdded" />
-                                    <Binding Path="TotalTemplates" />
+                                <MultiBinding StringFormat="{}{0}/{1}">
+                                    <Binding Path="TemplatesAdded.Count"/>
+                                    <Binding Path="Templates.Count"/>
                                 </MultiBinding>
                             </TextBlock.Text>
-                        </TextBlock>
+                    </TextBlock>
+
                     </StackPanel>
 
                 </StackPanel>

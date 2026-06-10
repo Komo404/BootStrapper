@@ -5,27 +5,45 @@ using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace BootStrapper.ViewModels.Templates;
 
 public partial class TemplateInfoViewModel : ViewModelBase
 {
-    private readonly NavigationService _navigation;
-    private readonly TemplateManifest _template;
-    private readonly UserConfig _config;
+    private readonly NavigationService _navigation = null!;
+    private readonly TemplateManifest _template = null!;
+    private readonly UserConfig _config = null!;
 
-    public string Name => _template.Name;
-    public string Desc => _template.Description;
-    public string UnityV => _template.UnityVersion;
-    public string MaxUnityV => _template.MaxUnityVersion;
-    public string Author => _template.Author;
-    public string Tags => _template.Tags != null ? string.Join(", ", _template.Tags) : string.Empty;
+    public string Name { get; set; } = string.Empty;
+    public string Desc { get; set; } = string.Empty;
+    public string UnityV { get; set; } = string.Empty;
+    public string MaxUnityV { get; set; } = string.Empty;
+    public string Author { get; set; } = string.Empty;
+    public List<string> Tags { get; set; } = new List<string>();
 
     public TemplateInfoViewModel(NavigationService navigation, TemplateManifest template, UserConfig config)
     {
         _navigation = navigation;
         _template = template;
         _config = config;
+
+        Name = _template.Name;
+        Desc = _template.Description;
+        UnityV = _template.UnityVersion;
+        MaxUnityV = _template.MaxUnityVersion;
+        Author = _template.Author;
+
+        Tags = _template.Tags;
+    }
+
+    public TemplateInfoViewModel()
+    {
+        Tags = new List<string>
+        {
+            "ExampleTag1",
+            "ExampleTag2"
+        };
     }
 
     [RelayCommand]
@@ -51,9 +69,9 @@ public partial class TemplateInfoViewModel : ViewModelBase
     private void OpenTemplateFolder() => TemplateService.OpenTemplateFolder();
 
     [RelayCommand]
-    private void DeleteTemplate()
+    private async Task DeleteTemplate()
     {
-        TemplateService.DeleteTemplate(_config, _template.Id);
+        await TemplateService.DeleteTemplate(_config, _template.Id);
         _navigation.CurrentView = new TemplateListViewModel(_navigation, _config);
     }
 }
