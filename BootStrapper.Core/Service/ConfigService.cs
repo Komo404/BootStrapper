@@ -7,7 +7,7 @@ namespace BootStrapper.Core.Service;
 
 public static class ConfigService
 {
-    public static UserConfig LoadConfig(string configFilePath)
+    public static UserConfig LoadConfig(string configFilePath) // é chamado pelo MainWindowViewModel para carregar a configuração do usuário
     {
         if (!File.Exists(configFilePath))
             CreateDefaultConfig(configFilePath);
@@ -53,8 +53,8 @@ public static class ConfigService
             UnitySelectedPath = null,
             UnityPaths = unityPaths,
             Theme = "Dark",
-            ProjectsFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "BootStrapperProjects"),
-            TemplatesFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "BootStrapperTemplates"),
+            ProjectsFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "BootStrapperProjects"),
+            TemplatesFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "BootStrapperTemplates"),
             AutoUpdateEnabled = true
         };
 

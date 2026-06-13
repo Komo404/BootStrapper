@@ -43,7 +43,7 @@ public static class UnityService
             throw new Exception("Failed to open Unity project.", ex);
         }
     }
-    public static List<string> GetUnityVersions ()
+    public static List<string> GetUnityVersions()
     {
         string unityHubPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "Unity", "Hub", "Editor");
 

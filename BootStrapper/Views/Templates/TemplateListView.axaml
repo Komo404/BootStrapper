@@ -33,7 +33,8 @@
                     HorizontalAlignment="Right"/>
         </Grid>
 
-        <!-- TEMPLATE LIST -->
+        <!-- ============= CARD DINAMICO TEMPLATE ============= -->
+
                 <ScrollViewer Grid.Row="1"
                               VerticalScrollBarVisibility="Auto"
                               Margin="5,10,10,10">
@@ -139,11 +140,10 @@
         <!-- FOOTER -->
         <Grid Grid.Row="2" Margin="30, 20, 20, 15" ColumnDefinitions="*,Auto">
 
-            <TextBlock Text="{Binding TemplateList.Count} templates loaded" VerticalAlignment="Center" Foreground="#8E8E8E"/>
+            <TextBlock Text="{Binding TemplateList.Count, StringFormat='{} {0} templates loaded'}" VerticalAlignment="Center" Foreground="#8E8E8E"/>
 
             <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="10">
-                <Button Content="Refresh" HorizontalContentAlignment="Center" Width="90" Foreground="White"/>
-                <Button Content="Import" HorizontalContentAlignment="Center" Width="90" Foreground="White"/>
+                <Button Content="Import" Command="{Binding ImportTemplateCommand}" HorizontalContentAlignment="Center" Width="90" Foreground="White"/>
             </StackPanel>
 
         </Grid>

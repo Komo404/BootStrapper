@@ -67,6 +67,12 @@ public partial class TemplateListViewModel : ViewModelBase
         _navigation.CurrentView = new TemplateInfoViewModel(_navigation, template, _config);
     }
 
+    [RelayCommand]
+    private void ImportTemplate()
+    {
+
+    }
+
     [RelayCommand] 
     private async Task DeleteTemplate(TemplateManifest template)
     {

@@ -5,7 +5,8 @@
              mc:Ignorable="d"
              xmlns:vm="clr-namespace:BootStrapper.ViewModels"
              x:Class="BootStrapper.Views.SidebarView"
-             x:DataType="vm:SidebarViewModel">
+             x:DataType="vm:SidebarViewModel"
+             Width="65">
 
     <UserControl.Styles>
 
@@ -18,10 +19,6 @@
             <Setter Property="HorizontalContentAlignment" Value="Left"/>
         </Style>
 
-        <Style Selector="Button.sidebar:pointerover">
-            <Setter Property="Background" Value="#2D2D2D"/>
-        </Style>
-
         <Style Selector="TextBlock.icon">
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="FontSize" Value="18"/>
@@ -32,67 +29,104 @@
 
         <Style Selector="TextBlock.menuText">
             <Setter Property="IsVisible" Value="False"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
         </Style>
 
-        <Style Selector="Border#SidebarBorder:pointerover TextBlock.menuText">
+        <Style Selector=":is(UserControl).expanded TextBlock.menuText">
             <Setter Property="IsVisible" Value="True"/>
         </Style>
 
     </UserControl.Styles>
 
     <Border x:Name="SidebarBorder"
-            Width="65"
             Background="#2B2D3D"
-            HorizontalAlignment="Left">
-
-        <Border.Styles>
-            <Style Selector="Border#SidebarBorder:pointerover">
-                <Setter Property="Width" Value="220"/>
-            </Style>
-        </Border.Styles>
+            HorizontalAlignment="Stretch">
 
         <Grid Margin="10" RowDefinitions="Auto,*,Auto">
 
             <StackPanel Grid.Row="0" Spacing="8">
-                <Button Classes="sidebar" Command="{Binding GoToHomeCommand}">
-                    <StackPanel Orientation="Horizontal" Spacing="10">
-                        <TextBlock Classes="icon" Text="⌂"/>
-                        <TextBlock Classes="menuText" Text="Home"/>
+
+                <Button Classes="sidebar"
+                        Command="{Binding GoToHomeCommand}">
+                    <StackPanel Orientation="Horizontal"
+                                Spacing="10">
+                        <TextBlock Classes="icon"
+                                   Text="⌂"/>
+                        <TextBlock Classes="menuText"
+                                   VerticalAlignment="Center"
+                                   Text="Home"/>
+                    </StackPanel>
+                </Button>
+
+            </StackPanel>
+
+            <StackPanel Grid.Row="1"
+                        Spacing="8"
+                        VerticalAlignment="Center">
+
+                <Button Classes="sidebar"
+                        Command="{Binding GoToProjectCreateCommand}">
+                    <StackPanel Orientation="Horizontal"
+                                Spacing="10">
+                        <TextBlock Classes="icon"
+                                   Text="＋"/>
+                        <TextBlock Classes="menuText"
+                                   VerticalAlignment="Center"
+                                   Text="Create Project"/>
+                    </StackPanel>
+                </Button>
+
+                <Button Classes="sidebar"
+                        Command="{Binding GoToTemplateListCommand}">
+                    <StackPanel Orientation="Horizontal"
+                                Spacing="10">
+                        <TextBlock Classes="icon"
+                                   Text="▦"/>
+                        <TextBlock Classes="menuText"
+                                   VerticalAlignment="Center"
+                                   Text="Template List"/>
+                    </StackPanel>
+                </Button>
+
+                <Button Classes="sidebar"
+                        Command="{Binding GoToProjectListCommand}">
+                    <StackPanel Orientation="Horizontal"
+                                Spacing="10">
+                        <TextBlock Classes="icon"
+                                   Text="▣"/>
+                        <TextBlock Classes="menuText"
+                                   VerticalAlignment="Center"
+                                   Text="Project List"/>
+                    </StackPanel>
+                </Button>
+
+            </StackPanel>
+
+            <StackPanel Grid.Row="2">
+
+                <Button Classes="sidebar"
+                        Command="{Binding GoToCreditsCommand}">
+                    <StackPanel Orientation="Horizontal"
+                                Spacing="10">
+                        <TextBlock Classes="icon"
+                                   Text="ⓘ"/>
+                        <TextBlock Classes="menuText"
+                                   VerticalAlignment="Center"
+                                   Text="Credits"/>
+                    </StackPanel>
+                </Button> 
+            
+                <Button Classes="sidebar"
+                        Command="{Binding GoToSettingsCommand}">
+                    <StackPanel Orientation="Horizontal"
+                                Spacing="10">
+                        <TextBlock Classes="icon"
+                                   Text="S"/>
+                        <TextBlock Classes="menuText"
+                                   VerticalAlignment="Center"
+                                   Text="Settings"/>
                     </StackPanel>
                 </Button>
             </StackPanel>
-
-            <StackPanel Grid.Row="1" Spacing="8" VerticalAlignment="Center">
-                <Button Classes="sidebar" Command="{Binding GoToProjectCreateCommand}">
-                    <StackPanel Orientation="Horizontal" Spacing="10">
-                        <TextBlock Classes="icon" Text="＋"/>
-                        <TextBlock Classes="menuText" Text="Create Project"/>
-                    </StackPanel>
-                </Button>
-
-                <Button Classes="sidebar" Command="{Binding GoToTemplateListCommand}">
-                    <StackPanel Orientation="Horizontal" Spacing="10">
-                        <TextBlock Classes="icon" Text="▦"/>
-                        <TextBlock Classes="menuText" Text="Template List"/>
-                    </StackPanel>
-                </Button>
-
-                <Button Classes="sidebar" Command="{Binding GoToProjectListCommand}">
-                    <StackPanel Orientation="Horizontal" Spacing="10">
-                        <TextBlock Classes="icon" Text="▣"/>
-                        <TextBlock Classes="menuText" Text="Project List"/>
-                    </StackPanel>
-                </Button>
-            </StackPanel>
-
-            <Button Grid.Row="2" Classes="sidebar" Command="{Binding GoToCreditsCommand}">
-                <StackPanel Orientation="Horizontal" Spacing="10">
-                    <TextBlock Classes="icon" Text="ⓘ"/>
-                    <TextBlock Classes="menuText" Text="Credits"/>
-                </StackPanel>
-            </Button>
 
         </Grid>
     </Border>

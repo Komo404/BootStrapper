@@ -15,10 +15,23 @@
     <Grid Background="#171717">
         <StackPanel Margin="30" Spacing="18">
 
-            <StackPanel Spacing="2">
-                <TextBlock Text="Projects" FontSize="28" Foreground="White"/>
-                <TextBlock Text="Saved Unity projects" Foreground="#BDBDBD"/>
-            </StackPanel>
+    <Grid Grid.Row="0" ColumnDefinitions="*,Auto" Margin="10, 10, 10, 10">
+
+        <StackPanel Spacing="4">
+            <TextBlock Text="Projects" FontSize="28" FontWeight="SemiBold" Foreground="White"/>
+            <TextBlock Text="Organize your Projects" Foreground="#A0A0A0"/>
+        </StackPanel>
+
+        <Button Grid.Column="1"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Content="+ New Project"
+                Command="{Binding GoToProjectCreateCommand}"
+                Width="140"
+                Height="35"
+                Foreground="White"
+                HorizontalAlignment="Right"/>
+        </Grid>
 
 
             <StackPanel Spacing="10">
@@ -71,6 +84,7 @@
                 </ItemsControl>
 
             </StackPanel>
+
         </StackPanel>
     </Grid>
 </UserControl>

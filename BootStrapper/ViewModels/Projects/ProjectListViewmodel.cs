@@ -67,6 +67,11 @@ public partial class ProjectListViewModel : ViewModelBase
             }
         };
     }
+    [RelayCommand]
+    private void GoToProjectCreate()
+    {
+        _navigation.CurrentView = new ProjectCreateViewModel(_navigation, _config);
+    }
 
     [RelayCommand]
     private void GoToProjectInfo(Project project)

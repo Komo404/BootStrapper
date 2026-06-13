@@ -1,6 +1,6 @@
 namespace BootStrapper.Core.Models
 {
-    public class UserConfig
+    public class UserConfig // Configs do usuário ficam
     {
         public List<string> UnityPaths { get; set; } = [];
         public string UnitySelectedPath { get; set; } = string.Empty;

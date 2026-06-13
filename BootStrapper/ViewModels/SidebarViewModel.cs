@@ -21,7 +21,6 @@ public partial class SidebarViewModel: ViewModelBase
     [RelayCommand]
     private void GoToHome()
     {
-        Console.WriteLine("GoToHome");
         if (_navigation is null)
             throw new InvalidOperationException("NavigationService não foi inicializado");
         _navigation.CurrentView = new HomeViewModel(_navigation, _config);
@@ -29,7 +28,6 @@ public partial class SidebarViewModel: ViewModelBase
     [RelayCommand]
     private void GoToProjectCreate()
     {
-        Console.WriteLine("GoTo2");
         if (_navigation is null)
             throw new InvalidOperationException("NavigationService não foi inicializado");
         _navigation.CurrentView = new ProjectCreateViewModel(_navigation, _config);
@@ -37,7 +35,6 @@ public partial class SidebarViewModel: ViewModelBase
     [RelayCommand]
     private void GoToTemplateList()
     {
-        Console.WriteLine("GoTo3");
         if (_navigation is null)
             throw new InvalidOperationException("NavigationService não foi inicializado");
         _navigation.CurrentView = new TemplateListViewModel(_navigation, _config);
@@ -45,7 +42,6 @@ public partial class SidebarViewModel: ViewModelBase
     [RelayCommand]
     private void GoToProjectList()
     {
-        Console.WriteLine("GoTo4");
         if (_navigation is null)
             throw new InvalidOperationException("NavigationService não foi inicializado");
         _navigation.CurrentView = new ProjectListViewModel(_navigation, _config);
@@ -53,9 +49,16 @@ public partial class SidebarViewModel: ViewModelBase
     [RelayCommand]
     private void GoToCredits()
     {
-        Console.WriteLine("GoTo5");
         if (_navigation is null)
             throw new InvalidOperationException("NavigationService não foi inicializado");
         _navigation.CurrentView = new CreditsViewModel(_navigation);
+    }
+
+    [RelayCommand]
+    private void GoToSettings()
+    {
+        if (_navigation is null)
+            throw new InvalidOperationException("NavigationService não foi inicializado");
+        _navigation.CurrentView = new SettingsViewModel(_navigation, _config);
     }
 }

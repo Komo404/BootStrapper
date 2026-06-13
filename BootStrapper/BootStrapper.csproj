@@ -63,5 +63,8 @@
     <Compile Update="Views\CreditsView.axaml.cs">
       <DependentUpon>CreditsView.axaml</DependentUpon>
     </Compile>
+    <Compile Update="Views\SettingsView.axaml.cs">
+      <DependentUpon>SettingsView.axaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>
