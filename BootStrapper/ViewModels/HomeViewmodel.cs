@@ -35,7 +35,7 @@ public partial class HomeViewModel : ViewModelBase
                 Description = "Description",
                 Author = "author",
                 Path = "C:",
-                Templates = new List<TemplateNode>
+                Templates = new ObservableCollection<TemplateNode>
                 {
                     new TemplateNode
                     {

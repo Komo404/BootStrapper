@@ -1,9 +1,16 @@
-﻿using BootStrapper.Core.Models;
+﻿using Avalonia.Controls;
+using Avalonia.Platform.Storage;
+using BootStrapper.Core.Models;
 using BootStrapper.Core.Service;
 using BootStrapper.Views;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
+using System.IO;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace BootStrapper.ViewModels.Templates;
 
@@ -11,25 +18,27 @@ public partial class TemplateCreateViewModel : ViewModelBase
 {
     private readonly NavigationService _navigation;
     private readonly UserConfig _config;
-    public List<TemplateNode> TemplateScripts {  get; set; }
+    public ObservableCollection<TemplateNode> TemplateScripts { get; } = [];
     public string Name { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
-    public List<string> Tags { get; set; } = [];
+    public List<string> Tags { get; set; } = ["Camera", "Networking", "UI", "Save system", "Steam", "UI", "Animations","Action","Other"];
     public string Version { get; set; } = string.Empty;
     public string UnityVersion { get; set; } = string.Empty;
     public string Author { get; set; } = string.Empty;
+
+    [ObservableProperty] private TemplateNode? selectedNode;
 
     public TemplateCreateViewModel(NavigationService navigation, UserConfig config)
     {
         _navigation = navigation;
         _config = config;
 
-        TemplateScripts = new List<TemplateNode>();
+        TemplateScripts = new ObservableCollection<TemplateNode>();
     }
 
     public TemplateCreateViewModel()
     {
-        TemplateScripts = new List<TemplateNode>()
+        TemplateScripts = new ObservableCollection<TemplateNode>()
         {
             new TemplateNode
             {
@@ -81,10 +90,22 @@ public partial class TemplateCreateViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    private void AddTemplateScript()
+    private async Task AddScripts()
     {
-        // Logic to add a template script to the TemplateScripts list
-        // This could involve opening a file dialog to select a script, for example
+        // Abre seleção de arquivos
+        // Recebe pastas e arquivos .cs
+        // Adiciona pasta como pasta e arquivo como arquivo, sendo todos nodes
+    }
+
+    [RelayCommand]
+    private void RemoveScripts(List<TemplateNode> selectedNodes)
+    {
+        if (selectedNodes is null) return;
+
+        foreach(var node in selectedNodes)
+        {
+            TemplateScripts.Remove(node);
+        }
     }
 
     [RelayCommand]
@@ -103,7 +124,7 @@ public partial class TemplateCreateViewModel : ViewModelBase
             ManifestPath = string.Empty
         };
 
-        TemplateService.CreateTemplate(_config, newTemplateManifest);
+        TemplateService.CreateTemplate(_config, newTemplateManifest, TemplateScripts.ToList());
         _navigation.CurrentView = new TemplateInfoViewModel(_navigation, newTemplateManifest, _config);
     }
 

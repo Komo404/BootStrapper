@@ -65,7 +65,7 @@ public class TemplateService
         throw new Exception($"Template with ID {templateId} not found.");
     }
 
-    public static void CreateTemplate(UserConfig config, TemplateManifest templateInfo)
+    public static void CreateTemplate(UserConfig config, TemplateManifest templateInfo, List<TemplateNode> files)
     {
         if (templateInfo == null) throw new ArgumentNullException(nameof(templateInfo));
         if (config == null) throw new ArgumentNullException(nameof(config));
@@ -82,7 +82,16 @@ public class TemplateService
 
         string scriptsFolderPath = Path.Combine(templateInfo.TemplatePath, "Scripts");
         Directory.CreateDirectory(scriptsFolderPath); // Cria pasta de scripts
-    }
+
+        foreach (var file in files)
+        {
+            if (file.IsFolder)
+            {
+                Path.Combine(templateInfo.TemplatePath, file.RelativePath); //????
+            }
+
+            }
+        }
 
     public static async Task DeleteTemplate(UserConfig config, Guid templateId)
     {

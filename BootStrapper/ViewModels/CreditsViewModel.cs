@@ -12,6 +12,4 @@ public class CreditsViewModel : ViewModelBase
     {
         _navigation = navigation;
     }
-    public CreditsViewModel() { }
-
 }

@@ -70,7 +70,7 @@ public partial class TemplateListViewModel : ViewModelBase
     [RelayCommand]
     private void ImportTemplate()
     {
-
+        // Abre o file explorer, seleciona o arquivo, serializa ele)
     }
 
     [RelayCommand] 

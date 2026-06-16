@@ -7,7 +7,7 @@ namespace BootStrapper.Core.Service;
 
 public static class ConfigService
 {
-    public static UserConfig LoadConfig(string configFilePath) // é chamado pelo MainWindowViewModel para carregar a configuração do usuário
+    public static UserConfig LoadConfig(string configFilePath) // é chamado pelo App.axaml.cs* para carregar a configuração do usuário
     {
         if (!File.Exists(configFilePath))
             CreateDefaultConfig(configFilePath);
@@ -50,7 +50,7 @@ public static class ConfigService
 
         UserConfig defaultConfig = new UserConfig
         {
-            UnitySelectedPath = null,
+            UnitySelectedPath = unityPaths[0],
             UnityPaths = unityPaths,
             Theme = "Dark",
             ProjectsFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "BootStrapperProjects"),

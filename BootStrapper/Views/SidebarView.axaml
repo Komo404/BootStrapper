@@ -120,7 +120,7 @@
                     <StackPanel Orientation="Horizontal"
                                 Spacing="10">
                         <TextBlock Classes="icon"
-                                   Text="S"/>
+                                   Text="⚙️"/>
                         <TextBlock Classes="menuText"
                                    VerticalAlignment="Center"
                                    Text="Settings"/>

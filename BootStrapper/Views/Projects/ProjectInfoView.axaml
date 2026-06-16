@@ -29,7 +29,7 @@
                 <StackPanel Grid.Column="1" HorizontalAlignment="Right" Spacing="10">
 
                     <StackPanel Orientation="Horizontal" Spacing="10">
-                        <Button Content="Open" 
+                        <Button Content="Execute" 
                                 Command="{Binding OpenProjectCommand}"
                                 Foreground="White"/>
                         <Button Content="Delete"
@@ -72,7 +72,7 @@
 
                         <StackPanel Spacing="4">
                             <TextBlock Text="Unity Version" Foreground="White"/>
-                            <TextBox Text="{Binding UVersion}"/>
+                            <TextBox Text="{Binding UVersion}" MaxLength="10" MaxWidth="50" HorizontalAlignment="Left"/>
                         </StackPanel>
 
                         <StackPanel Spacing="4">
@@ -99,6 +99,8 @@
                                 </ItemsControl>
 
                             </StackPanel>
+                            <Button Content="Add Template" Command="{Binding AddTemplateCommand}"
+                                    Foreground="White" Margin="0, 10, 0, 0"></Button>
                         </StackPanel>
 
                         <StackPanel Spacing="4">
@@ -109,7 +111,9 @@
                         <Button Content="Open Project Folder" 
                                 Command="{Binding OpenProjectFolderCommand}"
                                 Margin="0,10,0,0" Foreground="White"/>
-                        <Button Content="Update Project" Margin="0,40,0,0" HorizontalAlignment="Center" Foreground="White"/>
+
+                        <Button Content="Update Project" Command="{Binding UpdateProjectCommand}"
+                                Margin="0,100,0,0" HorizontalAlignment="Center" Foreground="White"/>
 
                     </StackPanel>
 
@@ -134,18 +138,26 @@
                                    FontSize="18"
                                    FontWeight="SemiBold"
                                    Foreground="White"/>
-
+                        <ItemsControl ItemsSource="">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding .}" />
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
                         <Border Background="#2B2D3D" Padding="14" CornerRadius="8">
-                            <StackPanel Spacing="5">
-                                <TextBlock Text="▸ Project" Foreground="White"/>
-                                <TextBlock Text="    README.md" Foreground="#D0D0D0"/>
-                                <TextBlock Text="    manifest.json" Foreground="#D0D0D0"/>
-                                <TextBlock Text="    ▸ Scripts" Foreground="White"/>
-                                <TextBlock Text="        ▸ Category" Foreground="#D0D0D0"/>
-                                <TextBlock Text="            Class1.cs" Foreground="#D0D0D0"/>
-                                <TextBlock Text="            Class2.cs" Foreground="#D0D0D0"/>
-                                <TextBlock Text="    ▸ Config" Foreground="White"/>
-                            </StackPanel>
+
+
+                            <TreeView ItemsSource="{Binding ProjectFiles}" FontSize="12">
+                                <TreeView.ItemTemplate>
+                                    <TreeDataTemplate ItemsSource="{Binding }">
+
+                                        <TextBlock Foreground="White" Text="{Binding .}" />
+
+                                    </TreeDataTemplate>
+                                </TreeView.ItemTemplate>
+                            </TreeView>
+
                         </Border>
 
                         <StackPanel Orientation="Horizontal" Spacing="10">

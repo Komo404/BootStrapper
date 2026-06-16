@@ -31,6 +31,7 @@
                     <TextBlock Text="Insert the new template infos and the basic file structure" FontSize="14" Foreground="#D6D6D6"/>
                 </StackPanel>
 
+                <!--LEFT SIDE-->
                 <StackPanel Grid.Row="1" Grid.Column="0" Spacing="12">
 
                     <TextBlock Text="Template Name" Foreground="White"/>
@@ -65,41 +66,45 @@
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
 
-                </ScrollViewer>
+                    </ScrollViewer>
 
                     <TextBlock Text="Template Author" Foreground="White"/>
-                    <TextBox Text="{Binding Author}" PlaceholderText="Template Author"
-                             AcceptsReturn="True"/>
+                    <TextBox Text="{Binding Author}" PlaceholderText="Template Author" AcceptsReturn="True"/>
 
                 </StackPanel>
 
-                <!--Right Side-->
+                <!--RIGHT SIDE -->
                 <StackPanel Grid.Row="1" Grid.Column="1" Spacing="10">
+
                     <TextBlock Text="Unity Version" Foreground="White"/>
-                        <TextBox Grid.Column="0" Text="{Binding UnityVersion}" PlaceholderText="Unity version" />
 
-                    <TextBlock Text="Files" Foreground="White"/>
-                    <Border Height="130"
-                            Background="#626262"
-                            CornerRadius="8"
-                            Padding="12">
-                    <ScrollViewer VerticalScrollBarVisibility="Auto">
-                        <StackPanel Spacing="8">
-                            <TextBlock Text="Manifest.json" Foreground="White"/>
-                            <TextBlock Text="README.md" Foreground="White"/>
-                            <TextBlock Text="Scripts/" Foreground="White"/>
+                    <TextBox Text="{Binding UnityVersion}" PlaceholderText="Unity version"/>
 
-                            <ItemsControl ItemsSource="{Binding TemplateScripts}">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate x:DataType="models:TemplateNode">
-                                         <TextBlock Text="{Binding Name}" Foreground="White"/>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
+                    <TextBlock Text="Scripts Preview" Foreground="White"/>
 
-                        </StackPanel>
-                    </ScrollViewer>
+                    <Border Height="150" Background="#626262" CornerRadius="8" Padding="12">
+
+                        <TreeView ItemsSource="{Binding TemplateScripts}" SelectedItem="{Binding }">
+                            <TreeView.ItemTemplate>
+
+                                <TreeDataTemplate ItemsSource="{Binding Children}" x:DataType="models:TemplateNode">
+
+                                    <StackPanel Orientation="Horizontal" Spacing="4">
+                                        <TextBlock Text="📁" IsVisible="{Binding IsFolder}" />
+                                        <TextBlock Text="📄" IsVisible="{Binding !IsFolder}" />
+                                        <TextBlock Text="{Binding Name}" Foreground="White"/>
+                                    </StackPanel>
+
+                                </TreeDataTemplate>
+                            </TreeView.ItemTemplate>
+                        </TreeView>
                     </Border>
+
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <Button Content="Add Scripts" Command="{Binding AddScriptsCommand}" Foreground="White" />
+                        <Button Content="Remove Selected" Command="{Binding RemoveScriptsCommand}" Foreground="White" />
+                    </StackPanel>
+
                 </StackPanel>
 
                 <StackPanel Grid.Row="2" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="10">

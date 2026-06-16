@@ -68,6 +68,11 @@ public partial class ProjectListViewModel : ViewModelBase
         };
     }
     [RelayCommand]
+    private void OpenUnity(Project project)
+    {
+        UnityService.OpenUnityProject(_config, project);
+    }
+    [RelayCommand]
     private void GoToProjectCreate()
     {
         _navigation.CurrentView = new ProjectCreateViewModel(_navigation, _config);

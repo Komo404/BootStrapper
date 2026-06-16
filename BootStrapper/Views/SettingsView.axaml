@@ -2,19 +2,111 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" Width="700" Height="400"
+             mc:Ignorable="d"
+             Width="700"
+             Height="400"
              xmlns:vm="clr-namespace:BootStrapper.ViewModels"
-             xmlns:models="clr-namespace:BootStrapper.Core.Models;assembly=BootStrapper.Core"
              x:Class="BootStrapper.Views.SettingsView"
              x:DataType="vm:SettingsViewModel">
+
     <Design.DataContext>
         <vm:SettingsViewModel/>
     </Design.DataContext>
 
-    <Grid Background="#171717">
-        <TextBlock Text="Hello From Settings">
-            
-        </TextBlock>
-    </Grid>
+    <Grid Background="#171717"
+          RowDefinitions="*,Auto"
+          Margin="20">
 
+        <ScrollViewer Grid.Row="0">
+            <StackPanel Spacing="20">
+
+                <!-- Header -->
+                <TextBlock Text="Settings"
+                           FontSize="24"
+                           FontWeight="Bold"
+                           Foreground="White"/>
+
+                <!-- Unity -->
+                <Border Background="#222222"
+                        CornerRadius="8"
+                        Padding="15">
+                    <StackPanel Spacing="10">
+
+                        <TextBlock Text="Unity"
+                                   FontSize="16"
+                                   FontWeight="SemiBold"
+                                   Foreground="White"/>
+
+                        <Grid ColumnDefinitions="220,*">
+                            <TextBlock Grid.Column="0"
+                                       VerticalAlignment="Center"
+                                       Text="Preferred Unity Version:"
+                                       Foreground="White"/>
+
+                            <ComboBox Grid.Column="1"
+                                      ItemsSource="{Binding UnityVersions}"
+                                      SelectedItem="{Binding PreferredUnityVersion}" />
+                        </Grid>
+
+                    </StackPanel>
+                </Border>
+
+                <!-- General -->
+                <Border Background="#222222"
+                        CornerRadius="8"
+                        Padding="15">
+                    <StackPanel Spacing="10">
+
+                        <TextBlock Text="General"
+                                   FontSize="16"
+                                   FontWeight="SemiBold"
+                                   Foreground="White"/>
+
+                        <CheckBox Content="Launch project automatically after creation"
+                                  IsChecked="{Binding AutoLaunchProject}" />
+
+                        <CheckBox Content="Check for updates on startup"
+                                  IsChecked="{Binding CheckForUpdates}" />
+
+                    </StackPanel>
+                </Border>
+
+                <!-- Paths -->
+                <Border Background="#222222"
+                        CornerRadius="8"
+                        Padding="15">
+                    <StackPanel Spacing="10">
+
+                        <TextBlock Text="Paths"
+                                   FontSize="16"
+                                   FontWeight="SemiBold"
+                                   Foreground="White"/>
+
+                        <TextBlock Text="Default Projects Folder"
+                                   Foreground="White"/>
+
+
+                    </StackPanel>
+                </Border>
+
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Footer -->
+        <Border Grid.Row="1"
+                Background="#1E1E1E"
+                Padding="10"
+                Margin="0,15,0,0">
+
+            <Grid ColumnDefinitions="*,Auto,Auto"
+                  ColumnSpacing="10">
+
+                <Button Grid.Column="1"
+                        Content="Reset Settings To Default"
+                        Command="{Binding ResetSettingsCommand}" />
+            </Grid>
+
+        </Border>
+
+    </Grid>
 </UserControl>

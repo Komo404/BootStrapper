@@ -3,6 +3,7 @@ using BootStrapper.Core.Service;
 using BootStrapper.Views;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace BootStrapper.ViewModels.Projects;
 
@@ -12,11 +13,12 @@ public partial class ProjectInfoViewModel : ViewModelBase
     private readonly Project _project;
     private readonly UserConfig _config;
 
-    public string Name { get; private set; }
-    public string Description { get; private set; }
-    public string UVersion { get; private set; }
-    public string Author { get; private set; }
-    public List<TemplateNode> Templates { get; private set; }
+    public string Name { get; set; } = string.Empty;
+    public string Description { get; set; } = string.Empty;
+    public string UVersion { get; set; } = string.Empty;
+    public string Author { get; set; } = string.Empty;
+    public ObservableCollection<TemplateNode> Templates { get; set; } = [];
+    public string[] ProjectFiles { get; set; } = { };
 
     public ProjectInfoViewModel(NavigationService navigation, Project project, UserConfig config)
     {
@@ -35,9 +37,9 @@ public partial class ProjectInfoViewModel : ViewModelBase
     {
         Name = "Mock Project";
         Description = "Description";
-        UVersion = "UVers";
+        UVersion = "6000.0";
         Author = "Komori";
-        Templates = new List<TemplateNode>
+        Templates = new ObservableCollection<TemplateNode>
         {
             new TemplateNode
             {
@@ -53,6 +55,10 @@ public partial class ProjectInfoViewModel : ViewModelBase
             },
         };
     }
+    private void GetProjectFiles()
+    {
+        var projectFiles = new List<string>();
+    }
 
     [RelayCommand]
     private void OpenProject() => UnityService.OpenUnityProject(_config, _project);
@@ -63,7 +69,17 @@ public partial class ProjectInfoViewModel : ViewModelBase
         ProjectService.DeleteProject(_project);
         _navigation.CurrentView = new ProjectListViewModel(_navigation, _config);
     }
+    [RelayCommand]
+    private void AddTemplate(TemplateNode template)
+    {
 
+    }
     [RelayCommand]
     private void OpenProjectFolder() => ProjectService.OpenProjectFolder();
+
+    [RelayCommand]
+    private void UpdateProject()
+    {
+
+    }
 }

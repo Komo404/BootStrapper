@@ -39,18 +39,21 @@
                 <StackPanel Grid.Column="5" Margin="30, 35, 0, 0">
                     <TextBlock Foreground="White" HorizontalAlignment="Center" Margin="5, 10, 0, 10" Text="All Templates" />
                     <Border Background="#414161" HorizontalAlignment="Center" 
-                            Padding="10" 
+                            Padding="5" 
                             MaxWidth="200" MinWidth="185" MaxHeight="300" >
 
                         <ScrollViewer HorizontalScrollBarVisibility="Disabled">
 
-                            <ItemsControl ItemsSource="{Binding Templates}">
+                            <ListBox ItemsSource="{Binding Templates}" Background="#4CCC" 
+                                     SelectedItem="{Binding AddTemplateCommand}"
+                                     SelectionMode="Multiple">
+
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <TextBox Margin="0, 0, 0, 5" Foreground="White" Background="#4CCC" Text="{Binding Name}"></TextBox>
+                                        <TextBlock Padding="5" Background="#ACCC" Text="{Binding Name}"></TextBlock>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
-                            </ItemsControl>
+                            </ListBox >
 
                         </ScrollViewer>
 

@@ -5,6 +5,7 @@ using BootStrapper.Views;
 using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 
 namespace BootStrapper.ViewModels.Projects;
@@ -19,7 +20,7 @@ public partial class ProjectCreateViewModel : ViewModelBase
     public string UnityVersion { get; set; } = string.Empty;
     public string[] Tags { get; set; } = [];
     public List<TemplateManifest> Templates { get; } = [];
-    public List<TemplateNode> TemplatesAdded { get; set; } = [];
+    public ObservableCollection<TemplateNode> TemplatesAdded { get; set; } = [];
     public string Author { get; set; } = string.Empty;
 
     public ProjectCreateViewModel(NavigationService navigation, UserConfig config)
@@ -83,6 +84,12 @@ public partial class ProjectCreateViewModel : ViewModelBase
     private void GoToTemplateCreate()
     {
         _navigation.CurrentView = new TemplateCreateViewModel(_navigation, _config);
+    }
+
+    [RelayCommand]
+    private void AddTemplate(TemplateNode template)
+    {
+        TemplatesAdded.Add(template);
     }
 
     [RelayCommand]
