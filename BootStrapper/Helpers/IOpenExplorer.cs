@@ -8,4 +8,6 @@ namespace BootStrapper.Helpers;
 public interface IOpenExplorer
 {
     Task<string?> OpenFolderDialogAsync();
+
+    void OpenTemplateFolder(string folderPath);
 }

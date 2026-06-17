@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Platform.Storage;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,5 +27,11 @@ public class OpenExplorer : IOpenExplorer
         if (result == null || !result.Any()) return null;
 
         return result.First().TryGetLocalPath();
+    }
+
+    public void OpenTemplateFolder(string folderPath)
+    {
+        var directoryinfo = new DirectoryInfo(folderPath);
+        toplevel.Launcher.LaunchDirectoryInfoAsync(directoryinfo);
     }
 }

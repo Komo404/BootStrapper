@@ -20,6 +20,7 @@ public partial class TemplateInfoViewModel : ViewModelBase
     public string UnityV { get; set; } = string.Empty;
     public string MaxUnityV { get; set; } = string.Empty;
     public string Author { get; set; } = string.Empty;
+    public string TemplatePath { get; } = string.Empty;
     public List<string> Tags { get; set; } = new List<string>();
 
     public TemplateInfoViewModel(NavigationService navigation, TemplateManifest template, UserConfig config)
@@ -33,8 +34,8 @@ public partial class TemplateInfoViewModel : ViewModelBase
         UnityV = _template.UnityVersion;
         MaxUnityV = _template.MaxUnityVersion;
         Author = _template.Author;
-
         Tags = _template.Tags;
+        TemplatePath = _template.TemplatePath;
     }
 
     public TemplateInfoViewModel()
@@ -66,7 +67,7 @@ public partial class TemplateInfoViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    private void OpenTemplateFolder() => TemplateService.OpenTemplateFolder();
+    private void OpenTemplateFolder() => _navigation.Explorer.OpenTemplateFolder(TemplatePath);
 
     [RelayCommand]
     private async Task DeleteTemplate()

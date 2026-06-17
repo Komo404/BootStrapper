@@ -131,9 +131,4 @@ public class TemplateService
             File.WriteAllText(scriptPath, $"// Script: {script}");
         }
     }
-
-    public static void OpenTemplateFolder()
-    {
-
-    }
 }
