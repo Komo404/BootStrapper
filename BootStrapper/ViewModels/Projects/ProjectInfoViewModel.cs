@@ -1,7 +1,8 @@
 ﻿using BootStrapper.Core.Models;
-using BootStrapper.Core.Service;
+using BootStrapper.Core.Services;
 using BootStrapper.Views;
 using CommunityToolkit.Mvvm.Input;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
@@ -10,17 +11,17 @@ namespace BootStrapper.ViewModels.Projects;
 public partial class ProjectInfoViewModel : ViewModelBase
 {
     private readonly NavigationService _navigation;
-    private readonly Project _project;
+    private readonly ProjectManifest _project;
     private readonly UserConfig _config;
 
     public string Name { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
     public string UVersion { get; set; } = string.Empty;
     public string Author { get; set; } = string.Empty;
-    public ObservableCollection<TemplateNode> Templates { get; set; } = [];
+    public ObservableCollection<TemplateManifest> TemplatePreviewInfo { get; set; } = [];
     public string[] ProjectFiles { get; set; } = { };
 
-    public ProjectInfoViewModel(NavigationService navigation, Project project, UserConfig config)
+    public ProjectInfoViewModel(NavigationService navigation, ProjectManifest project, UserConfig config)
     {
         _navigation = navigation;
         _project = project; // Supondo que o project já foi carregado na HomeViewModel, então não precisa carregar de novo
@@ -30,7 +31,10 @@ public partial class ProjectInfoViewModel : ViewModelBase
         Description = _project.Description;
         UVersion = _project.UnityVersion;
         Author = _project.Author;
-        Templates = _project.Templates;
+        foreach(var template in _project.TemplateIds)
+        {
+            TemplatePreviewInfo.Add(TemplateService.GetTemplateById(_config, template));
+        }
     }
 
     public ProjectInfoViewModel()
@@ -39,22 +43,19 @@ public partial class ProjectInfoViewModel : ViewModelBase
         Description = "Description";
         UVersion = "6000.0";
         Author = "Komori";
-        Templates = new ObservableCollection<TemplateNode>
+        TemplatePreviewInfo = new ObservableCollection<TemplateManifest>
         {
-            new TemplateNode
-            {
-                Name = "Teste"
-            },
-            new TemplateNode
-            {
-                Name = "Teste 2"
-            },
-            new TemplateNode
-            {
-                Name = "Teste 3"
-            },
+            new TemplateManifest {
+                Name = "TemplateTeste",
+                Description = "Teste",
+                TemplatePath = "",
+                ManifestPath = "",
+                Version = "1.0",
+                UnityVersion = "1.11.f1",
+            }
         };
     }
+
     private void GetProjectFiles()
     {
         var projectFiles = new List<string>();
@@ -69,11 +70,13 @@ public partial class ProjectInfoViewModel : ViewModelBase
         ProjectService.DeleteProject(_project);
         _navigation.CurrentView = new ProjectListViewModel(_navigation, _config);
     }
+
     [RelayCommand]
     private void AddTemplate(TemplateNode template)
     {
 
     }
+
     [RelayCommand]
     private void OpenProjectFolder() => ProjectService.OpenProjectFolder();
 

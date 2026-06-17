@@ -1,4 +1,5 @@
 ﻿using BootStrapper.Core.Models;
+using BootStrapper.Helpers;
 using BootStrapper.ViewModels.Projects;
 using BootStrapper.ViewModels.Templates;
 using BootStrapper.Views;
@@ -14,9 +15,9 @@ public partial class MainWindowViewModel : ViewModelBase
 
     public SidebarViewModel Sidebar { get; }
 
-    public MainWindowViewModel(UserConfig config)
+    public MainWindowViewModel(UserConfig config, IOpenExplorer explorer)
     {
-        Navigation = new NavigationService();
+        Navigation = new NavigationService(explorer);
 
         Sidebar = new SidebarViewModel(Navigation, config);
 

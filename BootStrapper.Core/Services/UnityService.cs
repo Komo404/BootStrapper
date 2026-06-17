@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 
-namespace BootStrapper.Core.Service;
+namespace BootStrapper.Core.Services;
 
 public static class UnityService
 {
-    public static void CreateUnityProject(UserConfig config, Project project)
+    public static void CreateUnityProject(UserConfig config, ProjectManifest project)
     {
         if (string.IsNullOrEmpty(config.UnitySelectedPath))
             throw new ArgumentNullException(nameof(config.UnitySelectedPath), "Unity path cannot be null or empty.");
@@ -27,7 +27,7 @@ public static class UnityService
         }
     }
 
-    public static void OpenUnityProject(UserConfig config, Project project)
+    public static void OpenUnityProject(UserConfig config, ProjectManifest project)
     {
         if (string.IsNullOrEmpty(config.UnitySelectedPath))
             throw new ArgumentNullException(nameof(config.UnitySelectedPath), "Unity path cannot be null or empty.");

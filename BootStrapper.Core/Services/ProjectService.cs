@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using System.Reflection.Metadata;
 using System.Text;
 
-namespace BootStrapper.Core.Service;
+namespace BootStrapper.Core.Services;
 
 public class ProjectService
 {
-    public static void CreateProject(UserConfig config, Project projectInfo)
+    public static void CreateProject(UserConfig config, ProjectManifest projectInfo)
     {
         if (config.ProjectsFolder == null)
             throw new DirectoryNotFoundException("Projects Folder is null");
@@ -25,7 +25,7 @@ public class ProjectService
         Directory.CreateDirectory(scriptsFolderPath);
     }
 
-    public static void DeleteProject(Project project)
+    public static void DeleteProject(ProjectManifest project)
     {
         if (!Directory.Exists(project.Path))
             throw new ArgumentNullException("Project is not existent");
@@ -33,7 +33,7 @@ public class ProjectService
         Directory.Delete(project.Path, true);
     }
 
-    public static void UpdateProject(UserConfig config, string projectPath, Project projectInfo)
+    public static void UpdateProject(UserConfig config, string projectPath, ProjectManifest projectInfo)
     {
         if (!Directory.Exists(projectPath))
             throw new ArgumentNullException("Project is not existent");
@@ -46,14 +46,14 @@ public class ProjectService
         // TODO: Atualiza os arquivos do projeto, caso haja templates novos
     }
 
-    public static Project GetProject(UserConfig config, string projectPath)
+    public static ProjectManifest GetProject(UserConfig config, string projectPath)
     {
         if (!Directory.Exists(projectPath))
             throw new ArgumentNullException("Project is not existent");
 
-        List<Project> projects = ListProjects(config);
+        List<ProjectManifest> projects = ListProjects(config);
 
-        foreach (Project project in projects)
+        foreach (ProjectManifest project in projects)
         {
             if (project.Path == projectPath)
                 return project;
@@ -62,11 +62,11 @@ public class ProjectService
         throw new Exception("Não achou o projeto");
     }
 
-    public static List<Project> ListProjects(UserConfig config)
+    public static List<ProjectManifest> ListProjects(UserConfig config)
     {
 
         string[] folders = Directory.GetDirectories(config.ProjectsFolder);
-        List<Project> projects = new List<Project>();
+        List<ProjectManifest> projects = new List<ProjectManifest>();
 
         foreach (string folder in folders)
         {
@@ -75,7 +75,7 @@ public class ProjectService
             else if (!File.Exists(Path.Combine(folder, "manifest.json")))
                 continue;
             string manifestPath = Path.Combine(folder, "manifest.json");
-            Project project = ManifestService.ReadManifest<Project>(manifestPath);
+            ProjectManifest project = ManifestService.ReadManifest<ProjectManifest>(manifestPath);
             projects.Add(project);
         }
 
@@ -84,7 +84,7 @@ public class ProjectService
 
     public static string[] GetProjectHistory(UserConfig config, string projectPath)
     {
-        Project project = GetProject(config, projectPath);
+        ProjectManifest project = GetProject(config, projectPath);
         String[] changeHistory;
         if (project.ChangeHistory != null)
         {

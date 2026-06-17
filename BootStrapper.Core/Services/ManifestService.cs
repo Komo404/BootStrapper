@@ -3,7 +3,7 @@ using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace BootStrapper.Core.Service;
+namespace BootStrapper.Core.Services;
 
 public class ManifestService
 {

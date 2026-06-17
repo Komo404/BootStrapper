@@ -1,5 +1,5 @@
 ﻿using BootStrapper.Core.Models;
-using BootStrapper.Core.Service;
+using BootStrapper.Core.Services;
 using BootStrapper.Views;
 using CommunityToolkit.Mvvm.Input;
 using System;

@@ -1,11 +1,12 @@
 ﻿using BootStrapper.Core.Models;
-using BootStrapper.Core.Service;
+using BootStrapper.Core.Services;
 using BootStrapper.ViewModels.Templates;
 using BootStrapper.Views;
 using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text;
 
 namespace BootStrapper.ViewModels.Projects;
@@ -20,7 +21,7 @@ public partial class ProjectCreateViewModel : ViewModelBase
     public string UnityVersion { get; set; } = string.Empty;
     public string[] Tags { get; set; } = [];
     public List<TemplateManifest> Templates { get; } = [];
-    public ObservableCollection<TemplateNode> TemplatesAdded { get; set; } = [];
+    public ObservableCollection<Guid> TemplatesAdded { get; set; } = [];
     public string Author { get; set; } = string.Empty;
 
     public ProjectCreateViewModel(NavigationService navigation, UserConfig config)
@@ -34,43 +35,42 @@ public partial class ProjectCreateViewModel : ViewModelBase
     public ProjectCreateViewModel() {
         Templates = new List<TemplateManifest>()
         {
-                new TemplateManifest
-                {
-                    Name = "Mock1",
-                    Description = "",
-                    Version = "1.0",
-                    UnityVersion = "2022.3",
-                    MaxUnityVersion = "2023.0",
-                    Author = "",
-                    Tags = new List<string>(),
-                    TemplatePath = "",
-                    ManifestPath = "",
-                },
-                new TemplateManifest
-                {
-                    Name = "Mock2",
-                    Description = "",
-                    Version = "1.0",
-                    UnityVersion = "2022.3",
-                    MaxUnityVersion = "2023.0",
-                    Author = "",
-                    Tags = new List<string>(),
-                    TemplatePath = "",
-                    ManifestPath = "",
-                },
-                new TemplateManifest
-                {
-                    Name = "Mock3",
-                    Description = "",
-                    Version = "1.0",
-                    UnityVersion = "2022.3",
-                    MaxUnityVersion = "2023.0",
-                    Author = "",
-                    Tags = new List<string>(),
-                    TemplatePath = "",
-                    ManifestPath = "",
-                }
-
+            new TemplateManifest
+            {
+                Name = "Mock1",
+                Description = "",
+                Version = "1.0",
+                UnityVersion = "2022.3",
+                MaxUnityVersion = "2023.0",
+                Author = "",
+                Tags = new List<string>(),
+                TemplatePath = "",
+                ManifestPath = "",
+            },
+            new TemplateManifest
+            {
+                Name = "Mock2",
+                Description = "",
+                Version = "1.0",
+                UnityVersion = "2022.3",
+                MaxUnityVersion = "2023.0",
+                Author = "",
+                Tags = new List<string>(),
+                TemplatePath = "",
+                ManifestPath = "",
+            },
+            new TemplateManifest
+            {
+                Name = "Mock3",
+                Description = "",
+                Version = "1.0",
+                UnityVersion = "2022.3",
+                MaxUnityVersion = "2023.0",
+                Author = "",
+                Tags = new List<string>(),
+                TemplatePath = "",
+                ManifestPath = "",
+            }
         };
     }
 
@@ -87,15 +87,15 @@ public partial class ProjectCreateViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    private void AddTemplate(TemplateNode template)
+    private void AddTemplate(Guid template)
     {
         TemplatesAdded.Add(template);
     }
 
     [RelayCommand]
-    private void CreateProject(Project projectInfo)
+    private void CreateProject(ProjectManifest projectInfo)
     {
-        Project newProject = new Project
+        ProjectManifest newProject = new ProjectManifest
         {
             Id = Guid.NewGuid(),
             Name = Name,
@@ -104,7 +104,7 @@ public partial class ProjectCreateViewModel : ViewModelBase
             Path = Path,
             UnityVersion = UnityVersion,
             Author = Author,
-            Templates = TemplatesAdded,
+            TemplateIds = TemplatesAdded.ToList(),
             ChangeHistory = Array.Empty<string>()
         };
 

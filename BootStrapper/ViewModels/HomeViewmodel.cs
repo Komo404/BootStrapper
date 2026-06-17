@@ -1,5 +1,5 @@
 ﻿using BootStrapper.Core.Models;
-using BootStrapper.Core.Service;
+using BootStrapper.Core.Services;
 using BootStrapper.ViewModels.Projects;
 using BootStrapper.Views;
 using CommunityToolkit.Mvvm.Input;
@@ -13,7 +13,7 @@ public partial class HomeViewModel : ViewModelBase
 {
     private readonly NavigationService _navigation;
     private readonly UserConfig _config;
-    public ObservableCollection<Project> RecentProjects { get; set; }
+    public ObservableCollection<ProjectManifest> RecentProjects { get; set; }
 
     public HomeViewModel(NavigationService navigation, UserConfig config)
     {
@@ -21,57 +21,45 @@ public partial class HomeViewModel : ViewModelBase
         _config = config ?? throw new ArgumentNullException(nameof(config));
 
         var projects = ProjectService.ListProjects(_config);
-        RecentProjects = new ObservableCollection<Project>(projects);
+        RecentProjects = new ObservableCollection<ProjectManifest>(projects);
     }
 
     public HomeViewModel()
     {
-        RecentProjects = new ObservableCollection<Project>
+        RecentProjects = new ObservableCollection<ProjectManifest>
         {
-            new Project
+            new ProjectManifest
             {
                 Name = "Mock1",
                 UnityVersion = "6000f",
                 Description = "Description",
                 Author = "author",
                 Path = "C:",
-                Templates = new ObservableCollection<TemplateNode>
-                {
-                    new TemplateNode
-                    {
-                        Name= "Node1",
-                        IsFolder = true,
-                    },
-                    new TemplateNode
-                    {
-                        Name= "Node2",
-                        IsFolder = false
-                    }
-                },
+                TemplateIds = [],
                 ChangeHistory = [],
                 CreationDate = DateTime.Now,
                 Id = Guid.NewGuid()
             },
-            new Project
+            new ProjectManifest
             {
                 Name = "Mock2",
                 UnityVersion = "UV",
                 Description = "DESC",
                 Author = "Komori",
                 Path = "/path",
-                Templates = [],
+                TemplateIds = [],
                 ChangeHistory = [],
                 CreationDate = DateTime.Now,
                 Id = Guid.NewGuid()
             },
-            new Project
+            new ProjectManifest
             {
                 Name = "Mock3",
                 UnityVersion = "",
                 Description = "",
                 Author = "",
                 Path = "",
-                Templates = [],
+                TemplateIds = [],
                 ChangeHistory = [],
                 CreationDate = DateTime.Now,
                 Id = Guid.NewGuid()
@@ -80,7 +68,7 @@ public partial class HomeViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    private void GoToProjectInfo(Project project)
+    private void GoToProjectInfo(ProjectManifest project)
     {
         if (_navigation is null)
             throw new InvalidOperationException("NavigationService não foi inicializado");
@@ -89,7 +77,7 @@ public partial class HomeViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    private void OpenUnity(Project project)
+    private void OpenUnity(ProjectManifest project)
     {
         if (_navigation is null)
             throw new InvalidOperationException("NavigationService não foi inicializado");

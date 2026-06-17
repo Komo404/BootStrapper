@@ -1,5 +1,5 @@
 ﻿using BootStrapper.Core.Models;
-using BootStrapper.Core.Service;
+using BootStrapper.Core.Services;
 using BootStrapper.Views;
 using BootStrapper.Views.Projects;
 using CommunityToolkit.Mvvm.Input;
@@ -13,8 +13,8 @@ public partial class ProjectListViewModel : ViewModelBase
 {
     private readonly NavigationService _navigation;
     private readonly UserConfig _config;
-    private readonly List<Project> _projects;
-    public ObservableCollection<Project> ProjectList { get; set; }
+    private readonly List<ProjectManifest> _projects;
+    public ObservableCollection<ProjectManifest> ProjectList { get; set; }
 
     public ProjectListViewModel(NavigationService navigation, UserConfig config)
     {
@@ -22,45 +22,45 @@ public partial class ProjectListViewModel : ViewModelBase
         _config = config;
 
         _projects = ProjectService.ListProjects(config);
-        ProjectList = new ObservableCollection<Project>(_projects);
+        ProjectList = new ObservableCollection<ProjectManifest>(_projects);
     }
 
     public ProjectListViewModel()
     {
-        ProjectList = new ObservableCollection<Project>
+        ProjectList = new ObservableCollection<ProjectManifest>
         {
-            new Project
+            new ProjectManifest
             {
                 Name = "Mock1",
                 UnityVersion = "6000.0",
                 Description = "Mock Description",
                 Author = "Komori",
                 Path = "C:",
-                Templates = [],
+                TemplateIds = [],
                 ChangeHistory = [],
                 CreationDate = DateTime.Now,
                 Id = Guid.NewGuid()
             },
-            new Project
+            new ProjectManifest
             {
                 Name = "Mock2",
                 UnityVersion = "2022.3",
                 Description = "Description 2",
                 Author = "",
                 Path = "",
-                Templates = [],
+                TemplateIds = [],
                 ChangeHistory = [],
                 CreationDate = DateTime.Now,
                 Id = Guid.NewGuid()
             },
-            new Project
+            new ProjectManifest
             {
                 Name = "Mock3",
                 UnityVersion = "2022.3",
                 Description = "Third one",
                 Author = "",
                 Path = "",
-                Templates = [],
+                TemplateIds = [],
                 ChangeHistory = [],
                 CreationDate = DateTime.Now,
                 Id = Guid.NewGuid()
@@ -68,7 +68,7 @@ public partial class ProjectListViewModel : ViewModelBase
         };
     }
     [RelayCommand]
-    private void OpenUnity(Project project)
+    private void OpenUnity(ProjectManifest project)
     {
         UnityService.OpenUnityProject(_config, project);
     }
@@ -79,13 +79,13 @@ public partial class ProjectListViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    private void GoToProjectInfo(Project project)
+    private void GoToProjectInfo(ProjectManifest project)
     {
         _navigation.CurrentView = new ProjectInfoViewModel(_navigation, project, _config);
     }
 
     [RelayCommand]
-    private void DeleteProject(Project project)
+    private void DeleteProject(ProjectManifest project)
     {
         ProjectService.DeleteProject(project);
         ProjectList.Remove(project);

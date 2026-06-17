@@ -4,7 +4,8 @@ using Avalonia.Data.Core;
 using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
 using BootStrapper.Core.Models;
-using BootStrapper.Core.Service;
+using BootStrapper.Core.Services;
+using BootStrapper.Helpers;
 using BootStrapper.ViewModels;
 using BootStrapper.Views;
 using System;
@@ -13,7 +14,7 @@ using System.Linq;
 
 namespace BootStrapper;
 
-public partial class App : Application
+public partial class App : Application // Ponto inicial da aplicação
 {
     public override void Initialize()
     {
@@ -29,10 +30,15 @@ public partial class App : Application
             string configFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "BootStrapper", "config.json");
             UserConfig config = ConfigService.LoadConfig(configFilePath);
 
-            desktop.MainWindow = new MainWindow
-            {
-                DataContext = new MainWindowViewModel(config),
-            };
+
+            var mainWindow = new MainWindow();
+            IOpenExplorer explorer = new OpenExplorer(mainWindow);
+
+            // Carrega a MainWindow com as coisas que ela precisa. A Mainwindow que instancia o NavigateService. 
+            mainWindow.DataContext = new MainWindowViewModel(config, explorer);
+
+            desktop.MainWindow = mainWindow;
+
         }
 
         base.OnFrameworkInitializationCompleted();

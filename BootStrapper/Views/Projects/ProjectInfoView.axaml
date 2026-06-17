@@ -79,7 +79,7 @@
                             <TextBlock Text="Templates" Foreground="White"/>
                             <StackPanel Orientation="Horizontal">
 
-                                <ItemsControl ItemsSource="{Binding Templates}">
+                                <ItemsControl ItemsSource="{Binding TemplatePreviewInfo}">
 
                                     <ItemsControl.ItemsPanel>
                                         <ItemsPanelTemplate>

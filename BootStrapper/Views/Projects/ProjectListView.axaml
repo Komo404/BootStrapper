@@ -40,7 +40,7 @@
 
                 <ItemsControl ItemsSource="{Binding ProjectList}">
                     <ItemsControl.ItemTemplate>
-                        <DataTemplate x:DataType="models:Project">
+                        <DataTemplate x:DataType="models:ProjectManifest">
                            
 
                             <Border Background="#2B2D3D" Margin="5" CornerRadius="10" Padding="14">

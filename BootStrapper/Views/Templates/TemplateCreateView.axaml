@@ -77,14 +77,13 @@
                 <StackPanel Grid.Row="1" Grid.Column="1" Spacing="10">
 
                     <TextBlock Text="Unity Version" Foreground="White"/>
-
                     <TextBox Text="{Binding UnityVersion}" PlaceholderText="Unity version"/>
 
                     <TextBlock Text="Scripts Preview" Foreground="White"/>
 
-                    <Border Height="150" Background="#626262" CornerRadius="8" Padding="12">
+                    <Border Height="150" Background="#6fff" CornerRadius="8" Padding="12">
 
-                        <TreeView ItemsSource="{Binding TemplateScripts}" SelectedItem="{Binding }">
+                        <TreeView ItemsSource="{Binding TemplateScripts}" Foreground="Wheat" SelectedItem="{Binding }">
                             <TreeView.ItemTemplate>
 
                                 <TreeDataTemplate ItemsSource="{Binding Children}" x:DataType="models:TemplateNode">
@@ -101,15 +100,17 @@
                     </Border>
 
                     <StackPanel Orientation="Horizontal" Spacing="8">
-                        <Button Content="Add Scripts" Command="{Binding AddScriptsCommand}" Foreground="White" />
+                        <Button Content="Import Folder" Command="{Binding AddUserScriptFolderCommand}" Foreground="White" />
                         <Button Content="Remove Selected" Command="{Binding RemoveScriptsCommand}" Foreground="White" />
                     </StackPanel>
 
                 </StackPanel>
 
                 <StackPanel Grid.Row="2" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="10">
-                    <Button Content="Cancel" Command="{Binding GoToHomeCommand}" Background="Transparent" Foreground="White" BorderBrush="White" BorderThickness="1" />
-                    <Button Content="Create Template" Command="{Binding CreateTemplateCommand}" Foreground="White"/>
+                    <Button Content="Cancel" Command="{Binding GoToHomeCommand}" 
+                            Background="Transparent" Foreground="White" BorderBrush="White" BorderThickness="1" />
+                    <Button Content="Create Template" Command="{Binding CreateTemplateCommand}" 
+                            Foreground="White"/>
                 </StackPanel>
 
             </Grid>

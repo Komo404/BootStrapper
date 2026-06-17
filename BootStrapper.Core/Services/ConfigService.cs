@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace BootStrapper.Core.Service;
+namespace BootStrapper.Core.Services;
 
 public static class ConfigService
 {

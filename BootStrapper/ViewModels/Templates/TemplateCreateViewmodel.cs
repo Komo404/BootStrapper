@@ -1,14 +1,16 @@
 ﻿using Avalonia.Controls;
+using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
 using BootStrapper.Core.Models;
-using BootStrapper.Core.Service;
+using BootStrapper.Core.Services;
+using BootStrapper.Helpers;
 using BootStrapper.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
-using System.IO;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -18,7 +20,8 @@ public partial class TemplateCreateViewModel : ViewModelBase
 {
     private readonly NavigationService _navigation;
     private readonly UserConfig _config;
-    public ObservableCollection<TemplateNode> TemplateScripts { get; } = [];
+    public string UserScriptFolderPath;
+    public ObservableCollection<TemplateNode> TemplateScripts { get; } = []; // Preview
     public string Name { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
     public List<string> Tags { get; set; } = ["Camera", "Networking", "UI", "Save system", "Steam", "UI", "Animations","Action","Other"];
@@ -90,26 +93,24 @@ public partial class TemplateCreateViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    private async Task AddScripts()
+    private async void AddUserScriptFolder()
     {
-        // Abre seleção de arquivos
-        // Recebe pastas e arquivos .cs
-        // Adiciona pasta como pasta e arquivo como arquivo, sendo todos nodes
+        UserScriptFolderPath = await _navigation.Explorer.OpenFolderDialogAsync();
     }
 
     [RelayCommand]
-    private void RemoveScripts(List<TemplateNode> selectedNodes)
+    private void RemoveScripts(ObservableCollection<TemplateNode> selectedNodes)
     {
         if (selectedNodes is null) return;
 
         foreach(var node in selectedNodes)
         {
-            TemplateScripts.Remove(node);
+            File.Delete(node.RelativePath);
         }
     }
 
     [RelayCommand]
-    private void CreateTemplate(TemplateManifest template)
+    private void CreateTemplate(string UserScriptFolderPath)
     {
         var newTemplateManifest = new TemplateManifest
         {
@@ -124,7 +125,8 @@ public partial class TemplateCreateViewModel : ViewModelBase
             ManifestPath = string.Empty
         };
 
-        TemplateService.CreateTemplate(_config, newTemplateManifest, TemplateScripts.ToList());
+        TemplateService.CreateTemplate(_config, newTemplateManifest, UserScriptFolderPath);
+
         _navigation.CurrentView = new TemplateInfoViewModel(_navigation, newTemplateManifest, _config);
     }
 

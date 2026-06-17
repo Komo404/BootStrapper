@@ -1,5 +1,5 @@
 ﻿using BootStrapper.Core.Models;
-using BootStrapper.Core.Service;
+using BootStrapper.Core.Services;
 using BootStrapper.ViewModels.Projects;
 using BootStrapper.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -27,7 +27,7 @@ public partial class SettingsViewModel : ViewModelBase
     public string[] UnityVersions { get; set; }
 
     private readonly NavigationService _navigation;
-    public ObservableCollection<Project> RecentProjects { get; set; }
+    public ObservableCollection<ProjectManifest> RecentProjects { get; set; }
 
     public SettingsViewModel(NavigationService navigation, UserConfig config)
     {

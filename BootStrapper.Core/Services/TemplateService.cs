@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using BootStrapper.Core.Service;
+using BootStrapper.Core.Services;
 using BootStrapper.Core.Models;
+using System.Security.Principal;
 
-namespace BootStrapper.Core.Service;
+namespace BootStrapper.Core.Services;
 
 public class TemplateService
 {
@@ -65,8 +66,8 @@ public class TemplateService
         throw new Exception($"Template with ID {templateId} not found.");
     }
 
-    public static void CreateTemplate(UserConfig config, TemplateManifest templateInfo, List<TemplateNode> files)
-    {
+    public static void CreateTemplate(UserConfig config, TemplateManifest templateInfo, string userScriptsFolderPath)
+    {   
         if (templateInfo == null) throw new ArgumentNullException(nameof(templateInfo));
         if (config == null) throw new ArgumentNullException(nameof(config));
 
@@ -80,18 +81,12 @@ public class TemplateService
 
         ManifestService.WriteManifest(templateInfo.ManifestPath, templateInfo); // Cria manifest Json
 
-        string scriptsFolderPath = Path.Combine(templateInfo.TemplatePath, "Scripts");
-        Directory.CreateDirectory(scriptsFolderPath); // Cria pasta de scripts
+        string TemplatescriptsFolderPath = Path.Combine(templateInfo.TemplatePath, "Scripts");
+        Directory.CreateDirectory(TemplatescriptsFolderPath); // Cria pasta de scripts
 
-        foreach (var file in files)
-        {
-            if (file.IsFolder)
-            {
-                Path.Combine(templateInfo.TemplatePath, file.RelativePath); //????
-            }
+        Microsoft.VisualBasic.FileIO.FileSystem.CopyDirectory(userScriptsFolderPath, TemplatescriptsFolderPath, true);
 
-            }
-        }
+    }
 
     public static async Task DeleteTemplate(UserConfig config, Guid templateId)
     {

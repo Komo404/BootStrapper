@@ -71,7 +71,7 @@
                                     <Binding Path="Templates.Count"/>
                                 </MultiBinding>
                             </TextBlock.Text>
-                    </TextBlock>
+                        </TextBlock>
 
                     </StackPanel>
 
