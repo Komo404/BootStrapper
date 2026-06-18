@@ -3,8 +3,10 @@ using BootStrapper.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Security.Principal;
 using System.Text;
+using System.Xml.Linq;
 
 namespace BootStrapper.Core.Services;
 
@@ -73,7 +75,7 @@ public class TemplateService
         throw new Exception($"Template with ID {templateId} not found.");
     }
 
-    public static TemplateManifest CreateTemplate(UserConfig config, TemplateManifest templateInfo, string userScriptsFolderPath)
+    public static TemplateManifest CreateTemplate(UserConfig config, TemplateManifest templateInfo, ObservableCollection<TemplateNode> TemplateScripts)
     {   
         if (templateInfo == null) throw new ArgumentNullException(nameof(templateInfo));
         if (config == null) throw new ArgumentNullException(nameof(config));
@@ -91,13 +93,29 @@ public class TemplateService
         string TemplateScriptsFolderPath = Path.Combine(templateInfo.TemplatePath, "Scripts");
         Directory.CreateDirectory(TemplateScriptsFolderPath); // Cria pasta de scripts
 
-        if(userScriptsFolderPath != null)
+        if(TemplateScripts != null)
         {
-            Microsoft.VisualBasic.FileIO.FileSystem.CopyDirectory(userScriptsFolderPath, TemplateScriptsFolderPath, true);
+            foreach(TemplateNode node in TemplateScripts)
+            {
+                if (node.IsFolder)
+                {
+                    Microsoft.VisualBasic.FileIO.FileSystem.CopyDirectory(Path.Combine(node.UserScriptFolderPath, node.RelativePath), TemplateScriptsFolderPath, true);
+                    foreach (TemplateNode childrenNode in node.Children)
+                    {
+                        Microsoft.VisualBasic.FileIO.FileSystem.CopyDirectory(Path.Combine(childrenNode.UserScriptFolderPath, childrenNode.RelativePath), TemplateScriptsFolderPath, true);
+                    }
+                }
+                else {
+                    Microsoft.VisualBasic.FileIO.FileSystem.CopyFile(Path.Combine(node.UserScriptFolderPath, node.RelativePath), TemplateScriptsFolderPath, true);
+                    foreach (TemplateNode childrenNode in node.Children)
+                    {
+                        Microsoft.VisualBasic.FileIO.FileSystem.CopyFile(Path.Combine(childrenNode.UserScriptFolderPath, childrenNode.RelativePath), TemplateScriptsFolderPath, true);
+                    }
+                }
+            }
         }
 
         return templateInfo;
-
     }
 
     public static async Task DeleteTemplate(UserConfig config, Guid templateId)
@@ -154,12 +172,63 @@ public class TemplateService
         }
     }
 
-    public static ObservableCollection<TemplateNode> BuildScriptTree(string UserScriptsFolderPath)
+    public static ObservableCollection<TemplateNode> BuildScriptTree(string path, string root)
     {
         // Le o path recursivamente e a cada iteraçao adiciona um node para o arquivo existente na pasta com if folder
         ObservableCollection<TemplateNode> ScriptTree = [];
+        try
+        {
+            foreach (string file in Directory.GetFiles(path))
+            {
+                string extension = Path.GetExtension(file);
+                if (extension != null && (extension.Equals(".cs")))
+                {
+                    TemplateNode node = new TemplateNode
+                    {
+                        Name = Path.GetFileName(file),
+                        IsFolder = false,
+                        Children = [],
+                        UserScriptFolderPath = root,
+                        RelativePath = Path.GetRelativePath(root, path),
+                    };
+                    ScriptTree.Add(node);
+                }
+            }
 
+            foreach (string directory in Directory.GetDirectories(path))
+            {
+                var childs = BuildScriptTree(directory, root);
+                var folderNode = new TemplateNode
+                {
+                    Name = Path.GetFileName(directory),
+                    IsFolder = true,
+                    Children = new ObservableCollection<TemplateNode>(childs),
+                    UserScriptFolderPath = root,
+                    RelativePath = Path.GetRelativePath(root, path),
+                };
+                ScriptTree.Add(folderNode);
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex.Message);
+        }
 
         return ScriptTree;
+    }
+
+    public static void RemoveTreeNode(ObservableCollection<TemplateNode> branch, TemplateNode selectedNode)
+    {
+        for (int i = 0; i <branch.Count(); i++)
+        {
+            var currentNode = branch[i];
+            if (currentNode == selectedNode)
+            {
+                branch.Remove(currentNode);
+                return;
+            }
+
+            RemoveTreeNode(currentNode.Children, selectedNode);
+        }
     }
 }

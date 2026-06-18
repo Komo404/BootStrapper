@@ -138,11 +138,12 @@
         </ScrollViewer>
 
         <!-- FOOTER -->
-        <Grid Grid.Row="2" Margin="30, 20, 20, 15" ColumnDefinitions="*,Auto">
+        <Grid Grid.Row="30" Margin="30, 20, 20, 15" ColumnDefinitions="*, auto">
 
-            <TextBlock Text="{Binding TemplateList.Count, StringFormat='{} {0} templates loaded'}" VerticalAlignment="Center" Foreground="#8E8E8E"/>
+            <TextBlock Grid.Column="0" Text="{Binding TemplateList.Count, StringFormat='{} {0} templates loaded'}" VerticalAlignment="Center" Foreground="#8E8E8E"/>
 
-            <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="10">
+            <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0,0,10,0" Spacing="10">
+                <Button Content="Open Explorer" Command="{Binding OpenExplorerCommand}" HorizontalContentAlignment="Center" Width="120" Foreground="White"/>
                 <Button Content="Import" Command="{Binding ImportTemplateCommand}" HorizontalContentAlignment="Center" Width="90" Foreground="White"/>
             </StackPanel>
 

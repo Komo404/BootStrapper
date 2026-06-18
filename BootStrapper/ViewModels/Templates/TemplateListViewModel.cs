@@ -1,5 +1,6 @@
 ﻿using BootStrapper.Core.Models;
 using BootStrapper.Core.Services;
+using BootStrapper.Helpers;
 using BootStrapper.Views;
 using CommunityToolkit.Mvvm.Input;
 using System;
@@ -67,6 +68,12 @@ public partial class TemplateListViewModel : ViewModelBase
     private void GoToTemplateInfo(TemplateManifest template)
     {
         _navigation.CurrentView = new TemplateInfoViewModel(_navigation, template, _config);
+    }
+
+    [RelayCommand]
+    private void OpenExplorer()
+    {
+        _navigation.Explorer.OpenTemplateFolder(_config.TemplatesFolder);
     }
 
     [RelayCommand]

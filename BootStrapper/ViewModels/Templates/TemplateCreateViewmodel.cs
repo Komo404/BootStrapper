@@ -17,6 +17,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace BootStrapper.ViewModels.Templates;
 
@@ -25,7 +26,9 @@ public partial class TemplateCreateViewModel : ViewModelBase
     private readonly NavigationService _navigation;
     private readonly UserConfig _config;
     public string UserScriptFolderPath;
-    public ObservableCollection<TemplateNode> TemplateScripts { get; set; } = []; // Para preview files
+
+    [ObservableProperty]
+    private ObservableCollection<TemplateNode> templateScripts = []; // Preview. OBS: ObservableProperty: temp = algo; ObservableCollection = .add/.remove
     public string Name { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
 
@@ -51,6 +54,7 @@ public partial class TemplateCreateViewModel : ViewModelBase
         {
             new TemplateNode {
                 Name = "ExampleScript.cs",
+                UserScriptFolderPath = "",
                 RelativePath = "Assets/Scripts/ExampleScript.cs",
                 IsFolder = false,
                 Children =
@@ -58,6 +62,7 @@ public partial class TemplateCreateViewModel : ViewModelBase
                     new TemplateNode
                     {
                         Name = "ChildScript.cs",
+                        UserScriptFolderPath = "",
                         RelativePath = "Assets/Scripts/ChildScript.cs",
                         IsFolder = false,
                         Children = []
@@ -66,6 +71,7 @@ public partial class TemplateCreateViewModel : ViewModelBase
             },
             new TemplateNode {
                 Name = "ExampleFolder",
+                UserScriptFolderPath = "",
                 RelativePath = "Assets/ExampleFolder",
                 IsFolder = true,
                 Children =
@@ -73,6 +79,7 @@ public partial class TemplateCreateViewModel : ViewModelBase
                     new TemplateNode
                     {
                         Name = "NestedScript.cs",
+                        UserScriptFolderPath = "",
                         RelativePath = "Assets/ExampleFolder/NestedScript.cs",
                         IsFolder = false,
                         Children = []
@@ -109,18 +116,18 @@ public partial class TemplateCreateViewModel : ViewModelBase
     [RelayCommand]
     private async Task AddUserScriptFolder()
     {
-        var res = await _navigation.Explorer.OpenFolderDialogAsync();
+        var scripts = await _navigation.Explorer.OpenFolderDialogAsync();
 
-        UserScriptFolderPath = res;
+        UserScriptFolderPath = scripts;
 
-        TemplateScripts = TemplateService.BuildScriptTree(UserScriptFolderPath);
+        TemplateScripts = TemplateService.BuildScriptTree(UserScriptFolderPath, UserScriptFolderPath);
     }
 
     [RelayCommand]
     private void RemoveScript(TemplateNode selectedNode)
     {
         if (selectedNode is null) return;
-        File.Delete(selectedNode.RelativePath);
+        TemplateService.RemoveTreeNode(TemplateScripts, selectedNode);
     }
 
     [RelayCommand]
@@ -140,8 +147,7 @@ public partial class TemplateCreateViewModel : ViewModelBase
             ManifestPath = string.Empty
         };
 
-        System.Diagnostics.Debug.Write("Tags enviadas: " + string.Join(", ", AddedTags));
-        var createdTemplate = TemplateService.CreateTemplate(_config, newTemplateManifest, UserScriptFolderPath);
+        var createdTemplate = TemplateService.CreateTemplate(_config, newTemplateManifest, TemplateScripts);
 
         _navigation.CurrentView = new TemplateInfoViewModel(_navigation, createdTemplate, _config);
     }

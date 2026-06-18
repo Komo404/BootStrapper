@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
+             xmlns:models="clr-namespace:BootStrapper.Core.Models;assembly=BootStrapper.Core"
              xmlns:vm="clr-namespace:BootStrapper.ViewModels.Templates"
              x:Class="BootStrapper.Views.Templates.TemplateInfoView"
              x:DataType="vm:TemplateInfoViewModel">
@@ -43,7 +44,6 @@
 
                     <StackPanel Orientation="Horizontal" Spacing="10">
                          <Button Content="Open Template Folder" Command="{Binding OpenTemplateFolderCommand}" Foreground="White"/>
-
                          <Button Content="Delete" Command="{Binding DeleteTemplateCommand}" Background="#8B2E2E" Foreground="White"/>
                     </StackPanel>
 
@@ -177,15 +177,25 @@
                                    Foreground="White"/>
 
                         <Border Background="#2B2D3D" Padding="14" CornerRadius="8">
-                            <StackPanel Spacing="5">
-                                <TextBlock Text="> Scripts" Foreground="White"/>
-                            </StackPanel>
+                            <TreeView ItemsSource="{Binding TemplateScripts}" Foreground="Wheat" SelectedItem="{Binding SelectedNode}">
+                                <TreeView.ItemTemplate>
+
+                                    <TreeDataTemplate ItemsSource="{Binding Children}" x:DataType="models:TemplateNode">
+
+                                        <StackPanel Orientation="Horizontal" Spacing="4">
+                                            <TextBlock Text="📁" IsVisible="{Binding IsFolder}" />
+                                            <TextBlock Text="📄" IsVisible="{Binding !IsFolder}" />
+                                            <TextBlock Text="{Binding Name}" Foreground="White"/>
+                                        </StackPanel>
+
+                                    </TreeDataTemplate>
+                                </TreeView.ItemTemplate>
+                            </TreeView>
                         </Border>
 
                         <StackPanel Orientation="Horizontal" Spacing="10">
-                            <Button Content="Open" Foreground="White"/>
-                            <Button Content="Remove" Foreground="White"/>
-                            <Button Content="Refresh" Foreground="White"/>
+                            <Button Content="Add" Command="{Binding AddScriptsCommand}" Foreground="White"/>
+                            <Button Content="Remove" Command="{Binding RemoveScriptCommand}" Foreground="White"/>
                         </StackPanel>
 
                     </StackPanel>
@@ -212,7 +222,6 @@
                                  Foreground="White"
                                  Height="300"
                                  Text="using UnityEngine;&#x0a;&#x0a;public class Class1 : MonoBehaviour&#x0a;{&#x0a;&#x0a;}" />
-
 
                     </StackPanel>
                 </Border>

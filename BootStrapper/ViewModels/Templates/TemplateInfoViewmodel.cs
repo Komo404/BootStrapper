@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,6 +31,8 @@ public partial class TemplateInfoViewModel : ViewModelBase
     public string MaxUnityVersion { get; set; } = string.Empty;
     public string Author { get; set; } = string.Empty;
     public string TemplatePath { get; } = string.Empty;
+    public ObservableCollection<TemplateNode> TemplateScripts { get; set; } = [];
+    public TemplateNode? SelectedNode { get; set; }
 
     public TemplateInfoViewModel(NavigationService navigation, TemplateManifest template, UserConfig config)
     {
@@ -47,6 +50,7 @@ public partial class TemplateInfoViewModel : ViewModelBase
         Author = _template.Author;
         AddedTags = new ObservableCollection<string>(_template.Tags);
         TemplatePath = _template.TemplatePath;
+        TemplateScripts = TemplateService.BuildScriptTree(TemplatePath, TemplatePath);
     }
 
     public TemplateInfoViewModel()
@@ -64,6 +68,19 @@ public partial class TemplateInfoViewModel : ViewModelBase
     }
 
     [RelayCommand]
+    private void AddScripts()
+    {
+        Task filesAdded = _navigation.Explorer.OpenFolderDialogAsync();
+    }
+
+    [RelayCommand]
+    private void RemoveScript(TemplateNode selectedNode)
+    {
+        if (selectedNode is null) return;
+        TemplateService.RemoveTreeNode(TemplateScripts, selectedNode);
+    }
+
+    [RelayCommand]
     private void UpdateTemplate()
     {
         _template.Name = Name;
@@ -76,6 +93,8 @@ public partial class TemplateInfoViewModel : ViewModelBase
         _template.Author = Author;
 
         TemplateService.UpdateTemplateManifest(_config, _template);
+
+        
     }
 
     [RelayCommand]
