@@ -100,17 +100,10 @@ public class TemplateService
                 if (node.IsFolder)
                 {
                     Microsoft.VisualBasic.FileIO.FileSystem.CopyDirectory(Path.Combine(node.UserScriptFolderPath, node.RelativePath), TemplateScriptsFolderPath, true);
-                    foreach (TemplateNode childrenNode in node.Children)
-                    {
-                        Microsoft.VisualBasic.FileIO.FileSystem.CopyDirectory(Path.Combine(childrenNode.UserScriptFolderPath, childrenNode.RelativePath), TemplateScriptsFolderPath, true);
-                    }
                 }
                 else {
-                    Microsoft.VisualBasic.FileIO.FileSystem.CopyFile(Path.Combine(node.UserScriptFolderPath, node.RelativePath), TemplateScriptsFolderPath, true);
-                    foreach (TemplateNode childrenNode in node.Children)
-                    {
-                        Microsoft.VisualBasic.FileIO.FileSystem.CopyFile(Path.Combine(childrenNode.UserScriptFolderPath, childrenNode.RelativePath), TemplateScriptsFolderPath, true);
-                    }
+                    if (Path.GetExtension(node.UserScriptFolderPath) == ".cs")
+                        Microsoft.VisualBasic.FileIO.FileSystem.CopyFile(Path.Combine(node.UserScriptFolderPath, node.RelativePath), TemplateScriptsFolderPath, true);
                 }
             }
         }
@@ -144,32 +137,6 @@ public class TemplateService
         updatedManifest.ManifestPath = Path.Combine(config.TemplatesFolder, templateInfo.Id.ToString(), $"manifest.json");
 
         ManifestService.WriteManifest(templateInfo.ManifestPath, updatedManifest);
-    }
-
-    public static void UpdateTemplateScripts(TemplateManifest template, List<string> newScriptsPath)
-    {
-        string scriptsFolderPath = Path.Combine(template.TemplatePath, "Scripts");
-        string scriptPath;
-
-        if (!Directory.Exists(scriptsFolderPath))
-        {
-            Directory.CreateDirectory(scriptsFolderPath);
-        }
-
-        foreach (string script in newScriptsPath)
-        {
-            if(Directory.Exists(script))
-            {
-                continue;
-            }
-            else
-            {
-                scriptPath = Path.Combine(scriptsFolderPath, $"{script}.cs"); // CS
-            }
-
-            scriptPath = Path.Combine(scriptsFolderPath, $"{script}"); // Folder
-            File.WriteAllText(scriptPath, $"// Script: {script}");
-        }
     }
 
     public static ObservableCollection<TemplateNode> BuildScriptTree(string path, string root)
@@ -206,7 +173,7 @@ public class TemplateService
                     UserScriptFolderPath = root,
                     RelativePath = Path.GetRelativePath(root, path),
                 };
-                ScriptTree.Add(folderNode);
+                ScriptTree.Add(folderNode); 
             }
         }
         catch (Exception ex)

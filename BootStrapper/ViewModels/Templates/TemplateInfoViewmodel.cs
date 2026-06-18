@@ -6,6 +6,7 @@ using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -31,8 +32,9 @@ public partial class TemplateInfoViewModel : ViewModelBase
     public string MaxUnityVersion { get; set; } = string.Empty;
     public string Author { get; set; } = string.Empty;
     public string TemplatePath { get; } = string.Empty;
-    public ObservableCollection<TemplateNode> TemplateScripts { get; set; } = [];
-    public TemplateNode? SelectedNode { get; set; }
+
+    [ObservableProperty] private ObservableCollection<TemplateNode> templateScripts = [];
+    [ObservableProperty] private TemplateNode? selectedNode;
 
     public TemplateInfoViewModel(NavigationService navigation, TemplateManifest template, UserConfig config)
     {
@@ -59,6 +61,16 @@ public partial class TemplateInfoViewModel : ViewModelBase
         Version = "1.0";
         UnityVersion = "1.0.0ff";
         AddedTags = ["TagE 1", "TagE 2", "TagE 3"];
+        TemplateScripts = [
+            new TemplateNode()
+            {
+                Name = "Teste",
+                Children = [],
+                IsFolder = true,
+                RelativePath = "",
+                UserScriptFolderPath = ""
+            }
+            ];
     }
 
     [RelayCommand]
@@ -77,7 +89,16 @@ public partial class TemplateInfoViewModel : ViewModelBase
     private void RemoveScript(TemplateNode selectedNode)
     {
         if (selectedNode is null) return;
+        Debug.WriteLine(selectedNode);
         TemplateService.RemoveTreeNode(TemplateScripts, selectedNode);
+
+            if(selectedNode.IsFolder == true)
+                Directory.Delete(Path.Combine(TemplatePath, selectedNode.RelativePath, selectedNode.Name));
+            else
+            {
+                File.Delete(Path.Combine(TemplatePath, selectedNode.RelativePath, selectedNode.Name));
+            }
+
     }
 
     [RelayCommand]
@@ -93,8 +114,6 @@ public partial class TemplateInfoViewModel : ViewModelBase
         _template.Author = Author;
 
         TemplateService.UpdateTemplateManifest(_config, _template);
-
-        
     }
 
     [RelayCommand]

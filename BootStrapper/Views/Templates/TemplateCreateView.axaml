@@ -168,8 +168,7 @@
                     <TextBlock Text="Scripts Preview" Foreground="White"/>
 
                     <Border Height="150" Background="#6fff" CornerRadius="8" Padding="12">
-
-                        <TreeView ItemsSource="{Binding TemplateScripts}" Foreground="Wheat" SelectedItem="{Binding SelectedNode}">
+                        <TreeView ItemsSource="{Binding TemplateScripts}" Foreground="White" SelectedItem="{Binding SelectedNode}">
                             <TreeView.ItemTemplate>
 
                                 <TreeDataTemplate ItemsSource="{Binding Children}" x:DataType="models:TemplateNode">
