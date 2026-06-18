@@ -23,6 +23,7 @@ public partial class TemplateInfoViewModel : ViewModelBase
     public string Description { get; set; } = string.Empty;
     public TemplateCategory Category { get; set; }
     public ObservableCollection<string> AddedTags { get; set; } = [];
+    public DateTime CreationDate { get; } = new();
     public IReadOnlyList<string> Tags { get; } = ["2D", "3D", "Input System", "Cinemachine", "URP", "HDRP", "Addressables", "Localization", "NavMesh", "Mobile"];
     public string Version { get; set; } = string.Empty;
     public string UnityVersion { get; set; } = string.Empty;
@@ -42,6 +43,7 @@ public partial class TemplateInfoViewModel : ViewModelBase
         Category = _template.Category;
         UnityVersion = _template.UnityVersion;
         MaxUnityVersion = _template.MaxUnityVersion;
+        CreationDate = _template.CreationDate;
         Author = _template.Author;
         AddedTags = new ObservableCollection<string>(_template.Tags);
         TemplatePath = _template.TemplatePath;

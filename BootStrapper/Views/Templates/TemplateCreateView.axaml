@@ -169,7 +169,7 @@
 
                     <Border Height="150" Background="#6fff" CornerRadius="8" Padding="12">
 
-                        <TreeView ItemsSource="{Binding TemplateScripts}" Foreground="Wheat" SelectedItem="{Binding }">
+                        <TreeView ItemsSource="{Binding TemplateScripts}" Foreground="Wheat" SelectedItem="{Binding SelectedNode}">
                             <TreeView.ItemTemplate>
 
                                 <TreeDataTemplate ItemsSource="{Binding Children}" x:DataType="models:TemplateNode">
@@ -187,7 +187,7 @@
 
                     <StackPanel Orientation="Horizontal" Spacing="8">
                         <Button Content="Import Folder" Command="{Binding AddUserScriptFolderCommand}" Foreground="White" />
-                        <Button Content="Remove Selected" Command="{Binding RemoveScriptsCommand}" Foreground="White" />
+                        <Button Content="Remove Selected" Command="{Binding RemoveScriptCommand}" CommandParameter="{Binding SelectedNode}" Foreground="White" />
                     </StackPanel>
 
                 </StackPanel>

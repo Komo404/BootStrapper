@@ -107,27 +107,20 @@ public partial class TemplateCreateViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    private async void AddUserScriptFolder()
+    private async Task AddUserScriptFolder()
     {
         var res = await _navigation.Explorer.OpenFolderDialogAsync();
 
-        if (UserScriptFolderPath != null)
-        {
-            UserScriptFolderPath = res;
-        }
+        UserScriptFolderPath = res;
 
-        TemplateScripts = null; //Função que lê os arquivos do path
+        TemplateScripts = TemplateService.BuildScriptTree(UserScriptFolderPath);
     }
 
     [RelayCommand]
-    private void RemoveScripts(ObservableCollection<TemplateNode> selectedNodes)
+    private void RemoveScript(TemplateNode selectedNode)
     {
-        if (selectedNodes is null) return;
-
-        foreach(var node in selectedNodes)
-        {
-            File.Delete(node.RelativePath);
-        }
+        if (selectedNode is null) return;
+        File.Delete(selectedNode.RelativePath);
     }
 
     [RelayCommand]
@@ -148,9 +141,9 @@ public partial class TemplateCreateViewModel : ViewModelBase
         };
 
         System.Diagnostics.Debug.Write("Tags enviadas: " + string.Join(", ", AddedTags));
-        TemplateService.CreateTemplate(_config, newTemplateManifest, UserScriptFolderPath);
+        var createdTemplate = TemplateService.CreateTemplate(_config, newTemplateManifest, UserScriptFolderPath);
 
-        _navigation.CurrentView = new TemplateInfoViewModel(_navigation, newTemplateManifest, _config);
+        _navigation.CurrentView = new TemplateInfoViewModel(_navigation, createdTemplate, _config);
     }
 
 }

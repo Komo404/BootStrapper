@@ -1,14 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using BootStrapper.Core.Models;
 using BootStrapper.Core.Services;
-using BootStrapper.Core.Models;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Security.Principal;
+using System.Text;
 
 namespace BootStrapper.Core.Services;
 
 public class TemplateService
 {
+
     /// <summary>
     ///     Gets the Directories from the templates folder path
     /// </summary>
@@ -34,6 +36,9 @@ public class TemplateService
         return templates;
     }
 
+
+
+
     /// <summary>
     ///     Get the  Directories from the templates folder path, filter by tag and returns the template of that tag
     /// </summary>
@@ -45,6 +50,8 @@ public class TemplateService
         List<TemplateManifest> allTemplates = GetAllTemplates(config);
         return allTemplates.FindAll(template => template.Tags.Contains(tag));
     }
+
+
 
     /// <summary>
     ///     Get the Directories from the templates folder path, filter by Id and  returns the template of that Id
@@ -66,7 +73,7 @@ public class TemplateService
         throw new Exception($"Template with ID {templateId} not found.");
     }
 
-    public static void CreateTemplate(UserConfig config, TemplateManifest templateInfo, string userScriptsFolderPath)
+    public static TemplateManifest CreateTemplate(UserConfig config, TemplateManifest templateInfo, string userScriptsFolderPath)
     {   
         if (templateInfo == null) throw new ArgumentNullException(nameof(templateInfo));
         if (config == null) throw new ArgumentNullException(nameof(config));
@@ -79,16 +86,17 @@ public class TemplateService
 
         Directory.CreateDirectory(templateInfo.TemplatePath); // Cria pasta do template
 
-        ManifestService.WriteManifest(templateInfo.ManifestPath, templateInfo); // Cria manifest Json
+        ManifestService.WriteManifest(templateInfo.ManifestPath, templateInfo); // Cria o manifest Json
 
-        string TemplatescriptsFolderPath = Path.Combine(templateInfo.TemplatePath, "Scripts");
-        Directory.CreateDirectory(TemplatescriptsFolderPath); // Cria pasta de scripts
+        string TemplateScriptsFolderPath = Path.Combine(templateInfo.TemplatePath, "Scripts");
+        Directory.CreateDirectory(TemplateScriptsFolderPath); // Cria pasta de scripts
 
         if(userScriptsFolderPath != null)
         {
-            System.Diagnostics.Debug.WriteLine(userScriptsFolderPath);
-            Microsoft.VisualBasic.FileIO.FileSystem.CopyDirectory(userScriptsFolderPath, TemplatescriptsFolderPath, true);
+            Microsoft.VisualBasic.FileIO.FileSystem.CopyDirectory(userScriptsFolderPath, TemplateScriptsFolderPath, true);
         }
+
+        return templateInfo;
 
     }
 
@@ -144,5 +152,14 @@ public class TemplateService
             scriptPath = Path.Combine(scriptsFolderPath, $"{script}"); // Folder
             File.WriteAllText(scriptPath, $"// Script: {script}");
         }
+    }
+
+    public static ObservableCollection<TemplateNode> BuildScriptTree(string UserScriptsFolderPath)
+    {
+        // Le o path recursivamente e a cada iteraçao adiciona um node para o arquivo existente na pasta com if folder
+        ObservableCollection<TemplateNode> ScriptTree = [];
+
+
+        return ScriptTree;
     }
 }
