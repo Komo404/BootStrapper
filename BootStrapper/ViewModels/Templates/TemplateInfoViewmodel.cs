@@ -1,9 +1,13 @@
 ﻿using BootStrapper.Core.Models;
 using BootStrapper.Core.Services;
 using BootStrapper.Views;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Globalization;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,17 +15,20 @@ namespace BootStrapper.ViewModels.Templates;
 
 public partial class TemplateInfoViewModel : ViewModelBase
 {
-    private readonly NavigationService _navigation = null!;
-    private readonly TemplateManifest _template = null!;
-    private readonly UserConfig _config = null!;
+    private readonly NavigationService _navigation;
+    private readonly TemplateManifest _template;
+    private readonly UserConfig _config;
 
     public string Name { get; set; } = string.Empty;
-    public string Desc { get; set; } = string.Empty;
-    public string UnityV { get; set; } = string.Empty;
-    public string MaxUnityV { get; set; } = string.Empty;
+    public string Description { get; set; } = string.Empty;
+    public TemplateCategory Category { get; set; }
+    public ObservableCollection<string> AddedTags { get; set; } = [];
+    public IReadOnlyList<string> Tags { get; } = ["2D", "3D", "Input System", "Cinemachine", "URP", "HDRP", "Addressables", "Localization", "NavMesh", "Mobile"];
+    public string Version { get; set; } = string.Empty;
+    public string UnityVersion { get; set; } = string.Empty;
+    public string MaxUnityVersion { get; set; } = string.Empty;
     public string Author { get; set; } = string.Empty;
     public string TemplatePath { get; } = string.Empty;
-    public List<string> Tags { get; set; } = new List<string>();
 
     public TemplateInfoViewModel(NavigationService navigation, TemplateManifest template, UserConfig config)
     {
@@ -30,38 +37,41 @@ public partial class TemplateInfoViewModel : ViewModelBase
         _config = config;
 
         Name = _template.Name;
-        Desc = _template.Description;
-        UnityV = _template.UnityVersion;
-        MaxUnityV = _template.MaxUnityVersion;
+        Description = _template.Description;
+        Version = _template.Version;
+        Category = _template.Category;
+        UnityVersion = _template.UnityVersion;
+        MaxUnityVersion = _template.MaxUnityVersion;
         Author = _template.Author;
-        Tags = _template.Tags;
+        AddedTags = new ObservableCollection<string>(_template.Tags);
         TemplatePath = _template.TemplatePath;
     }
 
     public TemplateInfoViewModel()
     {
-        Tags = new List<string>
-        {
-            "ExampleTag1",
-            "ExampleTag2"
-        };
+        Name = "TEMPLATE NAME";
+        Version = "1.0";
+        UnityVersion = "1.0.0ff";
+        AddedTags = ["TagE 1", "TagE 2", "TagE 3"];
+    }
+
+    [RelayCommand]
+    private void AddTag(string tag)
+    {
+        if (!AddedTags.Contains(tag)) AddedTags.Add(tag);
     }
 
     [RelayCommand]
     private void UpdateTemplate()
     {
-        TemplateManifest newTemplate = new TemplateManifest()
-        {
-            Id = _template.Id,
-            Name = _template.Name,
-            Description = _template.Description,
-            Version = _template.Version,
-            UnityVersion = _template.UnityVersion,
-            MaxUnityVersion = _template.MaxUnityVersion,
-            Author = _template.Author,
-            ManifestPath = _template.ManifestPath,
-            TemplatePath = _template.TemplatePath,
-        };
+        _template.Name = Name;
+        _template.Description = Description;
+        _template.Category = Category;
+        _template.Version = Version;
+        _template.UnityVersion = UnityVersion;
+        _template.Tags = AddedTags.ToList();
+        _template.MaxUnityVersion = MaxUnityVersion;
+        _template.Author = Author;
 
         TemplateService.UpdateTemplateManifest(_config, _template);
     }

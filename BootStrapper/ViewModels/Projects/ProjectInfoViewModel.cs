@@ -48,6 +48,7 @@ public partial class ProjectInfoViewModel : ViewModelBase
             new TemplateManifest {
                 Name = "TemplateTeste",
                 Description = "Teste",
+                Category = new TemplateCategory(),
                 TemplatePath = "",
                 ManifestPath = "",
                 Version = "1.0",

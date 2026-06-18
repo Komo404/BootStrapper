@@ -39,6 +39,7 @@ public partial class ProjectCreateViewModel : ViewModelBase
             {
                 Name = "Mock1",
                 Description = "",
+                Category = new TemplateCategory(),
                 Version = "1.0",
                 UnityVersion = "2022.3",
                 MaxUnityVersion = "2023.0",
@@ -51,6 +52,7 @@ public partial class ProjectCreateViewModel : ViewModelBase
             {
                 Name = "Mock2",
                 Description = "",
+                Category = new TemplateCategory(),
                 Version = "1.0",
                 UnityVersion = "2022.3",
                 MaxUnityVersion = "2023.0",
@@ -63,6 +65,7 @@ public partial class ProjectCreateViewModel : ViewModelBase
             {
                 Name = "Mock3",
                 Description = "",
+                Category = new TemplateCategory(),
                 Version = "1.0",
                 UnityVersion = "2022.3",
                 MaxUnityVersion = "2023.0",

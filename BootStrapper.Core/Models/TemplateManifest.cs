@@ -5,6 +5,7 @@
         // Manifest
         public Guid Id { get; set; } = Guid.Empty;
         public required string Name { get; set; } = string.Empty;
+        public required TemplateCategory Category { get; set; }
         public required string Description { get; set; } = string.Empty;
         public required string Version { get; set; } = string.Empty;
         public DateTime CreationDate { get; set; } = DateTime.Now;

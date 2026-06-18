@@ -7,6 +7,10 @@
              x:Class="BootStrapper.Views.Templates.TemplateInfoView"
              x:DataType="vm:TemplateInfoViewModel">
 
+    <Design.DataContext>
+        <vm:TemplateInfoViewModel/>
+    </Design.DataContext>
+
     <Grid Background="#171717" RowDefinitions="Auto,*,Auto">
 
         <!-- HEADER -->
@@ -20,31 +24,25 @@
 
                 <StackPanel Spacing="8">
 
-                    <TextBlock Text="TEMPLATE NAME" FontSize="24" FontWeight="SemiBold" Foreground="White"/>
+                    <TextBlock Text="{Binding Name}" FontSize="24" FontWeight="SemiBold" Foreground="White"/>
 
                     <StackPanel Orientation="Horizontal" Spacing="8">
 
-                        <ItemsControl ItemsSource="{Binding Tags}">
-
                             <Border Background="#626262" CornerRadius="6" Padding="8,3">
-                                <TextBlock Text="{Binding .}" Foreground="White"/>
+                                <TextBlock Text="{Binding Category}" Foreground="White"/>
                             </Border>
-                        </ItemsControl>
 
                     </StackPanel>
-
                 </StackPanel>
 
                 <StackPanel Grid.Column="1" HorizontalAlignment="Right" Spacing="10">
 
-                    <Border Background="#626262" MaxWidth="67" Padding="10,5" CornerRadius="6">
-                        <TextBlock Text="v1.0.0" Foreground="White"/>
+                    <Border Background="#626262" MaxWidth="70" Padding="10,5" CornerRadius="6">
+                        <TextBlock Text="{Binding Version}" Foreground="White"/>
                     </Border>
 
                     <StackPanel Orientation="Horizontal" Spacing="10">
-                         <Button Content="Open Template Folder"
-                                 Command="{Binding OpenTemplateFolderCommand}"
-                                 Foreground="White"/>
+                         <Button Content="Open Template Folder" Command="{Binding OpenTemplateFolderCommand}" Foreground="White"/>
 
                          <Button Content="Delete" Command="{Binding DeleteTemplateCommand}" Background="#8B2E2E" Foreground="White"/>
                     </StackPanel>
@@ -78,33 +76,69 @@
                             <TextBox AcceptsReturn="True"
                                      Height="90"
                                      TextWrapping="Wrap"
-                                     Text="{Binding Desc}" PlaceholderText="Insert the Template Description"/>
+                                     Text="{Binding Description}" PlaceholderText="Insert the Template Description"/>
                         </StackPanel>
 
                         <StackPanel Spacing="4">
                             <TextBlock Text="Unity Version" Foreground="White"/>
-                            <TextBox Text="{Binding UnityV}" PlaceholderText="Working Unity Version"/>
+                            <TextBox Text="{Binding UnityVersion}" PlaceholderText="Working Unity Version"/>
                         </StackPanel>
 
                         <StackPanel Spacing="4">
                             <TextBlock Text="Max Unity Version" Foreground="White"/>
-                            <TextBox Text="{Binding MaxUnityV}" PlaceholderText="Author"/>
+                            <TextBox Text="{Binding MaxUnityVersion}" PlaceholderText="Author"/>
                         </StackPanel>
 
                         <StackPanel Spacing="4">
                             <TextBlock Text="Tags" Foreground="White" />
 
-                            <ItemsControl ItemsSource="{Binding Tags}">
+                            <ItemsControl ItemsSource="{Binding AddedTags}" Classes="horizontal">
+
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-
-                                        <StackPanel Background="Gray">
+                                        <Grid>
                                             <TextBox Text="{Binding .}" />
-                                        </StackPanel>
-
+                                        </Grid>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
+
                             </ItemsControl>
+
+                        <Button Width="80" Height="30" Margin="0,0,6,6" Content="Add">
+                            <Button.Flyout>
+
+                                <Flyout Placement="BottomEdgeAlignedLeft">
+
+                                    <StackPanel Width="240" Margin="6" Spacing="6">
+
+                                        <TextBox Watermark="Search tag..."/>
+
+                                        <ScrollViewer MaxHeight="220">
+
+                                            <ItemsControl ItemsSource="{Binding Tags}">
+
+                                                <ItemsControl.ItemTemplate>
+
+                                                    <DataTemplate>
+
+                                                        <Button
+                                                        HorizontalContentAlignment="Left"
+                                                        Content="{Binding .}"
+                                                        Command="{Binding $parent[UserControl].DataContext.AddTagCommand}"
+                                                        CommandParameter="{Binding .}"/>
+
+                                                    </DataTemplate>
+
+                                                </ItemsControl.ItemTemplate>
+
+                                            </ItemsControl>
+
+                                        </ScrollViewer>
+
+                                    </StackPanel>
+                                </Flyout>
+                            </Button.Flyout>
+                        </Button>
                         </StackPanel>
 
                         <StackPanel Spacing="4">
@@ -112,7 +146,7 @@
                             <TextBox Text="{Binding Author}" PlaceholderText="Author"/>
                         </StackPanel>
 
-                        <Button Content="Open Template Folder" Margin="0,10,0,0" Foreground="White"/>
+                        <Button Content="Open Template Folder" Command="{Binding OpenTemplateFolderCommand}" Margin="0,10,0,0" Foreground="White"/>
                         <Button Content="Update Template" 
                                 Command="{Binding UpdateTemplateCommand}"
                                 Margin="0,40,0,0" 
@@ -144,13 +178,7 @@
 
                         <Border Background="#2B2D3D" Padding="14" CornerRadius="8">
                             <StackPanel Spacing="5">
-                                <TextBlock Text="▸ Scripts" Foreground="White"/>
-                                <TextBlock Text="    ▸ Category" Foreground="#D0D0D0"/>
-                                <TextBlock Text="        Class1.cs" Foreground="#D0D0D0"/>
-                                <TextBlock Text="        Class2.cs" Foreground="#D0D0D0"/>
-                                <TextBlock Text="▸ Config" Foreground="White"/>
-                                <TextBlock Text="README.md" Foreground="#D0D0D0"/>
-                                <TextBlock Text="manifest.json" Foreground="#D0D0D0"/>
+                                <TextBlock Text="> Scripts" Foreground="White"/>
                             </StackPanel>
                         </Border>
 

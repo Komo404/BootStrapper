@@ -9,7 +9,7 @@
 
     <Grid Background="#171717">
 
-        <Border Width="300" Height="400"
+        <Border Width="400" Height="400"
                 Padding="30" CornerRadius="16"
                 Background="#37345D"
                 BorderBrush="White"
@@ -17,40 +17,35 @@
 
             <StackPanel Spacing="1">
 
-                <TextBlock Text="Credits" HorizontalAlignment="Center" FontSize="20" Foreground="White"/>
+                <TextBlock Text="Credits" HorizontalAlignment="Center" FontSize="27" Foreground="White"/>
 
                 <Separator Background="White"/>
 
                 <StackPanel Spacing="6" Margin="0, 20, 0, 0">
-                    <TextBlock Text="Created By" FontSize="15" FontWeight="SemiBold" Foreground="White"/>
-                    <TextBlock Text="Miguel Komori" FontSize="14" Foreground="White"/>
+                    <TextBlock Text="Created By" FontSize="20" FontWeight="SemiBold" Foreground="White"/>
+                    <TextBlock Text="Miguel Komori" FontSize="16" Foreground="White"/>
                 </StackPanel>
 
                 <StackPanel Spacing="12">
-                    <TextBlock Text="Stacks" FontSize="15" Margin="0, 15, 0, 0" FontWeight="SemiBold" Foreground="White"/>
+                    <TextBlock Text="Stacks" FontSize="20" Margin="0, 15, 0, 0" FontWeight="SemiBold" Foreground="White"/>
 
                     <Border Background="#626262" Padding="5">
 
                         <StackPanel Spacing="10">
 
                             <Grid ColumnDefinitions="110,*">
-                                <TextBlock Text="Framework:" FontSize="11" Foreground="#CBD5E1"/>
-                                <TextBlock Grid.Column="1" FontSize="11" Text="Avalonia (MVVM Arch)" Foreground="White"/>
-                            </Grid>
-
-                            <Grid ColumnDefinitions="130,*">
-                                <TextBlock Text="SGDB:" FontSize="11" Foreground="#CBD5E1"/>
-                                <TextBlock Grid.Column="1" FontSize="11" Text="SQLite + EF Core" Foreground="White"/>
+                                <TextBlock Text="Framework:" FontSize="13" Foreground="#CBD5E1"/>
+                                <TextBlock Grid.Column="1" FontSize="13" Text="Avalonia (MVVM Arch)" Foreground="White"/>
                             </Grid>
 
                             <Grid ColumnDefinitions="165,*">
-                                <TextBlock Text="Tests:" FontSize="11" Foreground="#CBD5E1"/>
-                                <TextBlock Grid.Column="1" FontSize="11" Text="xUnit" Foreground="White"/>
+                                <TextBlock Text="Tests:" FontSize="13" Foreground="#CBD5E1"/>
+                                <TextBlock Grid.Column="1" FontSize="13" Text="xUnit" Foreground="White"/>
                             </Grid>
 
                             <Grid ColumnDefinitions="140,*">
-                                <TextBlock Text="CI/CD:" FontSize="11" Foreground="#CBD5E1"/>
-                                <TextBlock Grid.Column="1" FontSize="11" Text="Github Actions" Foreground="White"/>
+                                <TextBlock Text="CI/CD:" FontSize="13" Foreground="#CBD5E1"/>
+                                <TextBlock Grid.Column="1" FontSize="13" Text="Github Actions" Foreground="White"/>
                             </Grid>
 
                         </StackPanel>
@@ -60,7 +55,7 @@
                 <!-- Linguagens -->
                 <StackPanel Spacing="12" Margin="0, 15, 0, 0">
 
-                    <TextBlock Text="Languages" FontSize="15" FontWeight="SemiBold" Foreground="White"/>
+                    <TextBlock Text="Languages" FontSize="20" FontWeight="SemiBold" Foreground="White"/>
 
                     <WrapPanel ItemHeight="25" ItemWidth="50" Orientation="Horizontal">
                         <Border Background="#626262" CornerRadius="8" Margin="0,0,10,0">

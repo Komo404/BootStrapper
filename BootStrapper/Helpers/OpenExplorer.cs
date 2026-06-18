@@ -23,7 +23,6 @@ public class OpenExplorer : IOpenExplorer
         var options = new FolderPickerOpenOptions();
 
         var result = await toplevel.StorageProvider.OpenFolderPickerAsync(options);
-
         if (result == null || !result.Any()) return null;
 
         return result.First().TryGetLocalPath();

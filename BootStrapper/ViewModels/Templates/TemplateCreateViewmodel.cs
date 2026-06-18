@@ -1,5 +1,6 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Interactivity;
+using Avalonia.Logging;
 using Avalonia.Platform.Storage;
 using BootStrapper.Core.Models;
 using BootStrapper.Core.Services;
@@ -10,8 +11,11 @@ using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
 namespace BootStrapper.ViewModels.Templates;
@@ -21,11 +25,14 @@ public partial class TemplateCreateViewModel : ViewModelBase
     private readonly NavigationService _navigation;
     private readonly UserConfig _config;
     public string UserScriptFolderPath;
-    public ObservableCollection<TemplateNode> TemplateScripts { get; } = []; // Preview
+    public ObservableCollection<TemplateNode> TemplateScripts { get; set; } = []; // Para preview files
     public string Name { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
-    public List<string> Tags { get; set; } = ["Camera", "Networking", "UI", "Save system", "Steam", "UI", "Animations","Action","Other"];
-    public string Version { get; set; } = string.Empty;
+
+    [ObservableProperty] private TemplateCategory category;
+    public IReadOnlyList<TemplateCategory> Categories { get; } = Enum.GetValues<TemplateCategory>();
+    public ObservableCollection<string> AddedTags { get; set; } = [];
+    public IReadOnlyList<string> Tags { get; } = [ "2D", "3D", "Input System", "Cinemachine", "URP", "HDRP", "Addressables", "Localization", "NavMesh", "Mobile"];
     public string UnityVersion { get; set; } = string.Empty;
     public string Author { get; set; } = string.Empty;
 
@@ -35,55 +42,44 @@ public partial class TemplateCreateViewModel : ViewModelBase
     {
         _navigation = navigation;
         _config = config;
-
-        TemplateScripts = new ObservableCollection<TemplateNode>();
     }
 
     public TemplateCreateViewModel()
     {
+        AddedTags = ["Camera"];
         TemplateScripts = new ObservableCollection<TemplateNode>()
         {
-            new TemplateNode
-            {
+            new TemplateNode {
                 Name = "ExampleScript.cs",
                 RelativePath = "Assets/Scripts/ExampleScript.cs",
                 IsFolder = false,
-                Children = new List<TemplateNode>()
-                {
+                Children =
+                [
                     new TemplateNode
                     {
                         Name = "ChildScript.cs",
                         RelativePath = "Assets/Scripts/ChildScript.cs",
                         IsFolder = false,
-                        Children = new List<TemplateNode>()
+                        Children = []
                     }
-                }
+                ]
             },
-            new TemplateNode
-            {
+            new TemplateNode {
                 Name = "ExampleFolder",
                 RelativePath = "Assets/ExampleFolder",
                 IsFolder = true,
-                Children = new List<TemplateNode>()
-                {
+                Children =
+                [
                     new TemplateNode
                     {
                         Name = "NestedScript.cs",
                         RelativePath = "Assets/ExampleFolder/NestedScript.cs",
                         IsFolder = false,
-                        Children = new List<TemplateNode>()
+                        Children = []
                     }
-                }
+                ]
             }
         };
-
-        Tags = new List<string>()
-        {
-            "ExampleTag1",
-            "ExampleTag2",
-            "ExampleTag3"
-        };
-
     }
 
     [RelayCommand]
@@ -93,9 +89,34 @@ public partial class TemplateCreateViewModel : ViewModelBase
     }
 
     [RelayCommand]
+    private void SelectCategory(TemplateCategory category)
+    {
+        Category = category;
+    }
+
+    [RelayCommand]
+    private void AddTag(string tag)
+    {
+        if (!AddedTags.Contains(tag)) AddedTags.Add(tag);
+    }
+
+    [RelayCommand]
+    private void RemoveTag(string tag)
+    {
+        AddedTags.Remove(tag);
+    }
+
+    [RelayCommand]
     private async void AddUserScriptFolder()
     {
-        UserScriptFolderPath = await _navigation.Explorer.OpenFolderDialogAsync();
+        var res = await _navigation.Explorer.OpenFolderDialogAsync();
+
+        if (UserScriptFolderPath != null)
+        {
+            UserScriptFolderPath = res;
+        }
+
+        TemplateScripts = null; //Função que lê os arquivos do path
     }
 
     [RelayCommand]
@@ -110,21 +131,23 @@ public partial class TemplateCreateViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    private void CreateTemplate(string UserScriptFolderPath)
+    private void CreateTemplate()
     {
         var newTemplateManifest = new TemplateManifest
         {
             Id = Guid.Empty,
             Name = Name,
             Description = Description,
-            Version = Version,
+            Category = Category,
+            Version = "1.0",
             UnityVersion = UnityVersion,
-            Tags = Tags,
+            Tags = AddedTags.ToList(),
             Author = Author,
             TemplatePath = string.Empty,
             ManifestPath = string.Empty
         };
 
+        System.Diagnostics.Debug.Write("Tags enviadas: " + string.Join(", ", AddedTags));
         TemplateService.CreateTemplate(_config, newTemplateManifest, UserScriptFolderPath);
 
         _navigation.CurrentView = new TemplateInfoViewModel(_navigation, newTemplateManifest, _config);

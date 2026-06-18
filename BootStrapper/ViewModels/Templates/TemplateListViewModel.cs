@@ -33,6 +33,7 @@ public partial class TemplateListViewModel : ViewModelBase
             {
                 Name = "Mock1",
                 Description = "Desc 1",
+                Category = new TemplateCategory(),
                 Version = "1.0",
                 UnityVersion = "2022",
                 MaxUnityVersion = "2023",
@@ -45,6 +46,7 @@ public partial class TemplateListViewModel : ViewModelBase
             {
                 Name = "Mock2",
                 Description = "Desc 2",
+                Category = new TemplateCategory(),
                 Version = "1.0",
                 UnityVersion = "2022",
                 MaxUnityVersion = "2023",

@@ -10,13 +10,13 @@ namespace BootStrapper.Core.Services;
 public class TemplateService
 {
     /// <summary>
-    ///     Get the Directories from the templates folder path
+    ///     Gets the Directories from the templates folder path
     /// </summary>
     /// <param name="templatesFolderPath"></param>
     /// <returns>List of Type TemplateManifest</returns>
     public static List<TemplateManifest> GetAllTemplates(UserConfig config)
     {
-        List<TemplateManifest> templates = new List<TemplateManifest>();
+        List<TemplateManifest> templates = [];
 
         // 1. Ler todos os manifest JSON
         string[] templatefolders = Directory.GetDirectories(config.TemplatesFolder);
@@ -73,7 +73,7 @@ public class TemplateService
 
         templateInfo.Id = Guid.NewGuid();
         templateInfo.CreationDate = DateTime.Now;
-        templateInfo.Tags = new List<string>();
+        templateInfo.Tags = templateInfo.Tags;
         templateInfo.TemplatePath = Path.Combine(config.TemplatesFolder, templateInfo.Id.ToString());
         templateInfo.ManifestPath = Path.Combine(templateInfo.TemplatePath, "manifest.json");
 
@@ -84,7 +84,11 @@ public class TemplateService
         string TemplatescriptsFolderPath = Path.Combine(templateInfo.TemplatePath, "Scripts");
         Directory.CreateDirectory(TemplatescriptsFolderPath); // Cria pasta de scripts
 
-        Microsoft.VisualBasic.FileIO.FileSystem.CopyDirectory(userScriptsFolderPath, TemplatescriptsFolderPath, true);
+        if(userScriptsFolderPath != null)
+        {
+            System.Diagnostics.Debug.WriteLine(userScriptsFolderPath);
+            Microsoft.VisualBasic.FileIO.FileSystem.CopyDirectory(userScriptsFolderPath, TemplatescriptsFolderPath, true);
+        }
 
     }
 
@@ -103,7 +107,7 @@ public class TemplateService
 
     public static void UpdateTemplateManifest (UserConfig config, TemplateManifest templateInfo)
     {
-        TemplateManifest updatedManifest = GetTemplateById(config, templateInfo.Id); // não precisa ser criado um novo TemplateManifest, é só atualizar o templateInfo e passar ele para o WriteManifest
+        TemplateManifest updatedManifest = GetTemplateById(config, templateInfo.Id); // não precisa criar um novo TemplateManifest, é só atualizar o templateInfo e passar ele para o WriteManifest
         
         updatedManifest.Name = templateInfo.Name;
         updatedManifest.Description = templateInfo.Description;
@@ -116,18 +120,28 @@ public class TemplateService
         ManifestService.WriteManifest(templateInfo.ManifestPath, updatedManifest);
     }
 
-    public static void UpdateTemplateScripts(TemplateManifest template, List<string> newScripts)
+    public static void UpdateTemplateScripts(TemplateManifest template, List<string> newScriptsPath)
     {
         string scriptsFolderPath = Path.Combine(template.TemplatePath, "Scripts");
+        string scriptPath;
 
         if (!Directory.Exists(scriptsFolderPath))
         {
             Directory.CreateDirectory(scriptsFolderPath);
         }
 
-        foreach (string script in newScripts)
+        foreach (string script in newScriptsPath)
         {
-            string scriptPath = Path.Combine(scriptsFolderPath, $"{script}.cs");
+            if(Directory.Exists(script))
+            {
+                continue;
+            }
+            else
+            {
+                scriptPath = Path.Combine(scriptsFolderPath, $"{script}.cs"); // CS
+            }
+
+            scriptPath = Path.Combine(scriptsFolderPath, $"{script}"); // Folder
             File.WriteAllText(scriptPath, $"// Script: {script}");
         }
     }

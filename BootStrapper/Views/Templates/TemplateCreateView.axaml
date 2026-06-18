@@ -15,7 +15,7 @@
     <Grid Background="#171717">
 
         <Border Width="620"
-                Height="450"
+                Height="550"
                 Padding="24"
                 CornerRadius="12"
                 Background="#37345D"
@@ -42,35 +42,121 @@
                              AcceptsReturn="True"
                              Height="65" />
 
-                    <TextBlock Text="Tags" Foreground="White"/>
+                    <TextBlock Text="Category" FontWeight="SemiBold" Margin="0,0,0,4"/>
 
-                    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                    <Button
+                    HorizontalAlignment="Left"
+                    MinWidth="180"
+                    Content="{Binding Category}">
 
-                        <ItemsControl ItemsSource="{Binding Tags}">
+                        <Button.Flyout>
+
+                            <Flyout Placement="BottomEdgeAlignedLeft">
+
+                                <StackPanel Width="220" Margin="6" Spacing="4">
+
+                                    <TextBox Watermark="Search category..."/>
+
+                                    <ItemsControl ItemsSource="{Binding Categories}">
+
+                                        <ItemsControl.ItemTemplate>
+
+                                            <DataTemplate>
+
+                                                <Button
+                                                HorizontalContentAlignment="Left"
+                                                Content="{Binding .}"
+                                                Command="{Binding $parent[UserControl].DataContext.SelectCategoryCommand}"
+                                                CommandParameter="{Binding .}"/>
+
+                                            </DataTemplate>
+
+                                        </ItemsControl.ItemTemplate>
+
+                                    </ItemsControl>
+
+                                </StackPanel>
+                            </Flyout>
+                        </Button.Flyout>
+                    </Button>
+
+                    <TextBlock Margin="0,18,0,4" Text="Tags" FontWeight="SemiBold"/>
+
+                    <WrapPanel Orientation="Horizontal">
+                        <ItemsControl ItemsSource="{Binding AddedTags}">
 
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
-                                    <StackPanel Orientation="Horizontal"/>
+                                    <WrapPanel/>
                                 </ItemsPanelTemplate>
                             </ItemsControl.ItemsPanel>
 
                             <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <Border Background="#6CCC"
-                                            CornerRadius="5"
-                                            Margin="4"
-                                            Padding="8,4">
-                                        <TextBlock Text="{Binding .}" Foreground="White"/>
+
+                                <DataTemplate x:DataType="x:String">
+
+                                    <Border Margin="0,0,6,6" Padding="10,5" CornerRadius="14" Background="#3B82F6">
+
+                                        <StackPanel Orientation="Horizontal" Spacing="6">
+
+                                            <TextBlock Text="{Binding .}" VerticalAlignment="Center"/>
+
+                                            <Button
+                                            Width="18"
+                                            Height="18"
+                                            Padding="0"
+                                            Content="✕"
+                                            FontSize="11"
+                                            Background="Transparent"
+                                            BorderThickness="0"
+                                            Command="{Binding $parent[UserControl].DataContext.RemoveTagCommand}"
+                                            CommandParameter="{Binding .}"/>
+
+                                        </StackPanel>
+
                                     </Border>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
 
-                    </ScrollViewer>
 
-                    <TextBlock Text="Template Author" Foreground="White"/>
-                    <TextBox Text="{Binding Author}" PlaceholderText="Template Author" AcceptsReturn="True"/>
+                        <Button Width="30" Height="30" Margin="0,0,6,6" Content="+">
 
+                            <Button.Flyout>
+
+                                <Flyout Placement="BottomEdgeAlignedLeft">
+
+                                    <StackPanel Width="240" Margin="6" Spacing="6">
+
+                                        <TextBox Watermark="Search tag..."/>
+
+                                        <ScrollViewer MaxHeight="220">
+
+                                            <ItemsControl ItemsSource="{Binding Tags}">
+
+                                                <ItemsControl.ItemTemplate>
+
+                                                    <DataTemplate>
+
+                                                        <Button
+                                                        HorizontalContentAlignment="Left"
+                                                        Content="{Binding .}"
+                                                        Command="{Binding $parent[UserControl].DataContext.AddTagCommand}"
+                                                        CommandParameter="{Binding .}"/>
+
+                                                    </DataTemplate>
+
+                                                </ItemsControl.ItemTemplate>
+
+                                            </ItemsControl>
+
+                                        </ScrollViewer>
+
+                                    </StackPanel>
+                                </Flyout>
+                            </Button.Flyout>
+                        </Button>
+                    </WrapPanel>
                 </StackPanel>
 
                 <!--RIGHT SIDE -->

@@ -1,0 +1,38 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:generic="clr-namespace:System.Collections.Generic;assembly=mscorlib"> <!-- importa String -->
+
+        <Design.PreviewWith>
+            <Border Padding="20" Width="400" Height="100">
+
+                <ItemsControl Classes="horizontal">
+                    <ItemsControl.ItemsSource>
+                        <generic:List x:TypeArguments="sys:String">
+                            <sys:String> Item 1 </sys:String>
+                            <sys:String> Item 2 </sys:String>
+                            <sys:String> Item 3 </sys:String>
+                        </generic:List>
+                    </ItemsControl.ItemsSource>
+
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <TextBox Text="{Binding .}" Margin="5"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+            </Border>
+        </Design.PreviewWith>
+
+    <Style Selector="ItemsControl.horizontal">
+        <Setter Property="ItemsPanel">
+            <Setter.Value>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal" />
+                </ItemsPanelTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</Styles>
