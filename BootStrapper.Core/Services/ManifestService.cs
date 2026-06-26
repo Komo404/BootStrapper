@@ -13,6 +13,11 @@ public class ManifestService
 
         if (manifest != null)
         {
+            if (Directory.Exists(manifestPath))
+            {
+                manifestPath = Path.Combine(manifestPath, "manifest.json");
+            }
+
             File.WriteAllText(manifestPath, manifest);
         }
     }

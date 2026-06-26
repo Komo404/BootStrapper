@@ -22,12 +22,13 @@ public static class ConfigService
 
     public static void SaveConfig(string configFilePath, UserConfig config)
     {
-        if (config == null) {
-            CreateDefaultConfig(configFilePath);
+        if (string.IsNullOrEmpty(configFilePath))
+        {
+            throw new ArgumentNullException(nameof(configFilePath), "Config file path cannot be null or empty.");
         }
 
-        if (string.IsNullOrEmpty(configFilePath)) {
-            throw new ArgumentNullException(nameof(configFilePath), "Config file path cannot be null or empty.");
+        if (config == null) {
+            CreateDefaultConfig(configFilePath);
         }
 
         string? directory = Path.GetDirectoryName(configFilePath);
@@ -46,20 +47,18 @@ public static class ConfigService
         if (string.IsNullOrEmpty(configFilePath))
             throw new ArgumentNullException(nameof(configFilePath), "Config file path cannot be null or empty.");
 
-        List<string> unityPaths = UnityService.GetUnityPaths();
-
         UserConfig defaultConfig = new UserConfig
         {
-            UnitySelectedPath = unityPaths[0],
-            UnityPaths = unityPaths,
-            Theme = "Dark",
-            ProjectsFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "BootStrapper", "BootStrapperProjects"),
-            TemplatesFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "BootStrapper", "BootStrapperTemplates"),
+            CustomUnityEditorsPath = string.Empty,
+            ProjectsFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "BootStrapper", "Projects"),
+            TemplatesFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "BootStrapper", "Templates"),
+            AutoLaunchProject = true,
             AutoUpdateEnabled = true
         };
 
         if (!Directory.Exists(defaultConfig.ProjectsFolder))
             Directory.CreateDirectory(defaultConfig.ProjectsFolder);
+
         if (!Directory.Exists(defaultConfig.TemplatesFolder))
             Directory.CreateDirectory(defaultConfig.TemplatesFolder);
 

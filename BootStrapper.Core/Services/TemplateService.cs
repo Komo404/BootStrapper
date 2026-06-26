@@ -76,8 +76,8 @@ public class TemplateService
 
     public static TemplateManifest CreateTemplate(UserConfig config, TemplateManifest templateInfo, ObservableCollection<TemplateNode> TemplateScripts)
     {   
-        if (templateInfo == null) throw new ArgumentNullException(nameof(templateInfo));
-        if (config == null) throw new ArgumentNullException(nameof(config));
+        ArgumentNullException.ThrowIfNull(templateInfo, nameof(templateInfo));
+        ArgumentNullException.ThrowIfNull(config, nameof(config));
 
         templateInfo.Id = Guid.NewGuid();
         templateInfo.CreationDate = DateTime.Now;
@@ -120,18 +120,9 @@ public class TemplateService
         });
     }
 
-    public static void UpdateTemplateManifest (UserConfig config, TemplateManifest templateInfo)
+    public static void UpdateTemplateManifest (TemplateManifest templateInfo)
     {
-        TemplateManifest updatedManifest = GetTemplateById(config, templateInfo.Id); // não precisa criar um novo TemplateManifest, é só atualizar o templateInfo e passar ele para o WriteManifest
-        
-        updatedManifest.Name = templateInfo.Name;
-        updatedManifest.Description = templateInfo.Description;
-        updatedManifest.UnityVersions = templateInfo.UnityVersions;
-        updatedManifest.Category = templateInfo.Category;
-        updatedManifest.Tags = templateInfo.Tags;
-        updatedManifest.ManifestPath = Path.Combine(config.TemplatesFolder, templateInfo.Id.ToString(), $"manifest.json");
-
-        ManifestService.WriteManifest(templateInfo.ManifestPath, updatedManifest);
+        ManifestService.WriteManifest(templateInfo.ManifestPath, templateInfo);
     }
 
     public static ObservableCollection<TemplateNode> BuildScriptTree(string path, string root)

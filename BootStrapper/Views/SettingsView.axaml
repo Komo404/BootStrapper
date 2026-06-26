@@ -3,8 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             Width="700"
-             Height="400"
+             Width="700" Height="400"
              xmlns:vm="clr-namespace:BootStrapper.ViewModels"
              x:Class="BootStrapper.Views.SettingsView"
              x:DataType="vm:SettingsViewModel">
@@ -13,97 +12,91 @@
         <vm:SettingsViewModel/>
     </Design.DataContext>
 
-    <Grid Background="#171717"
-          RowDefinitions="*,Auto"
-          Margin="20">
+    <Grid Background="#171717" RowDefinitions="*, Auto" >
 
         <ScrollViewer Grid.Row="0">
             <StackPanel Spacing="20">
 
-                <!-- Header -->
-                <TextBlock Text="Settings"
-                           FontSize="24"
-                           FontWeight="Bold"
-                           Foreground="White"/>
-
-                <!-- Unity -->
-                <Border Background="#222222"
-                        CornerRadius="8"
-                        Padding="15">
-                    <StackPanel Spacing="10">
-
-                        <TextBlock Text="Unity"
-                                   FontSize="16"
-                                   FontWeight="SemiBold"
-                                   Foreground="White"/>
-
-                        <Grid ColumnDefinitions="220,*">
-                            <TextBlock Grid.Column="0"
-                                       VerticalAlignment="Center"
-                                       Text="Preferred Unity Version:"
-                                       Foreground="White"/>
-
-                            <ComboBox Grid.Column="1"
-                                      ItemsSource="{Binding UnityVersions}"
-                                      SelectedItem="{Binding PreferredUnityVersion}" />
-                        </Grid>
-
-                    </StackPanel>
-                </Border>
+                <!-- Header --> 
+                <TextBlock Text="Settings" Foreground="White" FontSize="24" FontWeight="Bold"/>
 
                 <!-- General -->
-                <Border Background="#222222"
-                        CornerRadius="8"
-                        Padding="15">
+                <Border Background="#222222" CornerRadius="8" Padding="15">
                     <StackPanel Spacing="10">
 
-                        <TextBlock Text="General"
-                                   FontSize="16"
-                                   FontWeight="SemiBold"
-                                   Foreground="White"/>
+                        <TextBlock Text="General" Foreground="White"
+                                    FontSize="16" FontWeight="SemiBold"/>
 
                         <CheckBox Content="Launch project automatically after creation"
-                                  IsChecked="{Binding AutoLaunchProject}" />
+                                  IsChecked="{Binding AutoLaunchProject}"
+                                  Command="{Binding SaveSettingsCommand}"/>
 
                         <CheckBox Content="Check for updates on startup"
-                                  IsChecked="{Binding CheckForUpdates}" />
+                                  IsChecked="{Binding CheckForUpdates}"
+                                  Command="{Binding SaveSettingsCommand}"/>
 
                     </StackPanel>
                 </Border>
 
                 <!-- Paths -->
-                <Border Background="#222222"
-                        CornerRadius="8"
-                        Padding="15">
-                    <StackPanel Spacing="10">
+                <Border Background="#222222" CornerRadius="8" Padding="15">
 
-                        <TextBlock Text="Paths"
-                                   FontSize="16"
-                                   FontWeight="SemiBold"
-                                   Foreground="White"/>
+                    <StackPanel Spacing="20">
+                        <TextBlock Text="Unity" Foreground="White" FontSize="24" FontWeight="Bold"/>
 
-                        <TextBlock Text="Default Projects Folder"
-                                   Foreground="White"/>
+                        <Grid ColumnDefinitions="200,*, 55">
+                            <TextBlock Grid.Column="0" Text="Custom Unity Editors Path:"
+                                       Foreground="White"
+                                       VerticalAlignment="Center"/>
 
+                            <TextBlock Grid.Column="1" Text="{Binding CustomUnityEditorsPath}" VerticalAlignment="Center"/>
+
+                            <Button Grid.Column="2" Content="Teste" Command="{Binding ChangeUnityEditorPathCommand}" />
+                        </Grid>
 
                     </StackPanel>
                 </Border>
 
+                <Border Background="#222222" CornerRadius="8" Padding="15">
+                    <StackPanel Spacing="20">
+                        <TextBlock Text="Bootstrapper Paths" Foreground="White"
+                                    FontSize="16" FontWeight="SemiBold"/>
+
+                        <Grid ColumnDefinitions="150,*">
+                            <TextBlock Grid.Column="0" Text="BootStrapper Path:"
+                                        Foreground="White"
+                                        VerticalAlignment="Center"/>
+
+                            <TextBlock Grid.Column="1" Text="{Binding BootStrapperPath}"/>
+                        </Grid>
+
+                        <Grid ColumnDefinitions="125,*">
+                            <TextBlock Grid.Column="0" Text="Projects Path:"
+                                       Foreground="White"
+                                       VerticalAlignment="Center"/>
+
+                            <TextBlock Grid.Column="1" Text="{Binding ProjectsPath}"/>
+                        </Grid>
+
+                        <Grid ColumnDefinitions="135,*">
+                            <TextBlock Grid.Column="0" Text="Templates Path:"
+                                       Foreground="White"
+                                       VerticalAlignment="Center"/>
+
+                            <TextBlock Grid.Column="1" Text="{Binding TemplatesPath}"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
             </StackPanel>
         </ScrollViewer>
 
         <!-- Footer -->
-        <Border Grid.Row="1"
-                Background="#1E1E1E"
-                Padding="10"
-                Margin="0,15,0,0">
+        <Border Grid.Row="1" Background="#1E1E1E"
+                Margin="0,15,0,0" Padding="10">
 
-            <Grid ColumnDefinitions="*,Auto,Auto"
-                  ColumnSpacing="10">
+            <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="10">
 
-                <Button Grid.Column="1"
-                        Content="Reset Settings To Default"
-                        Command="{Binding ResetSettingsCommand}" />
+                <Button Grid.Column="1" Content="Reset Settings To Default" Command="{Binding ResetSettingsCommand}" />
             </Grid>
 
         </Border>

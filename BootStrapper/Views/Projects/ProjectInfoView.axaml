@@ -81,8 +81,8 @@
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
 
-                                            <Border Background="#626262" CornerRadius="6" Padding="8,3">
-                                                <TextBlock Text="{Binding .}" HorizontalAlignment="Center" Foreground="White"/>
+                                            <Border Background="#BBBB" CornerRadius="3" Padding="10,5">
+                                                <TextBlock Text="{Binding .}" HorizontalAlignment="Center"/>
                                             </Border>
 
                                         </DataTemplate>
@@ -90,8 +90,6 @@
                                 </ItemsControl>
 
                             </StackPanel>
-                            <Button Content="Add Template" Command="{Binding AddTemplateCommand}"
-                                    Foreground="White" Margin="0, 10, 0, 0"></Button>
                         </StackPanel>
 
                         <Button Content="Open Project Folder"

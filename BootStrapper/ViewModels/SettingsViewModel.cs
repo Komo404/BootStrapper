@@ -7,42 +7,77 @@ using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace BootStrapper.ViewModels;
 
 public partial class SettingsViewModel : ViewModelBase
 {
-    [ObservableProperty]
-    private string? preferredUnityVersion;
+    private readonly UserConfig _config;
 
-    [ObservableProperty]
-    private bool autoLaunchProject;
 
-    [ObservableProperty]
-    private bool checkForUpdates;
-
-    [ObservableProperty]
-    private bool enableAnalytics;
-
-    public string[] UnityVersions { get; set; }
+    [ObservableProperty] private bool autoLaunchProject;
+    [ObservableProperty] private bool checkForUpdates;
+    [ObservableProperty] private string customUnityEditorsPath;
 
     private readonly NavigationService _navigation;
-    public ObservableCollection<ProjectManifest> RecentProjects { get; set; }
+
+    public string BootStrapperPath { get; set; } = string.Empty;
+    public string ProjectsPath { get; set; } = string.Empty;
+    public string TemplatesPath { get; set; } = string.Empty;
 
     public SettingsViewModel(NavigationService navigation, UserConfig config)
     {
         _navigation = navigation;
+        _config = config;
+
+        CustomUnityEditorsPath = config.CustomUnityEditorsPath;
+        AutoLaunchProject = config.AutoLaunchProject;
+        CheckForUpdates = config.AutoUpdateEnabled;
+
+        ProjectsPath = config.ProjectsFolder;
+        TemplatesPath = config.TemplatesFolder;
+        BootStrapperPath = Path.GetDirectoryName(TemplatesPath);
+    }
+
+    public SettingsViewModel() { }
+
+    [RelayCommand]
+    private async Task ChangeUnityEditorPath()
+    {
+        string? newUnityEditorPath = await _navigation.Explorer.OpenFolderDialogAsync();
+        if (newUnityEditorPath != null)
+            CustomUnityEditorsPath = newUnityEditorPath;
+        SaveSettings();
     }
 
     [RelayCommand]
     private void SaveSettings()
     {
-
+        _config.AutoLaunchProject = AutoLaunchProject;
+        _config.AutoUpdateEnabled = CheckForUpdates;
+        _config.CustomUnityEditorsPath = CustomUnityEditorsPath;
+        ConfigService.SaveConfig(Path.Combine(BootStrapperPath, "config.json"), _config);
     }
 
     [RelayCommand]
     private void ResetSettings()
     {
+        ConfigService.CreateDefaultConfig(Path.Combine(BootStrapperPath, "config.json"));
+        var newConfig = ConfigService.LoadConfig(Path.Combine(BootStrapperPath, "config.json"));
 
+        _config.AutoLaunchProject = newConfig.AutoLaunchProject;
+        _config.AutoUpdateEnabled = newConfig.AutoUpdateEnabled;
+        _config.CustomUnityEditorsPath = newConfig.CustomUnityEditorsPath;
+
+        RefreshUI(newConfig);
+    }
+
+    private void RefreshUI(UserConfig newConfig)
+    {
+        CustomUnityEditorsPath = newConfig.CustomUnityEditorsPath;
+        AutoLaunchProject = newConfig.AutoLaunchProject;
+        CheckForUpdates = newConfig.AutoUpdateEnabled;
     }
 }

@@ -21,7 +21,7 @@ public partial class TemplateInfoViewModel : ViewModelBase
     private readonly TemplateManifest _template;
     private readonly UserConfig _config;
 
-    public string Name { get; set; } = string.Empty;
+    [ObservableProperty] public string name = string.Empty;
     public string Description { get; set; } = string.Empty;
     public DateTime CreationDate { get; } = new();
     [ObservableProperty] private TemplateCategory category;
@@ -43,7 +43,7 @@ public partial class TemplateInfoViewModel : ViewModelBase
         _template = template;
         _config = config;
 
-        Name = _template.Name;
+        name = _template.Name;
         Description = _template.Description;
         Category = _template.Category;
         AddedUnityVersions = new ObservableCollection<string>(_template.UnityVersions);
@@ -52,12 +52,12 @@ public partial class TemplateInfoViewModel : ViewModelBase
         TemplatePath = _template.TemplatePath;
         TemplateScripts = TemplateService.BuildScriptTree(TemplatePath, TemplatePath);
 
-        UnityVersions = UnityService.GetUnityVersions();
+        UnityVersions = UnityService.GetUnityVersions(_config);
     }
 
     public TemplateInfoViewModel()
     {
-        Name = "TEMPLATE NAME";
+        name = "TEMPLATE NAME";
         AddedUnityVersions = ["Teste", "Teste2"];
         AddedTags = ["TagE 1", "TagE 2", "TagE 3"];
         TemplateScripts = [
@@ -143,7 +143,7 @@ public partial class TemplateInfoViewModel : ViewModelBase
         _template.UnityVersions = AddedUnityVersions.ToList();
         _template.Tags = AddedTags.ToList();
 
-        TemplateService.UpdateTemplateManifest(_config, _template);
+        TemplateService.UpdateTemplateManifest(_template);
     }
 
     [RelayCommand]

@@ -17,7 +17,7 @@ public partial class MainWindowViewModel : ViewModelBase
 
     public MainWindowViewModel(UserConfig config, IOpenExplorer explorer)
     {
-        Navigation = new NavigationService(explorer);
+        Navigation = new NavigationService(explorer, config);
 
         Sidebar = new SidebarViewModel(Navigation, config);
 

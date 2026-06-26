@@ -18,7 +18,6 @@ public partial class ProjectCreateViewModel : ViewModelBase
     private readonly UserConfig _config;
     public string Name { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
-    public string Path { get; set; } = string.Empty;
     public string ChoseUnityVersion { get; set;  } = string.Empty;
     public ObservableCollection<string> UnityVersions { get; set; } = [];
     public ObservableCollection<TemplateManifest> Templates { get; set; } = [];
@@ -39,7 +38,7 @@ public partial class ProjectCreateViewModel : ViewModelBase
         _config = config;
 
         Templates = new ObservableCollection<TemplateManifest>(TemplateService.GetAllTemplates(_config));
-        UnityVersions = new ObservableCollection<string>(UnityService.GetUnityVersions());
+        UnityVersions = new ObservableCollection<string>(UnityService.GetUnityVersions(_config));
         ChangeBrowserTemplates();
     }
 
@@ -148,7 +147,7 @@ public partial class ProjectCreateViewModel : ViewModelBase
             Name = Name,
             Description  = Description,
             CreationDate = DateTime.Now,
-            Path = Path,
+            Path = string.Empty,
             UnityVersion = ChoseUnityVersion,
             TemplateIds = AddedTemplateIds,
             ChangeHistory = Array.Empty<string>()

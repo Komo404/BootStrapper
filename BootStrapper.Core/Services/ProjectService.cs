@@ -3,6 +3,7 @@ using BootStrapper.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Reflection.Metadata;
 using System.Text;
 
@@ -17,7 +18,7 @@ public class ProjectService
 
         projectInfo.Path = Path.Combine(config.ProjectsFolder, projectInfo.Id.ToString());
 
-        Directory.CreateDirectory(projectInfo.Path); // Nome do projeto deve estar no path
+        Directory.CreateDirectory(projectInfo.Path);
 
         string manifestPath = Path.Combine(projectInfo.Path, "manifest.json");
         File.Create(manifestPath).Close();
@@ -45,24 +46,17 @@ public class ProjectService
         Directory.Delete(project.Path, true);
     }
 
-    public static void UpdateProject(UserConfig config, string projectPath, ProjectManifest projectInfo)
+    public static void UpdateProject(ProjectManifest projectInfo)
     {
-        if (!Directory.Exists(projectPath))
-            throw new ArgumentNullException("Project is not existent");
-
-        string projectManifestPath = Path.Combine(projectPath, "manifest.json");
-
-        ManifestService.WriteManifest(projectManifestPath, projectInfo);
-
-        string scriptsFolderPath = Path.Combine(projectPath, "Scripts");
-        // TODO: Atualiza os arquivos do projeto, caso haja templates novos
+        if (projectInfo == null) throw new ArgumentNullException("Project is not existent");
+        ManifestService.WriteManifest(Path.Combine(projectInfo.Path, "manifest.json"), projectInfo);
     }
 
     public static List<ProjectManifest> ListProjects(UserConfig config)
     {
 
         string[] folders = Directory.GetDirectories(config.ProjectsFolder);
-        List<ProjectManifest> projects = new List<ProjectManifest>();
+        List<ProjectManifest> projects = [];
 
         foreach (string folder in folders)
         {
@@ -76,10 +70,5 @@ public class ProjectService
         }
 
         return projects;
-    }
-
-    public static void OpenUnityProjectFolder()
-    {
-        
     }
 }

@@ -40,7 +40,7 @@ public partial class TemplateCreateViewModel : ViewModelBase
         _navigation = navigation;
         _config = config;
 
-        UnityVersions = UnityService.GetUnityVersions();
+        UnityVersions = UnityService.GetUnityVersions(_config);
     }
 
     public TemplateCreateViewModel()

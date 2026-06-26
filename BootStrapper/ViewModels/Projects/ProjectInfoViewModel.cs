@@ -16,7 +16,7 @@ public partial class ProjectInfoViewModel : ViewModelBase
     private readonly ProjectManifest _project;
     private readonly UserConfig _config;
 
-    public string Name { get; set; } = string.Empty;
+    [ObservableProperty] public string name = string.Empty;
     public string Description { get; set; } = string.Empty;
     public List<string> UnityVersions { get; set; } = [];
     public string UnityVersion { get; set; } = string.Empty;
@@ -26,32 +26,29 @@ public partial class ProjectInfoViewModel : ViewModelBase
     public ProjectInfoViewModel(NavigationService navigation, ProjectManifest project, UserConfig config)
     {
         _navigation = navigation;
-        _project = project; // Supondo que o project já foi carregado na HomeViewModel, então não precisa carregar de novo
+        _project = project;
         _config = config;
 
-        Name = _project.Name;
+        name = _project.Name;
         Description = _project.Description;
+        UnityVersion = _project.UnityVersion;
+
         var templateIds = _project.TemplateIds;
         foreach(Guid id in templateIds)
         {
             projectTemplates.Add(TemplateService.GetTemplateById(config, id).Name);
         }
+
         ProjectFiles = TemplateService.BuildScriptTree(_project.Path, _project.Path);
-        UnityVersion = _project.UnityVersion;
 
     }
 
     public ProjectInfoViewModel()
     {
-        Name = "Mock Project";
+        name = "Mock Project";
         Description = "Description";
         UnityVersion = "6000.0";
-        projectTemplates = ["Teste1", "teste2"];
-    }
-
-    private void GetProjectFiles()
-    {
-        var projectFiles = new List<string>();
+        projectTemplates = ["Teste 1", "Teste 2", "Teste 3", "Teste 4", "Teste 5", "Teste 6", "Teste 7", "Teste 8"];
     }
 
     [RelayCommand]
@@ -65,17 +62,13 @@ public partial class ProjectInfoViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    private void AddTemplate(TemplateNode template)
-    {
-
-    }
-
-    [RelayCommand]
     private void OpenProjectFolder() => _navigation.Explorer.OpenBootStrapperFolder(_project.Path);
 
     [RelayCommand]
     private void UpdateProject()
     {
-
+        _project.Name = name;
+        _project.Description = Description;
+        ProjectService.UpdateProject(_project);
     }
 }
