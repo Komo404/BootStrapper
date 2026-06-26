@@ -1,6 +1,7 @@
 ﻿using BootStrapper.Core.Models;
 using BootStrapper.Core.Services;
 using BootStrapper.Views;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
@@ -19,8 +20,8 @@ public partial class ProjectInfoViewModel : ViewModelBase
     public string Description { get; set; } = string.Empty;
     public List<string> UnityVersions { get; set; } = [];
     public string UnityVersion { get; set; } = string.Empty;
-    public ObservableCollection<TemplateManifest> TemplatePreviewInfo { get; set; } = [];
-    public string[] ProjectFiles { get; set; } = { };
+    [ObservableProperty] public ObservableCollection<string> projectTemplates = [];
+    public ObservableCollection<TemplateNode> ProjectFiles { get; set; } = [];
 
     public ProjectInfoViewModel(NavigationService navigation, ProjectManifest project, UserConfig config)
     {
@@ -30,6 +31,12 @@ public partial class ProjectInfoViewModel : ViewModelBase
 
         Name = _project.Name;
         Description = _project.Description;
+        var templateIds = _project.TemplateIds;
+        foreach(Guid id in templateIds)
+        {
+            projectTemplates.Add(TemplateService.GetTemplateById(config, id).Name);
+        }
+        ProjectFiles = TemplateService.BuildScriptTree(_project.Path, _project.Path);
         UnityVersion = _project.UnityVersion;
 
     }
@@ -39,17 +46,7 @@ public partial class ProjectInfoViewModel : ViewModelBase
         Name = "Mock Project";
         Description = "Description";
         UnityVersion = "6000.0";
-        TemplatePreviewInfo = new ObservableCollection<TemplateManifest>
-        {
-            new TemplateManifest {
-                Name = "TemplateTeste",
-                Description = "Teste",
-                Category = new TemplateCategory(),
-                TemplatePath = "",
-                ManifestPath = "",
-                UnityVersions = ["1.11.f1"],
-            }
-        };
+        projectTemplates = ["Teste1", "teste2"];
     }
 
     private void GetProjectFiles()

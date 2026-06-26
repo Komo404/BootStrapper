@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              xmlns:vm="clr-namespace:BootStrapper.ViewModels.Projects"
+             xmlns:models="clr-namespace:BootStrapper.Core.Models;assembly=BootStrapper.Core"
              x:Class="BootStrapper.Views.Projects.ProjectInfoView"
              x:DataType="vm:ProjectInfoViewModel">
     <Design.DataContext>
@@ -69,7 +70,7 @@
                             <TextBlock Text="Templates" Foreground="White"/>
                             <StackPanel Orientation="Horizontal">
 
-                                <ItemsControl ItemsSource="{Binding TemplatePreviewInfo}">
+                                <ItemsControl ItemsSource="{Binding ProjectTemplates}">
 
                                     <ItemsControl.ItemsPanel>
                                         <ItemsPanelTemplate>
@@ -81,7 +82,7 @@
                                         <DataTemplate>
 
                                             <Border Background="#626262" CornerRadius="6" Padding="8,3">
-                                                <TextBlock Text="{Binding Name}" HorizontalAlignment="Center" Foreground="White"/>
+                                                <TextBlock Text="{Binding .}" HorizontalAlignment="Center" Foreground="White"/>
                                             </Border>
 
                                         </DataTemplate>
@@ -125,19 +126,22 @@
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
+
                         <Border Background="#2B2D3D" Padding="14" CornerRadius="8">
-
-
-                            <TreeView ItemsSource="{Binding ProjectFiles}" FontSize="12">
+                            <TreeView ItemsSource="{Binding ProjectFiles}" Foreground="White">
                                 <TreeView.ItemTemplate>
-                                    <TreeDataTemplate ItemsSource="{Binding .}">
 
-                                        <TextBlock Foreground="White" Text="{Binding .}" />
+                                    <TreeDataTemplate ItemsSource="{Binding Children}" x:DataType="models:TemplateNode">
+
+                                        <StackPanel Orientation="Horizontal" Spacing="4">
+                                            <TextBlock Text="📁" IsVisible="{Binding IsFolder}" />
+                                            <TextBlock Text="📄" IsVisible="{Binding !IsFolder}" />
+                                            <TextBlock Text="{Binding Name}" Foreground="White"/>
+                                        </StackPanel>
 
                                     </TreeDataTemplate>
                                 </TreeView.ItemTemplate>
                             </TreeView>
-
                         </Border>
 
                         <StackPanel Orientation="Horizontal" Spacing="10">
