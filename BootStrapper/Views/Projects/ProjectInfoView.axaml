@@ -13,11 +13,7 @@
     <Grid Background="#171717" RowDefinitions="Auto,*,Auto">
 
         <!-- HEADER -->
-        <Border Grid.Row="0"
-                Background="#37345D"
-                CornerRadius="10"
-                Padding="20"
-                Margin="0,0,0,20">
+        <Border Grid.Row="0" Background="#37345D" Margin="0, 0, 0, 10" Padding="15" >
 
             <Grid ColumnDefinitions="*,Auto">
 
@@ -27,19 +23,13 @@
 
 
                 <StackPanel Grid.Column="1" HorizontalAlignment="Right" Spacing="10">
-
                     <StackPanel Orientation="Horizontal" Spacing="10">
-                        <Button Content="Execute" 
-                                Command="{Binding OpenProjectCommand}"
-                                Foreground="White"/>
-                        <Button Content="Delete"
-                                Command="{Binding DeleteProjectCommand}"
-                                Background="#8B2E2E" Foreground="White"/>
+                        <Button Content="Execute"  Command="{Binding OpenProjectCommand}" Foreground="White"/>
+                        <Button Content="Delete" Command="{Binding DeleteProjectCommand}" Background="#8B2E2E" Foreground="White"/>
                     </StackPanel>
                 </StackPanel>
 
             </Grid>
-
         </Border>
 
         <!-- Manifest + Project Structure + File Preview 1 por 2 -->
@@ -72,7 +62,7 @@
 
                         <StackPanel Spacing="4">
                             <TextBlock Text="Unity Version" Foreground="White"/>
-                            <TextBox Text="{Binding UVersion}" MaxLength="10" MaxWidth="50" HorizontalAlignment="Left"/>
+                            <TextBox Text="{Binding UnityVersion}" MaxLength="11" MaxWidth="100" HorizontalAlignment="Left"/>
                         </StackPanel>
 
                         <StackPanel Spacing="4">
@@ -103,12 +93,7 @@
                                     Foreground="White" Margin="0, 10, 0, 0"></Button>
                         </StackPanel>
 
-                        <StackPanel Spacing="4">
-                            <TextBlock Text="Author" Foreground="White"/>
-                            <TextBox Text="{Binding Author}"/>
-                        </StackPanel>
-
-                        <Button Content="Open Project Folder" 
+                        <Button Content="Open Project Folder"
                                 Command="{Binding OpenProjectFolderCommand}"
                                 Margin="0,10,0,0" Foreground="White"/>
 
@@ -121,12 +106,10 @@
 
             </Border>
 
-            <!-- STRUCTURE + EDITOR -->
-            <Grid Grid.Column="1"
-                  RowDefinitions="Auto,*"
-                  RowSpacing="20">
+            <!-- PROJECT STRUCTURE + FILE PREVIEW -->
+            <Grid Grid.Column="1" RowDefinitions="Auto,*" RowSpacing="20">
 
-                <!-- STRUCTURE -->
+                <!-- PROJECT STRUCTURE -->
                 <Border Grid.Row="0"
                         Background="#37345D"
                         CornerRadius="10"
@@ -134,10 +117,7 @@
 
                     <StackPanel Spacing="12">
 
-                        <TextBlock Text="Project Structure"
-                                   FontSize="18"
-                                   FontWeight="SemiBold"
-                                   Foreground="White"/>
+                        <TextBlock Text="Project Structure" FontSize="18" FontWeight="SemiBold" Foreground="White"/>
                         <ItemsControl ItemsSource="">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
@@ -150,7 +130,7 @@
 
                             <TreeView ItemsSource="{Binding ProjectFiles}" FontSize="12">
                                 <TreeView.ItemTemplate>
-                                    <TreeDataTemplate ItemsSource="{Binding }">
+                                    <TreeDataTemplate ItemsSource="{Binding .}">
 
                                         <TextBlock Foreground="White" Text="{Binding .}" />
 
@@ -170,24 +150,18 @@
                 </Border>
 
                 <!-- FILE PREVIEW -->
-                <Border Grid.Row="1"
-                        Background="#37345D"
-                        CornerRadius="10"
-                        Padding="20">
+                <Border Grid.Row="1" Background="#37345D" CornerRadius="3" Padding="20">
 
                     <StackPanel Spacing="12">
 
                         <TextBlock Text="File Preview"
-                                   FontSize="18"
-                                   FontWeight="SemiBold"
+                                   FontSize="18" FontWeight="SemiBold"
                                    Foreground="White"/>
 
-                        <TextBox AcceptsReturn="True"
-                                 TextWrapping="NoWrap"
+                        <TextBox Height="300"
+                                 AcceptsReturn="True" TextWrapping="NoWrap"
                                  FontFamily="Consolas"
-                                 Background="#2B2D3D"
-                                 Foreground="White"
-                                 Height="300"
+                                 Background="#2B2D3D" Foreground="White"
                                  Text="using UnityEngine;&#x0a;&#x0a;public class Class1 : MonoBehaviour&#x0a;{&#x0a;&#x0a;}" />
 
 

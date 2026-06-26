@@ -3,8 +3,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" Height="600"
-             xmlns:models="clr-namespace:BootStrapper.Core.Models;assembly=BootStrapper.Core"
              xmlns:vm="clr-namespace:BootStrapper.ViewModels.Templates"
+             xmlns:models="clr-namespace:BootStrapper.Core.Models;assembly=BootStrapper.Core"
              x:Class="BootStrapper.Views.Templates.TemplateCreateView"
              x:DataType="vm:TemplateCreateViewModel">
 
@@ -14,15 +14,10 @@
 
     <Grid Background="#171717">
 
-        <Border Width="620"
-                Height="550"
-                Padding="24"
-                CornerRadius="12"
-                Background="#37345D"
-                BorderBrush="White"
-                BorderThickness="1"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center">
+        <Border Width="620" MinHeight="550"
+                Padding="24" CornerRadius="3"
+                Background="#37345D" BorderBrush="White" BorderThickness="1"
+                HorizontalAlignment="Center" VerticalAlignment="Center">
 
             <Grid RowDefinitions="Auto,*,Auto" MinHeight="400" ColumnDefinitions="*,*" RowSpacing="18" ColumnSpacing="50">
 
@@ -34,53 +29,40 @@
                 <!--LEFT SIDE-->
                 <StackPanel Grid.Row="1" Grid.Column="0" Spacing="12">
 
-                    <TextBlock Text="Template Name" Foreground="White"/>
+                    <TextBlock Text="Template Name" FontWeight="SemiBold" Foreground="White"/>
                     <TextBox Text="{Binding Name}" PlaceholderText="Template name" />
 
-                    <TextBlock Text="Template Description" Foreground="White"/>
+                    <TextBlock Text="Template Description" FontWeight="SemiBold" Foreground="White"/>
                     <TextBox Text="{Binding Description}" PlaceholderText="Template description"
                              AcceptsReturn="True"
                              Height="65" />
 
-                    <TextBlock Text="Category" FontWeight="SemiBold" Margin="0,0,0,4"/>
+                    <TextBlock Text="Category" FontWeight="SemiBold" Foreground="White"/>
 
-                    <Button
-                    HorizontalAlignment="Left"
-                    MinWidth="180"
-                    Content="{Binding Category}">
-
+                    <Button HorizontalAlignment="Left" MinWidth="180" Content="{Binding Category}" Background="#5fff">
                         <Button.Flyout>
-
                             <Flyout Placement="BottomEdgeAlignedLeft">
 
                                 <StackPanel Width="220" Margin="6" Spacing="4">
-
-                                    <TextBox Watermark="Search category..."/>
+                                    <TextBox PlaceholderText="Search category..."/>
 
                                     <ItemsControl ItemsSource="{Binding Categories}">
-
                                         <ItemsControl.ItemTemplate>
-
                                             <DataTemplate>
-
-                                                <Button
+                                                <Button Content="{Binding .}"
                                                 HorizontalContentAlignment="Left"
-                                                Content="{Binding .}"
                                                 Command="{Binding $parent[UserControl].DataContext.SelectCategoryCommand}"
                                                 CommandParameter="{Binding .}"/>
-
                                             </DataTemplate>
 
                                         </ItemsControl.ItemTemplate>
-
                                     </ItemsControl>
-
                                 </StackPanel>
                             </Flyout>
                         </Button.Flyout>
                     </Button>
 
-                    <TextBlock Margin="0,18,0,4" Text="Tags" FontWeight="SemiBold"/>
+                    <TextBlock Text="Tags" FontWeight="SemiBold" Foreground="White"/>
 
                     <WrapPanel Orientation="Horizontal">
                         <ItemsControl ItemsSource="{Binding AddedTags}">
@@ -92,25 +74,19 @@
                             </ItemsControl.ItemsPanel>
 
                             <ItemsControl.ItemTemplate>
-
                                 <DataTemplate x:DataType="x:String">
 
-                                    <Border Margin="0,0,6,6" Padding="10,5" CornerRadius="14" Background="#3B82F6">
+                                    <Border Margin="0, 0, 6, 0" Padding="5" CornerRadius="3" Background="#6fff">
 
                                         <StackPanel Orientation="Horizontal" Spacing="6">
 
-                                            <TextBlock Text="{Binding .}" VerticalAlignment="Center"/>
+                                            <TextBlock Text="{Binding .}"/>
 
-                                            <Button
-                                            Width="18"
-                                            Height="18"
-                                            Padding="0"
-                                            Content="✕"
-                                            FontSize="11"
-                                            Background="Transparent"
-                                            BorderThickness="0"
-                                            Command="{Binding $parent[UserControl].DataContext.RemoveTagCommand}"
-                                            CommandParameter="{Binding .}"/>
+                                            <Button Content="✕" Width="12" Height="18"
+                                                Padding="0" FontSize="11"
+                                                Background="Transparent"
+                                                Command="{Binding $parent[UserControl].DataContext.RemoveTagCommand}"
+                                                CommandParameter="{Binding .}"/>
 
                                         </StackPanel>
 
@@ -120,68 +96,129 @@
                         </ItemsControl>
 
 
-                        <Button Width="30" Height="30" Margin="0,0,6,6" Content="+">
-
+                        <Button Width="30" Height="30" Margin="0, 0, 6, 6" Content="+">
                             <Button.Flyout>
-
                                 <Flyout Placement="BottomEdgeAlignedLeft">
 
                                     <StackPanel Width="240" Margin="6" Spacing="6">
 
-                                        <TextBox Watermark="Search tag..."/>
+                                        <TextBox PlaceholderText="Search tag..."/>
 
                                         <ScrollViewer MaxHeight="220">
 
                                             <ItemsControl ItemsSource="{Binding Tags}">
-
                                                 <ItemsControl.ItemTemplate>
-
                                                     <DataTemplate>
 
-                                                        <Button
-                                                        HorizontalContentAlignment="Left"
-                                                        Content="{Binding .}"
-                                                        Command="{Binding $parent[UserControl].DataContext.AddTagCommand}"
-                                                        CommandParameter="{Binding .}"/>
+                                                        <Button Content="{Binding .}"
+                                                            HorizontalContentAlignment="Left"
+                                                            Command="{Binding $parent[UserControl].DataContext.AddTagCommand}"
+                                                            CommandParameter="{Binding .}"/>
 
                                                     </DataTemplate>
 
                                                 </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                        </ScrollViewer>
+                                    </StackPanel>
 
+                                </Flyout>
+                            </Button.Flyout>
+                        </Button>
+
+                    </WrapPanel>
+
+                    <TextBlock Text="Unity Versions" FontWeight="SemiBold" Foreground="White"/>
+                    <WrapPanel Orientation="Horizontal">
+                        <ItemsControl ItemsSource="{Binding SelectedUnityVersions}">
+
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="x:String">
+
+                                    <Border Margin="0,3, 6, 0" Padding="5" CornerRadius="3" Background="#6fff">
+
+                                        <StackPanel Orientation="Horizontal" Spacing="6">
+
+                                            <TextBlock Text="{Binding .}"/>
+
+                                            <Button Content="✕" Width="12" Height="18"
+                                                    Padding="0" FontSize="11"
+                                                    Background="Transparent"
+                                                    Command="{Binding $parent[UserControl].DataContext.RemoveUnityVersionCommand}"
+                                                    CommandParameter="{Binding .}"/>
+
+                                        </StackPanel>
+
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+
+                        <Button Width="30" Height="30" Margin="0, 0, 6, 28" Content="+">
+                            <Button.Flyout>
+                                <Flyout Placement="BottomEdgeAlignedLeft">
+
+                                    <StackPanel Width="240" Margin="6" Spacing="6">
+
+                                        <StackPanel Orientation="Horizontal" Spacing="4">
+                                            <TextBox Width="130" Text="{Binding ManualUnityVersion}" PlaceholderText="Manual version"/>
+                                            <Button Content="+" Command="{Binding AddManualUnityVersionCommand}"/>
+                                        </StackPanel>
+
+                                        <ScrollViewer MaxHeight="220">
+
+                                            <ItemsControl ItemsSource="{Binding UnityVersions}">
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+
+
+                                                        <Button Content="{Binding .}"
+                                                                HorizontalContentAlignment="Left"
+                                                                Command="{Binding $parent[UserControl].DataContext.AddUnityVersionCommand}"
+                                                                CommandParameter="{Binding .}"/>
+
+                                                    </DataTemplate>
+
+                                                </ItemsControl.ItemTemplate>
                                             </ItemsControl>
 
                                         </ScrollViewer>
-
                                     </StackPanel>
+
                                 </Flyout>
                             </Button.Flyout>
                         </Button>
                     </WrapPanel>
+
                 </StackPanel>
 
                 <!--RIGHT SIDE -->
                 <StackPanel Grid.Row="1" Grid.Column="1" Spacing="10">
 
-                    <TextBlock Text="Unity Version" Foreground="White"/>
-                    <TextBox Text="{Binding UnityVersion}" PlaceholderText="Unity version"/>
+                    <TextBlock Text="Scripts Preview" FontWeight="SemiBold" Foreground="White"/>
 
-                    <TextBlock Text="Scripts Preview" Foreground="White"/>
+                    <Border Width="250" Height="250" Background="#6fff" CornerRadius="3" Padding="5">
+                            <TreeView ItemsSource="{Binding TemplateScripts}" Foreground="White" SelectedItem="{Binding SelectedNode}">
+                                <TreeView.ItemTemplate>
 
-                    <Border Height="150" Background="#6fff" CornerRadius="8" Padding="12">
-                        <TreeView ItemsSource="{Binding TemplateScripts}" Foreground="White" SelectedItem="{Binding SelectedNode}">
-                            <TreeView.ItemTemplate>
+                                    <TreeDataTemplate ItemsSource="{Binding Children}" x:DataType="models:TemplateNode">
 
-                                <TreeDataTemplate ItemsSource="{Binding Children}" x:DataType="models:TemplateNode">
+                                        <StackPanel Orientation="Horizontal" Spacing="4">
+                                            <TextBlock Text="📁" IsVisible="{Binding IsFolder}" />
+                                            <TextBlock Text="📄" IsVisible="{Binding !IsFolder}" />
+                                            <TextBlock Text="{Binding Name}" Foreground="White" FontSize="13"/>
+                                        </StackPanel>
 
-                                    <StackPanel Orientation="Horizontal" Spacing="4">
-                                        <TextBlock Text="📁" IsVisible="{Binding IsFolder}" />
-                                        <TextBlock Text="📄" IsVisible="{Binding !IsFolder}" />
-                                        <TextBlock Text="{Binding Name}" Foreground="White"/>
-                                    </StackPanel>
-
-                                </TreeDataTemplate>
-                            </TreeView.ItemTemplate>
-                        </TreeView>
+                                    </TreeDataTemplate>
+                                </TreeView.ItemTemplate>
+                            </TreeView>
                     </Border>
 
                     <StackPanel Orientation="Horizontal" Spacing="8">

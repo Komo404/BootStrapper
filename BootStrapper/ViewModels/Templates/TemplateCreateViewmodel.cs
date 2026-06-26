@@ -1,23 +1,13 @@
-﻿using Avalonia.Controls;
-using Avalonia.Interactivity;
-using Avalonia.Logging;
-using Avalonia.Platform.Storage;
+﻿
 using BootStrapper.Core.Models;
 using BootStrapper.Core.Services;
-using BootStrapper.Helpers;
-using BootStrapper.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 
 namespace BootStrapper.ViewModels.Templates;
 
@@ -28,15 +18,19 @@ public partial class TemplateCreateViewModel : ViewModelBase
     public string UserScriptFolderPath;
 
     [ObservableProperty]
-    private ObservableCollection<TemplateNode> templateScripts = []; // Preview. OBS: ObservableProperty: temp = algo; ObservableCollection = .add/.remove
+    private ObservableCollection<TemplateNode> templateScripts = [];
     public string Name { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
 
     [ObservableProperty] private TemplateCategory category;
-    public IReadOnlyList<TemplateCategory> Categories { get; } = Enum.GetValues<TemplateCategory>();
     public ObservableCollection<string> AddedTags { get; set; } = [];
+    public IReadOnlyList<TemplateCategory> Categories { get; } = Enum.GetValues<TemplateCategory>();
     public IReadOnlyList<string> Tags { get; } = [ "2D", "3D", "Input System", "Cinemachine", "URP", "HDRP", "Addressables", "Localization", "NavMesh", "Mobile"];
-    public string UnityVersion { get; set; } = string.Empty;
+
+    public string UnityVersion { get; set; } = String.Empty;
+    public ObservableCollection<string> SelectedUnityVersions { get; set; } = [];
+    public string ManualUnityVersion { get; set; } = string.Empty;
+    public List<string> UnityVersions { get; set; } = [];
     public string Author { get; set; } = string.Empty;
 
     [ObservableProperty] private TemplateNode? selectedNode;
@@ -45,10 +39,13 @@ public partial class TemplateCreateViewModel : ViewModelBase
     {
         _navigation = navigation;
         _config = config;
+
+        UnityVersions = UnityService.GetUnityVersions();
     }
 
     public TemplateCreateViewModel()
     {
+        UnityVersions = ["Ver1", "Ver2"];
         AddedTags = ["Camera"];
         TemplateScripts = new ObservableCollection<TemplateNode>()
         {
@@ -87,6 +84,30 @@ public partial class TemplateCreateViewModel : ViewModelBase
                 ]
             }
         };
+    }
+
+    [RelayCommand]
+    private void AddUnityVersion(string version)
+    {
+        if (!SelectedUnityVersions.Contains(version))
+            SelectedUnityVersions.Add(version);
+    }
+
+    [RelayCommand]
+    private void RemoveUnityVersion(string version)
+    {
+        SelectedUnityVersions.Remove(version);
+    }
+
+
+    [RelayCommand]
+    private void AddManualUnityVersion()
+    {
+        if (!string.IsNullOrWhiteSpace(ManualUnityVersion) && !SelectedUnityVersions.Contains(ManualUnityVersion))
+        {
+            SelectedUnityVersions.Add(ManualUnityVersion);
+            ManualUnityVersion = string.Empty;
+        }
     }
 
     [RelayCommand]
@@ -133,18 +154,19 @@ public partial class TemplateCreateViewModel : ViewModelBase
     [RelayCommand]
     private void CreateTemplate()
     {
+        //if (string.IsNullOrWhiteSpace(Name) || string.IsNullOrWhiteSpace(Description) || UnityVersions == null || AddedTags == null || TemplateScripts == null)  return;
+
         var newTemplateManifest = new TemplateManifest
         {
             Id = Guid.Empty,
+            TemplatePath = string.Empty,
+            ManifestPath = string.Empty,
+
             Name = Name,
             Description = Description,
             Category = Category,
-            Version = "1.0",
-            UnityVersion = UnityVersion,
-            Tags = AddedTags.ToList(),
-            Author = Author,
-            TemplatePath = string.Empty,
-            ManifestPath = string.Empty
+            UnityVersions = SelectedUnityVersions.ToList(),
+            Tags = AddedTags.ToList()
         };
 
         var createdTemplate = TemplateService.CreateTemplate(_config, newTemplateManifest, TemplateScripts);

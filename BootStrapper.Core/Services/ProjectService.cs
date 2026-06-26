@@ -1,6 +1,8 @@
 ﻿using BootStrapper.Core.Models;
+using BootStrapper.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Reflection.Metadata;
 using System.Text;
 
@@ -23,6 +25,16 @@ public class ProjectService
 
         string scriptsFolderPath = Path.Combine(projectInfo.Path, "Scripts");
         Directory.CreateDirectory(scriptsFolderPath);
+
+        List<string> TemplatePaths = [];
+        foreach (var id in projectInfo.TemplateIds)
+        {
+            TemplatePaths.Add(TemplateService.GetTemplateById(config, id).TemplatePath);
+            foreach (var templatePath in TemplatePaths)
+            {
+                FileSystemHelper.CopyDirectoryRecursively(Path.Combine(templatePath, projectInfo.UnityVersion), scriptsFolderPath);
+            }
+        }
     }
 
     public static void DeleteProject(ProjectManifest project)
@@ -46,22 +58,6 @@ public class ProjectService
         // TODO: Atualiza os arquivos do projeto, caso haja templates novos
     }
 
-    public static ProjectManifest GetProject(UserConfig config, string projectPath)
-    {
-        if (!Directory.Exists(projectPath))
-            throw new ArgumentNullException("Project is not existent");
-
-        List<ProjectManifest> projects = ListProjects(config);
-
-        foreach (ProjectManifest project in projects)
-        {
-            if (project.Path == projectPath)
-                return project;
-        }
-
-        throw new Exception("Não achou o projeto");
-    }
-
     public static List<ProjectManifest> ListProjects(UserConfig config)
     {
 
@@ -82,21 +78,8 @@ public class ProjectService
         return projects;
     }
 
-    public static string[] GetProjectHistory(UserConfig config, string projectPath)
+    public static void OpenUnityProjectFolder()
     {
-        ProjectManifest project = GetProject(config, projectPath);
-        String[] changeHistory;
-        if (project.ChangeHistory != null)
-        {
-            changeHistory = project.ChangeHistory;
-            return changeHistory;
-        }
-
-        throw new Exception("Project doesn't have change history");
-    }
-
-    public static void OpenProjectFolder()
-    {
-
+        
     }
 }

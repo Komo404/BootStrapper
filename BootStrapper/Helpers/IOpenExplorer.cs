@@ -9,5 +9,5 @@ public interface IOpenExplorer
 {
     Task<string?> OpenFolderDialogAsync();
 
-    void OpenTemplateFolder(string folderPath);
+    void OpenBootStrapperFolder(string folderPath);
 }

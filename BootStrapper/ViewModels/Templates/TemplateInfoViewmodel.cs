@@ -23,14 +23,15 @@ public partial class TemplateInfoViewModel : ViewModelBase
 
     public string Name { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
-    public TemplateCategory Category { get; set; }
-    public ObservableCollection<string> AddedTags { get; set; } = [];
     public DateTime CreationDate { get; } = new();
+    [ObservableProperty] private TemplateCategory category;
+    public ObservableCollection<string> AddedTags { get; set; } = [];
     public IReadOnlyList<string> Tags { get; } = ["2D", "3D", "Input System", "Cinemachine", "URP", "HDRP", "Addressables", "Localization", "NavMesh", "Mobile"];
-    public string Version { get; set; } = string.Empty;
+    public IReadOnlyList<TemplateCategory> Categories { get; } = Enum.GetValues<TemplateCategory>();
+    public ObservableCollection<string> AddedUnityVersions { get; set; } = [];
+    public string ManualUnityVersion { get; set; } = string.Empty;
+    public List<string> UnityVersions { get; set; } = [];
     public string UnityVersion { get; set; } = string.Empty;
-    public string MaxUnityVersion { get; set; } = string.Empty;
-    public string Author { get; set; } = string.Empty;
     public string TemplatePath { get; } = string.Empty;
 
     [ObservableProperty] private ObservableCollection<TemplateNode> templateScripts = [];
@@ -44,22 +45,20 @@ public partial class TemplateInfoViewModel : ViewModelBase
 
         Name = _template.Name;
         Description = _template.Description;
-        Version = _template.Version;
         Category = _template.Category;
-        UnityVersion = _template.UnityVersion;
-        MaxUnityVersion = _template.MaxUnityVersion;
+        AddedUnityVersions = new ObservableCollection<string>(_template.UnityVersions);
         CreationDate = _template.CreationDate;
-        Author = _template.Author;
         AddedTags = new ObservableCollection<string>(_template.Tags);
         TemplatePath = _template.TemplatePath;
         TemplateScripts = TemplateService.BuildScriptTree(TemplatePath, TemplatePath);
+
+        UnityVersions = UnityService.GetUnityVersions();
     }
 
     public TemplateInfoViewModel()
     {
         Name = "TEMPLATE NAME";
-        Version = "1.0";
-        UnityVersion = "1.0.0ff";
+        AddedUnityVersions = ["Teste", "Teste2"];
         AddedTags = ["TagE 1", "TagE 2", "TagE 3"];
         TemplateScripts = [
             new TemplateNode()
@@ -74,9 +73,43 @@ public partial class TemplateInfoViewModel : ViewModelBase
     }
 
     [RelayCommand]
+    private void ChangeCategory(TemplateCategory newCategory)
+    {
+        Category = newCategory;
+    }
+
+    [RelayCommand]
+    private void AddUnityVersion(string newUnityVersion)
+    {
+        if (!AddedUnityVersions.Contains(newUnityVersion)) AddedUnityVersions.Add(newUnityVersion);
+    }
+
+    [RelayCommand]
+    private void RemoveUnityVersion(string newUnityVersion)
+    {
+        if (AddedUnityVersions.Contains(newUnityVersion)) AddedUnityVersions.Remove(newUnityVersion);
+    }
+
+    [RelayCommand]
+    private void AddManualUnityVersion()
+    {
+        if (!string.IsNullOrWhiteSpace(ManualUnityVersion) && !AddedUnityVersions.Contains(ManualUnityVersion))
+        {
+            AddedUnityVersions.Add(ManualUnityVersion);
+            ManualUnityVersion = string.Empty;
+        }
+    }
+
+    [RelayCommand]
     private void AddTag(string tag)
     {
         if (!AddedTags.Contains(tag)) AddedTags.Add(tag);
+    }
+
+    [RelayCommand]
+    private void RemoveTag(string tag)
+    {
+        if (AddedTags.Contains(tag)) AddedTags.Remove(tag);
     }
 
     [RelayCommand]
@@ -107,17 +140,14 @@ public partial class TemplateInfoViewModel : ViewModelBase
         _template.Name = Name;
         _template.Description = Description;
         _template.Category = Category;
-        _template.Version = Version;
-        _template.UnityVersion = UnityVersion;
+        _template.UnityVersions = AddedUnityVersions.ToList();
         _template.Tags = AddedTags.ToList();
-        _template.MaxUnityVersion = MaxUnityVersion;
-        _template.Author = Author;
 
         TemplateService.UpdateTemplateManifest(_config, _template);
     }
 
     [RelayCommand]
-    private void OpenTemplateFolder() => _navigation.Explorer.OpenTemplateFolder(TemplatePath);
+    private void OpenTemplateFolder() => _navigation.Explorer.OpenBootStrapperFolder(TemplatePath);
 
     [RelayCommand]
     private async Task DeleteTemplate()

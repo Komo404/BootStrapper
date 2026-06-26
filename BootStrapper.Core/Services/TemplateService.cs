@@ -1,5 +1,6 @@
 ﻿using BootStrapper.Core.Models;
 using BootStrapper.Core.Services;
+using BootStrapper.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -37,8 +38,6 @@ public class TemplateService
 
         return templates;
     }
-
-
 
 
     /// <summary>
@@ -82,7 +81,6 @@ public class TemplateService
 
         templateInfo.Id = Guid.NewGuid();
         templateInfo.CreationDate = DateTime.Now;
-        templateInfo.Tags = templateInfo.Tags;
         templateInfo.TemplatePath = Path.Combine(config.TemplatesFolder, templateInfo.Id.ToString());
         templateInfo.ManifestPath = Path.Combine(templateInfo.TemplatePath, "manifest.json");
 
@@ -90,26 +88,24 @@ public class TemplateService
 
         ManifestService.WriteManifest(templateInfo.ManifestPath, templateInfo); // Cria o manifest Json
 
-        string TemplateScriptsFolderPath = Path.Combine(templateInfo.TemplatePath, "Scripts");
-        Directory.CreateDirectory(TemplateScriptsFolderPath); // Cria pasta de scripts
-
-        if(TemplateScripts != null)
+        foreach (string unityVersion in templateInfo.UnityVersions)
         {
-            foreach(TemplateNode node in TemplateScripts)
+            Directory.CreateDirectory(Path.Combine(templateInfo.TemplatePath, unityVersion));
+        }
+
+        if (TemplateScripts != null)
+        {
+            foreach (TemplateNode node in TemplateScripts)
             {
-                if (node.IsFolder)
+                foreach (string unityVersion in templateInfo.UnityVersions)
                 {
-                    Microsoft.VisualBasic.FileIO.FileSystem.CopyDirectory(Path.Combine(node.UserScriptFolderPath, node.RelativePath), TemplateScriptsFolderPath, true);
-                }
-                else {
-                    if (Path.GetExtension(node.UserScriptFolderPath) == ".cs")
-                        Microsoft.VisualBasic.FileIO.FileSystem.CopyFile(Path.Combine(node.UserScriptFolderPath, node.RelativePath), TemplateScriptsFolderPath, true);
+                    FileSystemHelper.CopyDirectoryRecursively(Path.Combine(node.UserScriptFolderPath, node.RelativePath), Path.Combine(templateInfo.TemplatePath, unityVersion, node.Name));
                 }
             }
         }
 
         return templateInfo;
-    }
+        }
 
     public static async Task DeleteTemplate(UserConfig config, Guid templateId)
     {
@@ -130,9 +126,8 @@ public class TemplateService
         
         updatedManifest.Name = templateInfo.Name;
         updatedManifest.Description = templateInfo.Description;
-        updatedManifest.Version = templateInfo.Version;
-        updatedManifest.UnityVersion = templateInfo.UnityVersion;
-        updatedManifest.MaxUnityVersion = templateInfo.MaxUnityVersion;
+        updatedManifest.UnityVersions = templateInfo.UnityVersions;
+        updatedManifest.Category = templateInfo.Category;
         updatedManifest.Tags = templateInfo.Tags;
         updatedManifest.ManifestPath = Path.Combine(config.TemplatesFolder, templateInfo.Id.ToString(), $"manifest.json");
 
@@ -156,7 +151,7 @@ public class TemplateService
                         IsFolder = false,
                         Children = [],
                         UserScriptFolderPath = root,
-                        RelativePath = Path.GetRelativePath(root, path),
+                        RelativePath = Path.GetRelativePath(root, file),
                     };
                     ScriptTree.Add(node);
                 }
@@ -171,7 +166,7 @@ public class TemplateService
                     IsFolder = true,
                     Children = new ObservableCollection<TemplateNode>(childs),
                     UserScriptFolderPath = root,
-                    RelativePath = Path.GetRelativePath(root, path),
+                    RelativePath = Path.GetRelativePath(root, directory),
                 };
                 ScriptTree.Add(folderNode); 
             }

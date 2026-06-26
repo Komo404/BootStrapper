@@ -8,15 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Models\" />
     <AvaloniaResource Include="Assets\**" />
-    <Folder Include="Templates\Camera\ThirdPerson\scripts\" />
-    <Folder Include="Templates\Gameplay\HSM\scripts\" />
-    <Folder Include="Templates\Audio\" />
-    <Folder Include="Templates\Networking\Fishnet-P2P\scripts\" />
-    <Folder Include="Templates\Steam\SteamOverlay\scripts\" />
-    <Folder Include="Templates\UI\" />
-    <Folder Include="Templates\SaveSystem\" />
+    <AvaloniaXaml Remove="Templates\**" />
+    <Compile Remove="Templates\**" />
+    <EmbeddedResource Remove="Templates\**" />
+    <None Remove="Templates\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -65,6 +61,9 @@
     </Compile>
     <Compile Update="Views\SettingsView.axaml.cs">
       <DependentUpon>SettingsView.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Templates\OfficialTemplateSView.axaml.cs">
+      <DependentUpon>OfficialTemplatesView.axaml</DependentUpon>
     </Compile>
   </ItemGroup>
 </Project>

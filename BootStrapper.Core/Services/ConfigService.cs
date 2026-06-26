@@ -53,8 +53,8 @@ public static class ConfigService
             UnitySelectedPath = unityPaths[0],
             UnityPaths = unityPaths,
             Theme = "Dark",
-            ProjectsFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "BootStrapperProjects"),
-            TemplatesFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "BootStrapperTemplates"),
+            ProjectsFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "BootStrapper", "BootStrapperProjects"),
+            TemplatesFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "BootStrapper", "BootStrapperTemplates"),
             AutoUpdateEnabled = true
         };
 

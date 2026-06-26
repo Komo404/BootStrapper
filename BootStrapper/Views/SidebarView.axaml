@@ -37,65 +37,48 @@
 
     </UserControl.Styles>
 
-    <Border x:Name="SidebarBorder"
-            Background="#2B2D3D"
-            HorizontalAlignment="Stretch">
+    <Border x:Name="SidebarBorder" Background="#2B2D3D" HorizontalAlignment="Stretch">
 
         <Grid Margin="10" RowDefinitions="Auto,*,Auto">
 
             <StackPanel Grid.Row="0" Spacing="8">
 
-                <Button Classes="sidebar"
-                        Command="{Binding GoToHomeCommand}">
-                    <StackPanel Orientation="Horizontal"
-                                Spacing="10">
-                        <TextBlock Classes="icon"
-                                   Text="⌂"/>
-                        <TextBlock Classes="menuText"
-                                   VerticalAlignment="Center"
-                                   Text="Home"/>
+                <Button Classes="sidebar" Command="{Binding GoToHomeCommand}">
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <TextBlock Classes="icon" Text="⌂"/>
+                        <TextBlock Classes="menuText" VerticalAlignment="Center" Text="Home"/>
                     </StackPanel>
                 </Button>
 
             </StackPanel>
 
-            <StackPanel Grid.Row="1"
-                        Spacing="8"
-                        VerticalAlignment="Center">
+            <StackPanel Grid.Row="1" Spacing="8" VerticalAlignment="Center">
 
-                <Button Classes="sidebar"
-                        Command="{Binding GoToProjectCreateCommand}">
-                    <StackPanel Orientation="Horizontal"
-                                Spacing="10">
-                        <TextBlock Classes="icon"
-                                   Text="＋"/>
-                        <TextBlock Classes="menuText"
-                                   VerticalAlignment="Center"
-                                   Text="Create Project"/>
+                <Button Classes="sidebar" Command="{Binding GoToProjectCreateCommand}">
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <TextBlock Classes="icon" Text="＋"/>
+                        <TextBlock Classes="menuText" VerticalAlignment="Center" Text="Create Project"/>
                     </StackPanel>
                 </Button>
 
-                <Button Classes="sidebar"
-                        Command="{Binding GoToTemplateListCommand}">
-                    <StackPanel Orientation="Horizontal"
-                                Spacing="10">
-                        <TextBlock Classes="icon"
-                                   Text="▦"/>
-                        <TextBlock Classes="menuText"
-                                   VerticalAlignment="Center"
-                                   Text="Template List"/>
+                <Button Classes="sidebar" Command="{Binding GoToProjectListCommand}">
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <TextBlock Classes="icon" Text="▣"/>
+                        <TextBlock Classes="menuText" VerticalAlignment="Center" Text="Project List"/>
                     </StackPanel>
                 </Button>
 
-                <Button Classes="sidebar"
-                        Command="{Binding GoToProjectListCommand}">
-                    <StackPanel Orientation="Horizontal"
-                                Spacing="10">
-                        <TextBlock Classes="icon"
-                                   Text="▣"/>
-                        <TextBlock Classes="menuText"
-                                   VerticalAlignment="Center"
-                                   Text="Project List"/>
+                <Button Classes="sidebar" Command="{Binding GoToTemplateListCommand}">
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <TextBlock Classes="icon" Text="▦"/>
+                        <TextBlock Classes="menuText" VerticalAlignment="Center" Text="Template List"/>
+                    </StackPanel>
+                </Button>
+
+                <Button Classes="sidebar" Command="{Binding GoToOfficialTemplatesCommand}">
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <TextBlock Classes="icon" Text="🌐"/>
+                        <TextBlock Classes="menuText" VerticalAlignment="Center" Text="Official Templates"/>
                     </StackPanel>
                 </Button>
 
@@ -103,27 +86,17 @@
 
             <StackPanel Grid.Row="2">
 
-                <Button Classes="sidebar"
-                        Command="{Binding GoToCreditsCommand}">
-                    <StackPanel Orientation="Horizontal"
-                                Spacing="10">
-                        <TextBlock Classes="icon"
-                                   Text="ⓘ"/>
-                        <TextBlock Classes="menuText"
-                                   VerticalAlignment="Center"
-                                   Text="Credits"/>
+                <Button Classes="sidebar" Command="{Binding GoToCreditsCommand}">
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <TextBlock Classes="icon" Text="ⓘ"/>
+                        <TextBlock Classes="menuText" VerticalAlignment="Center" Text="Credits"/>
                     </StackPanel>
                 </Button> 
             
-                <Button Classes="sidebar"
-                        Command="{Binding GoToSettingsCommand}">
-                    <StackPanel Orientation="Horizontal"
-                                Spacing="10">
-                        <TextBlock Classes="icon"
-                                   Text="⚙️"/>
-                        <TextBlock Classes="menuText"
-                                   VerticalAlignment="Center"
-                                   Text="Settings"/>
+                <Button Classes="sidebar" Command="{Binding GoToSettingsCommand}">
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <TextBlock Classes="icon" Text="⚙️"/>
+                        <TextBlock Classes="menuText" VerticalAlignment="Center" Text="Settings"/>
                     </StackPanel>
                 </Button>
             </StackPanel>

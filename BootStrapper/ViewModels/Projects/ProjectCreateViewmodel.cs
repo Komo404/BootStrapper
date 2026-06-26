@@ -2,6 +2,7 @@
 using BootStrapper.Core.Services;
 using BootStrapper.ViewModels.Templates;
 using BootStrapper.Views;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
@@ -18,32 +19,39 @@ public partial class ProjectCreateViewModel : ViewModelBase
     public string Name { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
     public string Path { get; set; } = string.Empty;
-    public string UnityVersion { get; set; } = string.Empty;
-    public string[] Tags { get; set; } = [];
-    public List<TemplateManifest> Templates { get; } = [];
-    public ObservableCollection<Guid> TemplatesAdded { get; set; } = [];
-    public string Author { get; set; } = string.Empty;
+    public string ChoseUnityVersion { get; set;  } = string.Empty;
+    public ObservableCollection<string> UnityVersions { get; set; } = [];
+    public ObservableCollection<TemplateManifest> Templates { get; set; } = [];
+    public IReadOnlyList<string> Tags { get; } = ["2D", "3D", "Input System", "Cinemachine", "URP", "HDRP", "Addressables", "Localization", "NavMesh", "Mobile"];
+    [ObservableProperty] private string actualFilter = string.Empty;
+    public enum TemplateBrowsingMode { Official, Personal }
+
+    [ObservableProperty] private TemplateBrowsingMode browsingMode = TemplateBrowsingMode.Official;
+    public string BrowsingTitle => BrowsingMode == TemplateBrowsingMode.Official ? "Official Templates" : "My Templates";
+    public ObservableCollection<TemplateManifest> BrowsableTemplates { get; set; } = [];
+    public ObservableCollection<TemplateManifest> AddedTemplates { get; set; } = [];
+    public List<Guid> AddedTemplateIds = [];
+    [ObservableProperty] private TemplateManifest? selectedBrowseTemplate;
 
     public ProjectCreateViewModel(NavigationService navigation, UserConfig config)
     {
         _navigation = navigation;
         _config = config;
 
-        Templates = TemplateService.GetAllTemplates(_config);
+        Templates = new ObservableCollection<TemplateManifest>(TemplateService.GetAllTemplates(_config));
+        UnityVersions = new ObservableCollection<string>(UnityService.GetUnityVersions());
+        ChangeBrowserTemplates();
     }
 
     public ProjectCreateViewModel() {
-        Templates = new List<TemplateManifest>()
+        Templates = new ObservableCollection<TemplateManifest>()
         {
             new TemplateManifest
             {
                 Name = "Mock1",
                 Description = "",
                 Category = new TemplateCategory(),
-                Version = "1.0",
-                UnityVersion = "2022.3",
-                MaxUnityVersion = "2023.0",
-                Author = "",
+                UnityVersions = [],
                 Tags = new List<string>(),
                 TemplatePath = "",
                 ManifestPath = "",
@@ -53,10 +61,7 @@ public partial class ProjectCreateViewModel : ViewModelBase
                 Name = "Mock2",
                 Description = "",
                 Category = new TemplateCategory(),
-                Version = "1.0",
-                UnityVersion = "2022.3",
-                MaxUnityVersion = "2023.0",
-                Author = "",
+                UnityVersions = [],
                 Tags = new List<string>(),
                 TemplatePath = "",
                 ManifestPath = "",
@@ -66,10 +71,7 @@ public partial class ProjectCreateViewModel : ViewModelBase
                 Name = "Mock3",
                 Description = "",
                 Category = new TemplateCategory(),
-                Version = "1.0",
-                UnityVersion = "2022.3",
-                MaxUnityVersion = "2023.0",
-                Author = "",
+                UnityVersions = [],
                 Tags = new List<string>(),
                 TemplatePath = "",
                 ManifestPath = "",
@@ -78,9 +80,38 @@ public partial class ProjectCreateViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    private void GoToProjectCreate()
+    private void SetBrowsingMode(string mode)
     {
-        _navigation.CurrentView = new ProjectCreateViewModel(_navigation, _config);
+        BrowsingMode = mode == "Official" ? TemplateBrowsingMode.Official : TemplateBrowsingMode.Personal;
+        ChangeBrowserTemplates();
+        OnPropertyChanged(nameof(BrowsingTitle));
+    }
+
+    private void ChangeBrowserTemplates()
+    {
+        var allTemplates = TemplateService.GetAllTemplates(_config);
+        var officialTemplates = TemplateService.GetAllTemplates(_config);
+
+        BrowsableTemplates.Clear();
+        if (BrowsingMode == TemplateBrowsingMode.Official)
+        {
+            foreach (var template in officialTemplates)
+                BrowsableTemplates.Add(template);
+        } else
+        {
+            return;
+        }
+
+        for (int i = 0; i < BrowsableTemplates.Count(); i++)
+        {
+            var templateManifest = BrowsableTemplates[i];
+            if (ChoseUnityVersion != string.Empty) {
+                if (!templateManifest.UnityVersions.Contains(ChoseUnityVersion))
+                {
+                    BrowsableTemplates.Remove(templateManifest);
+                }
+            }
+        }
     }
 
     [RelayCommand]
@@ -90,14 +121,27 @@ public partial class ProjectCreateViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    private void AddTemplate(Guid template)
+    private void SelectTemplate(TemplateManifest template) => SelectedBrowseTemplate = template;
+
+    [RelayCommand]
+    private void RemoveTemplate(TemplateManifest template) => AddedTemplates.Remove(template);
+
+    [RelayCommand]
+    private void AddSelectedTemplateToProject()
     {
-        TemplatesAdded.Add(template);
+        if (SelectedBrowseTemplate is null) return;
+        if (!AddedTemplates.Contains(SelectedBrowseTemplate))
+            AddedTemplates.Add(SelectedBrowseTemplate);
     }
 
     [RelayCommand]
     private void CreateProject(ProjectManifest projectInfo)
     {
+        foreach (var template in AddedTemplates)
+        {
+            AddedTemplateIds.Add(template.Id);
+        }
+
         ProjectManifest newProject = new ProjectManifest
         {
             Id = Guid.NewGuid(),
@@ -105,12 +149,10 @@ public partial class ProjectCreateViewModel : ViewModelBase
             Description  = Description,
             CreationDate = DateTime.Now,
             Path = Path,
-            UnityVersion = UnityVersion,
-            Author = Author,
-            TemplateIds = TemplatesAdded.ToList(),
+            UnityVersion = ChoseUnityVersion,
+            TemplateIds = AddedTemplateIds,
             ChangeHistory = Array.Empty<string>()
         };
-
         ProjectService.CreateProject(_config, newProject);
         _navigation.CurrentView = new ProjectInfoViewModel(_navigation, newProject, _config);
     }

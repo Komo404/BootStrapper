@@ -25,6 +25,15 @@ public partial class SidebarViewModel: ViewModelBase
             throw new InvalidOperationException("NavigationService não foi inicializado");
         _navigation.CurrentView = new HomeViewModel(_navigation, _config);
     }
+
+    [RelayCommand]
+    private void GoToOfficialTemplates()
+    {
+        if (_navigation is null)
+            throw new InvalidOperationException("NavigationService não foi inicializado");
+        _navigation.CurrentView = new OfficialTemplatesViewModel(_navigation, _config);
+    }
+
     [RelayCommand]
     private void GoToProjectCreate()
     {

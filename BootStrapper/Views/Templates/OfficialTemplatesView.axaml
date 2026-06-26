@@ -1,0 +1,145 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" Width="735" Height="600"
+             xmlns:vm="clr-namespace:BootStrapper.ViewModels.Templates"
+             xmlns:models="clr-namespace:BootStrapper.Core.Models;assembly=BootStrapper.Core"
+             x:Class="BootStrapper.Views.Templates.OfficialTemplatesView"
+             x:DataType="vm:OfficialTemplatesViewModel">
+
+    <Design.DataContext>
+        <vm:OfficialTemplatesViewModel/>
+    </Design.DataContext>
+
+    <Border BorderBrush="#878787" BorderThickness="1">
+        <Grid Background="#171717" RowDefinitions="Auto,*">
+
+            <!-- TOP BAR -->
+            <Border Grid.Row="0" Height="35" Background="#1E1E1E" BorderBrush="#878787" BorderThickness="0,0,0,1">
+            </Border>
+
+            <!-- DIVISÃO ENTRE 2 BORDERS -->
+            <Grid Grid.Row="1" ColumnDefinitions="360,*">
+
+                <!-- LISTA DE TEMPLATES -->
+                <Border Grid.Column="0" Background="#171717" BorderBrush="#878787" BorderThickness="0,0,1,0">
+
+                    <Grid RowDefinitions="Auto,Auto,*" Margin="24,20,24,0">
+
+                        <TextBlock Grid.Row="0" Text="Official Templates" FontSize="22" Foreground="White" Margin="0,0,0,16"/>
+
+                        <TextBlock Grid.Row="1" Text="Filter: Tag[]" FontSize="13"
+                                   Foreground="#BDBDBD" Margin="0,0,0,14"/>
+
+                        <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
+                            <ItemsControl ItemsSource="{Binding Templates}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate x:DataType="models:TemplateManifest">
+
+                                        <Button Margin="0,0,0,10"
+                                                Padding="0"
+                                                Background="#2A2A45"
+                                                BorderThickness="1"
+                                                HorizontalAlignment="Stretch"
+                                                HorizontalContentAlignment="Stretch"
+                                                Command="{Binding $parent[UserControl].DataContext.SelectTemplateCommand}"
+                                                CommandParameter="{Binding .}">
+
+                                            <Grid RowDefinitions="Auto,Auto">
+
+                                                <Border Grid.Row="0" Padding="14,5">
+                                                    <TextBlock Text="{Binding Name}" FontSize="15" Foreground="White"/>
+                                                </Border>
+
+                                                <ItemsControl Grid.Row="1" Margin="14, 8, 8, 3" ItemsSource="{Binding Tags}">
+                                                    <ItemsControl.ItemsPanel>
+                                                        <ItemsPanelTemplate>
+                                                            <WrapPanel/>
+                                                        </ItemsPanelTemplate>
+                                                    </ItemsControl.ItemsPanel>
+
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate x:DataType="x:String">
+                                                            <Border Margin="0,0,6,6" Padding="8,3" Background="#3D3B5E">
+                                                                <TextBlock Text="{Binding .}" FontSize="11" Foreground="#D6D6D6"/>
+                                                            </Border>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+
+                                            </Grid>
+                                        </Button>
+
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+
+                    </Grid>
+                </Border>
+
+                <!-- INFO TEMPLATE -->
+                <Grid Grid.Column="1" IsVisible="{Binding SelectedTemplate, Converter={x:Static ObjectConverters.IsNotNull}}"
+                      Margin="24,20,24,20" RowDefinitions="Auto,Auto,Auto,Auto,Auto">
+
+                    <TextBlock Grid.Row="0" Margin="0,0,0,8"
+                               Text="{Binding SelectedTemplate.Name}"
+                               FontSize="24"
+                               Foreground="White"/>
+
+                    <ItemsControl Grid.Row="1" Margin="0,0,0,16" ItemsSource="{Binding SelectedTemplate.Tags}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="x:String">
+                                <Border Margin="0,0,6,0" Padding="8,3" Background="#3D3B5E">
+                                    <TextBlock Text="{Binding .}" FontSize="11" Foreground="#D6D6D6"/>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                    <Border Grid.Row="2" Height="160" Background="#E8E8E8" Margin="0,0,0,16">
+                        <TextBlock Text="VIDEO/IMAGEM" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+
+                    <Border Grid.Row="3" Background="#2B2A45" Padding="16" Margin="0,0,0,16">
+                        <ScrollViewer MaxHeight="130" VerticalScrollBarVisibility="Auto">
+                            <TextBlock Text="{Binding SelectedTemplate.Description}" Foreground="#D6D6D6" TextWrapping="Wrap"/>
+                        </ScrollViewer>
+                    </Border>
+
+                    <Grid Grid.Row="4" RowDefinitions="Auto,Auto,Auto">
+
+                        <Border Grid.Row="0" Background="#2B2A45" Padding="13,5">
+                            <StackPanel>
+
+                                <TextBlock HorizontalAlignment="Center" Foreground="#D6D6D6">
+                                    <Run Text="Created At: "/>
+                                    <Run Text="{Binding SelectedTemplate.CreationDate}"/>
+                                </TextBlock>
+
+                                <TextBlock HorizontalAlignment="Center" Foreground="#D6D6D6" Margin="0,4,0,0">
+                                    <Run Text="Unity Versions: "/>
+                                    <Run Text="{Binding SelectedTemplate.UnityVersions}"/>
+                                </TextBlock>
+
+                            </StackPanel>
+                        </Border>
+
+                        <Button Grid.Row="2" Content="{Binding ActionLabel}" Command="{Binding ActionCommand}"
+                                HorizontalAlignment="Right"
+                                Margin="0,20,0,0" Padding="16,8"
+                                Background="#454870" Foreground="White"/>
+
+                    </Grid>
+                </Grid>
+            </Grid>
+        </Grid>
+    </Border>
+</UserControl>

@@ -35,10 +35,7 @@ public partial class TemplateListViewModel : ViewModelBase
                 Name = "Mock1",
                 Description = "Desc 1",
                 Category = new TemplateCategory(),
-                Version = "1.0",
-                UnityVersion = "2022",
-                MaxUnityVersion = "2023",
-                Author = "",
+                UnityVersions = ["2022"],
                 Tags = [],
                 TemplatePath = "",
                 ManifestPath = "",
@@ -48,10 +45,7 @@ public partial class TemplateListViewModel : ViewModelBase
                 Name = "Mock2",
                 Description = "Desc 2",
                 Category = new TemplateCategory(),
-                Version = "1.0",
-                UnityVersion = "2022",
-                MaxUnityVersion = "2023",
-                Author = "",
+                UnityVersions = ["2022"],
                 Tags = ["TAG 1", "TAG 2", "TAG 3"],
                 TemplatePath = "C:",
                 ManifestPath = "C:",
@@ -73,7 +67,7 @@ public partial class TemplateListViewModel : ViewModelBase
     [RelayCommand]
     private void OpenExplorer()
     {
-        _navigation.Explorer.OpenTemplateFolder(_config.TemplatesFolder);
+        _navigation.Explorer.OpenBootStrapperFolder(_config.TemplatesFolder);
     }
 
     [RelayCommand]

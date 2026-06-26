@@ -9,7 +9,8 @@
         x:DataType="vm:MainWindowViewModel"
         RequestedThemeVariant="Dark"
         Icon="/Assets/avalonia-logo.ico"
-        Title="BootStrapper">
+        Title="BootStrapper"
+        Width="1280" Height="690">
 
     <Grid ColumnDefinitions="Auto,*" Background="#171717">
         <view:SidebarView Grid.Column="0" DataContext="{Binding Sidebar}"/>

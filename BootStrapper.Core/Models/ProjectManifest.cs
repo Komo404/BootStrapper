@@ -8,7 +8,6 @@ public class ProjectManifest
     public required string Name { get; set; } = string.Empty;
     public required string Description { get; set; } = string.Empty;
     public required string UnityVersion { get; set; } = string.Empty;
-    public string Author { get; set; } = string.Empty;
     public required string Path { get; set; } = string.Empty;
     public required List<Guid> TemplateIds { get; set; } = [];
     public string[]? ChangeHistory { get; set; } = [];

@@ -5,6 +5,7 @@ using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Reflection.Metadata;
 
 namespace BootStrapper.ViewModels.Projects;
 
@@ -16,8 +17,8 @@ public partial class ProjectInfoViewModel : ViewModelBase
 
     public string Name { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
-    public string UVersion { get; set; } = string.Empty;
-    public string Author { get; set; } = string.Empty;
+    public List<string> UnityVersions { get; set; } = [];
+    public string UnityVersion { get; set; } = string.Empty;
     public ObservableCollection<TemplateManifest> TemplatePreviewInfo { get; set; } = [];
     public string[] ProjectFiles { get; set; } = { };
 
@@ -29,20 +30,15 @@ public partial class ProjectInfoViewModel : ViewModelBase
 
         Name = _project.Name;
         Description = _project.Description;
-        UVersion = _project.UnityVersion;
-        Author = _project.Author;
-        foreach(var template in _project.TemplateIds)
-        {
-            TemplatePreviewInfo.Add(TemplateService.GetTemplateById(_config, template));
-        }
+        UnityVersion = _project.UnityVersion;
+
     }
 
     public ProjectInfoViewModel()
     {
         Name = "Mock Project";
         Description = "Description";
-        UVersion = "6000.0";
-        Author = "Komori";
+        UnityVersion = "6000.0";
         TemplatePreviewInfo = new ObservableCollection<TemplateManifest>
         {
             new TemplateManifest {
@@ -51,8 +47,7 @@ public partial class ProjectInfoViewModel : ViewModelBase
                 Category = new TemplateCategory(),
                 TemplatePath = "",
                 ManifestPath = "",
-                Version = "1.0",
-                UnityVersion = "1.11.f1",
+                UnityVersions = ["1.11.f1"],
             }
         };
     }
@@ -79,7 +74,7 @@ public partial class ProjectInfoViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    private void OpenProjectFolder() => ProjectService.OpenProjectFolder();
+    private void OpenProjectFolder() => _navigation.Explorer.OpenBootStrapperFolder(_project.Path);
 
     [RelayCommand]
     private void UpdateProject()

@@ -4,79 +4,271 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              xmlns:vm="clr-namespace:BootStrapper.ViewModels.Projects"
+             xmlns:models="clr-namespace:BootStrapper.Core.Models;assembly=BootStrapper.Core"
              x:Class="BootStrapper.Views.Projects.ProjectCreateView"
              x:DataType="vm:ProjectCreateViewModel">
 
     <Design.DataContext>
-        <vm:ProjectCreateViewModel />
+        <vm:ProjectCreateViewModel/>
     </Design.DataContext>
 
     <Grid Background="#171717">
-        <Border Width="500" Height="500" BorderBrush="White" BorderThickness="1" CornerRadius="10" Background="#37345D">
-            <Grid ColumnDefinitions="220, *">
-                <StackPanel Spacing="17" Margin="20, 20, 0, 0">
-                    <TextBlock Text="New Unity Project" Margin="0, 0, 0, 15"  FontSize="16" Foreground="White" />
 
-                    <TextBlock Text="Project Name" Foreground="White"/>
-                    <TextBox Text="{Binding Name}" PlaceholderText="Project name"/>
+        <Border Width="1000"
+                Height="600"
+                BorderBrush="White"
+                BorderThickness="1"
+                CornerRadius="0"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                ClipToBounds="True">
 
-                    <TextBlock Text="Project Description" Foreground="White" />
-                    <TextBox Text="{Binding Description}" PlaceholderText="Description"/>
+            <Grid ColumnDefinitions="330,40,*">
 
-                    <TextBlock Text="Unity Version" Foreground="White" />
-                    <TextBox Text="{Binding UnityVersion}" PlaceholderText="Unity Version"/>
+                <!-- CRIAÇÃO DO PROJETO -->
+                <Border Grid.Column="0" Background="#37345D" Padding="24">
+                    <StackPanel Spacing="14">
 
-                    <TextBlock Text="Author" Foreground="White" />
-                    <TextBox Text="{Binding Author}" PlaceholderText="Author name"/>
+                        <StackPanel Spacing="6" Margin="0,0,0,10">
+                            <TextBlock Text="New Unity Project" FontSize="22" Foreground="White"/>
+                            <TextBlock Text="Configure the Project and select the templates to bootstrap"
+                                       FontSize="13" Foreground="#D6D6D6" TextWrapping="Wrap"/>
+                        </StackPanel>
 
-                    <Button Content="Create Project" Foreground="White"
-                            Command="{Binding CreateProjectCommand}" 
-                            HorizontalAlignment="Center"
-                            />
-                </StackPanel>
+                        <TextBlock Text="Project Name" Foreground="White"/>
+                        <TextBox Text="{Binding Name}" PlaceholderText="Project name"/>
 
-                <!--List of Templates-->
-                <StackPanel Grid.Column="5" Margin="30, 35, 0, 0">
-                    <TextBlock Foreground="White" HorizontalAlignment="Center" Margin="5, 10, 0, 10" Text="All Templates" />
-                    <Border Background="#414161" HorizontalAlignment="Center" 
-                            Padding="5" 
-                            MaxWidth="200" MinWidth="185" MaxHeight="300" >
+                        <TextBlock Text="Description" Foreground="White"/>
+                        <TextBox Text="{Binding Description}" PlaceholderText="Short description (optional)"/>
 
-                        <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+                        <TextBlock Text="Unity Version" Foreground="White"/>
+                        <ComboBox ItemsSource="{Binding UnityVersions}"
+                                  SelectedItem="{Binding ChoseUnityVersion}"
+                                  IsEditable="True"
+                                  PlaceholderText="Select or type a version"
+                                  HorizontalAlignment="Stretch"/>
 
-                            <ListBox ItemsSource="{Binding Templates}" Background="#4CCC" 
-                                     SelectedItem="{Binding AddTemplateCommand}"
-                                     SelectionMode="Multiple">
+                        <TextBlock Text="Selected Templates" Foreground="White" Margin="0,10,0,0"/>
+
+                        <Border Background="#2B2D3D" CornerRadius="0" Padding="10" MinHeight="90">
+                            <ItemsControl ItemsSource="{Binding AddedTemplates}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
 
                                 <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Padding="5" Background="#ACCC" Text="{Binding Name}"></TextBlock>
+                                    <DataTemplate x:DataType="models:TemplateManifest">
+                                        <Border Margin="0,0,6,6" Padding="10,5" CornerRadius="0" Background="#3B82F6">
+                                            <StackPanel Orientation="Horizontal" Spacing="6">
+                                                <TextBlock Text="{Binding Name}" Foreground="White" VerticalAlignment="Center"/>
+                                                <Button Width="18" Height="18" Padding="0"
+                                                        Content="✕" FontSize="11"
+                                                        Background="Transparent" BorderThickness="0"
+                                                        Command="{Binding $parent[UserControl].DataContext.RemoveTemplateCommand}"
+                                                        CommandParameter="{Binding .}"/>
+                                            </StackPanel>
+                                        </Border>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
-                            </ListBox >
+                            </ItemsControl>
+                        </Border>
 
-                        </ScrollViewer>
-
-                    </Border>
-
-                    <StackPanel Orientation="Horizontal" Margin="37, 10, 0, 30" Spacing="20">
-                        <Button Content="Create Template" Command="{Binding GoToTemplateCreateCommand}"
-                                Foreground="White"
-                                HorizontalAlignment="Left"></Button>
-                        
-                        <TextBlock Foreground="White" VerticalAlignment="Center">
+                        <TextBlock Foreground="#BDBDBD" FontSize="12">
                             <TextBlock.Text>
-                                <MultiBinding StringFormat="{}{0}/{1}">
-                                    <Binding Path="TemplatesAdded.Count"/>
-                                    <Binding Path="Templates.Count"/>
+                                <MultiBinding StringFormat="{}{0} template(s) selected">
+                                    <Binding Path="AddedTemplates.Count"/>
                                 </MultiBinding>
                             </TextBlock.Text>
                         </TextBlock>
 
-                    </StackPanel>
+                        <Button Content="Create Project"
+                                Command="{Binding CreateProjectCommand}"
+                                HorizontalAlignment="Center"
+                                Margin="0,20,0,0"
+                                Padding="16,8"
+                                Background="#454870"
+                                Foreground="White"/>
 
-                </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <!-- BAR DE TROCA DE VIEW -->
+                <Border Grid.Column="1" Background="#171717" BorderBrush="#333333" BorderThickness="1,0,1,0">
+                    <StackPanel VerticalAlignment="Top" Margin="0,20,0,0" Spacing="10" HorizontalAlignment="Center">
+
+                        <Button Width="30" Height="30" Padding="0"
+                                Background="#2B2A45"
+                                Foreground="White"
+                                HorizontalContentAlignment="Center"
+                                VerticalContentAlignment="Center"
+                                Command="{Binding SetBrowsingModeCommand}"
+                                CommandParameter="Official"
+                                ToolTip.Tip="Official Templates"
+                                Content="🌐"/>
+
+                        <Button Width="30" Height="30" Padding="0"
+                                Background="#2B2A45"
+                                Foreground="White"
+                                HorizontalContentAlignment="Center"
+                                VerticalContentAlignment="Center"
+                                Command="{Binding SetBrowsingModeCommand}"
+                                CommandParameter="Personal"
+                                ToolTip.Tip="My Templates"
+                                Content="📁"/>
+
+                        <Button Width="30" Height="30" Padding="0"
+                                Background="#2B2A45"
+                                Foreground="White"
+                                HorizontalContentAlignment="Center"
+                                VerticalContentAlignment="Center"
+                                Command="{Binding GoToTemplateCreateCommand}"
+                                ToolTip.Tip="Create New Template"
+                                Content="+"/>
+
+                    </StackPanel>
+                </Border>
+
+                <!-- TEMPLATE BROWSER -->
+                <Grid Grid.Column="2" RowDefinitions="Auto,*">
+
+                    <Border Grid.Row="0" Height="40" Background="#1E1E1E" BorderBrush="#333333" BorderThickness="0,0,0,1"/>
+
+                    <Grid Grid.Row="1" ColumnDefinitions="280,*">
+
+                        <!-- LISTA DE TEMPLATES -->
+                        <Border Grid.Column="0" Background="#171717" BorderBrush="#878787" BorderThickness="0,0,1,0">
+
+                            <Grid RowDefinitions="Auto,Auto,*" Margin="24,20,24,0">
+
+                                <TextBlock Grid.Row="0" Text="{Binding BrowsingTitle}" FontSize="22" Foreground="White" Margin="0,0,0,8"/>
+
+                                <StackPanel>
+                                    <TextBlock Grid.Row="1" Text="Filter: " FontSize="13" Foreground="#BDBDBD" Margin="0,0,0,14"/>
+                                    <TextBlock Grid.Row="1" Text="{Binding ActualFilter}" FontSize="13" Foreground="#BDBDBD" Margin="0,0,0,14"/>
+                                </StackPanel>
+
+                                <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
+                                    <ItemsControl ItemsSource="{Binding BrowsableTemplates}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate x:DataType="models:TemplateManifest">
+
+                                                <Button Margin="0,0,0,10"
+                                                        Padding="0"
+                                                        Background="#2A2A45"
+                                                        BorderThickness="1"
+                                                        HorizontalAlignment="Stretch"
+                                                        HorizontalContentAlignment="Stretch"
+                                                        Command="{Binding $parent[UserControl].DataContext.SelectTemplateCommand}"
+                                                        CommandParameter="{Binding .}">
+
+                                                    <Grid RowDefinitions="Auto,Auto">
+
+                                                        <Border Grid.Row="0" Padding="14,5">
+                                                            <TextBlock Text="{Binding Name}" FontSize="15" Foreground="White"/>
+                                                        </Border>
+
+                                                        <ItemsControl Grid.Row="1" Margin="14, 8, 8, 3" ItemsSource="{Binding Tags}">
+                                                            <ItemsControl.ItemsPanel>
+                                                                <ItemsPanelTemplate>
+                                                                    <WrapPanel/>
+                                                                </ItemsPanelTemplate>
+                                                            </ItemsControl.ItemsPanel>
+
+                                                            <ItemsControl.ItemTemplate>
+                                                                <DataTemplate x:DataType="x:String">
+                                                                    <Border Margin="0,0,6,6" Padding="8,3" Background="#3D3B5E">
+                                                                        <TextBlock Text="{Binding .}" FontSize="11" Foreground="#D6D6D6"/>
+                                                                    </Border>
+                                                                </DataTemplate>
+                                                            </ItemsControl.ItemTemplate>
+                                                        </ItemsControl>
+
+                                                    </Grid>
+                                                </Button>
+
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </ScrollViewer>
+
+                            </Grid>
+                        </Border>
+
+                        <!-- INFO TEMPLATE -->
+                        <!-- Converter: Converte null/não full para true/false -->
+                        <Grid Grid.Column="1" IsVisible="{Binding SelectedBrowseTemplate, Converter={x:Static ObjectConverters.IsNotNull}}" 
+                              Margin="24,20,24,20" RowDefinitions="Auto,Auto,Auto,Auto,Auto">
+
+                            <TextBlock Grid.Row="0" Margin="0,0,0,8"
+                                       Text="{Binding SelectedBrowseTemplate.Name}"
+                                       FontSize="24"
+                                       Foreground="White"/>
+
+                            <ItemsControl Grid.Row="1" Margin="0,0,0,16" ItemsSource="{Binding SelectedBrowseTemplate.Tags}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate x:DataType="x:String">
+                                        <Border Margin="0,0,6,0" Padding="8,3" Background="#3D3B5E">
+                                            <TextBlock Text="{Binding .}" FontSize="11" Foreground="#D6D6D6"/>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+
+                            <Border Grid.Row="2" Height="160" Background="#E8E8E8" Margin="0,0,0,16">
+                                <TextBlock Text="VIDEO/IMAGEM" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+
+                            <Border Grid.Row="3" Background="#2B2A45" Padding="16" Margin="0,0,0,16">
+                                <ScrollViewer MaxHeight="130" VerticalScrollBarVisibility="Auto">
+                                    <TextBlock Text="{Binding SelectedBrowseTemplate.Description}" Foreground="#D6D6D6" TextWrapping="Wrap"/>
+                                </ScrollViewer>
+                            </Border>
+
+                            <Grid Grid.Row="4" RowDefinitions="Auto,Auto,Auto">
+
+                                <Border Grid.Row="0" Background="#2B2A45" Padding="13,5">
+                                    <StackPanel>
+
+                                        <TextBlock HorizontalAlignment="Center" Foreground="#D6D6D6">
+                                            <Run Text="Created At: "/>
+                                            <Run Text="{Binding SelectedBrowseTemplate.CreationDate}"/>
+                                        </TextBlock>
+
+                                        <TextBlock HorizontalAlignment="Center" Foreground="#D6D6D6" Margin="0,4,0,0">
+                                            <Run Text="Unity Versions: "/>
+                                            <Run Text="{Binding SelectedBrowseTemplate.UnityVersions}"/>
+                                        </TextBlock>
+
+                                    </StackPanel>
+                                </Border>
+
+                                <Button Grid.Row="1"
+                                        Content="Add to Project"
+                                        HorizontalAlignment="Right"
+                                        Margin="0,16,0,0"
+                                        Padding="16,8"
+                                        Background="#454870"
+                                        Foreground="White"
+                                        CornerRadius="0"
+                                        Command="{Binding AddSelectedTemplateToProjectCommand}"/>
+
+                            </Grid>
+
+                        </Grid>
+                    </Grid>
+
+                </Grid>
+
             </Grid>
+
         </Border>
-    </Grid> 
+    </Grid>
 </UserControl>

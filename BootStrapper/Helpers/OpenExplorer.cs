@@ -28,7 +28,7 @@ public class OpenExplorer : IOpenExplorer
         return result.First().TryGetLocalPath();
     }
 
-    public void OpenTemplateFolder(string folderPath)
+    public void OpenBootStrapperFolder(string folderPath)
     {
         var directoryinfo = new DirectoryInfo(folderPath);
         toplevel.Launcher.LaunchDirectoryInfoAsync(directoryinfo);
