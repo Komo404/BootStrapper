@@ -7,8 +7,10 @@ using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace BootStrapper.ViewModels.Projects;
 
@@ -134,7 +136,7 @@ public partial class ProjectCreateViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    private void CreateProject(ProjectManifest projectInfo)
+    private async Task CreateProject(ProjectManifest projectInfo)
     {
         foreach (var template in AddedTemplates)
         {
@@ -152,7 +154,11 @@ public partial class ProjectCreateViewModel : ViewModelBase
             TemplateIds = AddedTemplateIds,
             ChangeHistory = Array.Empty<string>()
         };
-        ProjectService.CreateProject(_config, newProject);
+
+        newProject.Path = Path.Combine(_config.ProjectsFolder, newProject.Id.ToString());
+
+        await UnityService.CreateUnityProjectAsync(_config, newProject); // Unity cria Assets/, ProjectSettings/, etc
+        ProjectService.CreateProject(_config, newProject);                // só grava manifest + copia templates
         _navigation.CurrentView = new ProjectInfoViewModel(_navigation, newProject, _config);
     }
 

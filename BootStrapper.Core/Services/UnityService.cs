@@ -3,25 +3,29 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using System.Diagnostics;
 
 namespace BootStrapper.Core.Services;
 
 public static class UnityService
 {
-    public static void CreateUnityProject(UserConfig config, ProjectManifest project)
+    public static async Task CreateUnityProjectAsync(UserConfig config, ProjectManifest project)
     {
-        string unityExePath = GetUnityVersionPath(config, project.UnityVersion);
-
-        if (string.IsNullOrEmpty(unityExePath))
-            throw new ArgumentNullException(nameof(unityExePath), "Unity path cannot be null or empty.");
         if (string.IsNullOrEmpty(project.Path))
             throw new ArgumentNullException(nameof(project.Path), "Project path cannot be null or empty.");
 
-        string command = $"\"{unityExePath}\" -createProject \"{project.Path}\""; // Cria um projeto Unity
+        string unityExePath = GetUnityVersionPath(config, project.UnityVersion);
+
+        var processStartInfo = new ProcessStartInfo
+        {
+            FileName = unityExePath,
+            ArgumentList = { "-createProject", project.Path },
+            UseShellExecute = false
+        };
 
         try
         {
-            System.Diagnostics.Process.Start("cmd.exe", $"/C {command}");
+            using var process = Process.Start(processStartInfo);
         }
         catch (Exception ex)
         {
@@ -31,17 +35,15 @@ public static class UnityService
 
     public static void OpenUnityProject(UserConfig config, ProjectManifest project)
     {
-        string unityExePath = GetUnityVersionPath(config, project.UnityVersion);
-
-        if (string.IsNullOrEmpty(unityExePath))
-            throw new ArgumentNullException(nameof(unityExePath), "Unity path cannot be null or empty.");
         if (string.IsNullOrEmpty(project.Path))
             throw new ArgumentNullException(nameof(project.Path), "Project path cannot be null or empty.");
+
+        string unityExePath = GetUnityVersionPath(config, project.UnityVersion);
        
         string command = $"\"{unityExePath}\" -projectPath \"{project.Path}\""; // Abrir um projeto Unity
 
         try {
-            System.Diagnostics.Process.Start("cmd.exe", $"/C {command}");
+            Process processo = System.Diagnostics.Process.Start("cmd.exe", $"/C {command}");
         }
         catch (Exception ex) {
             throw new Exception("Failed to open Unity project.", ex);

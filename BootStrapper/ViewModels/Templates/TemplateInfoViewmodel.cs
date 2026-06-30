@@ -126,10 +126,9 @@ public partial class TemplateInfoViewModel : ViewModelBase
         TemplateService.RemoveTreeNode(TemplateScripts, selectedNode);
 
             if(selectedNode.IsFolder == true)
-                Directory.Delete(Path.Combine(TemplatePath, selectedNode.RelativePath, selectedNode.Name));
-            else
-            {
-                File.Delete(Path.Combine(TemplatePath, selectedNode.RelativePath, selectedNode.Name));
+                Directory.Delete(Path.Combine(TemplatePath, selectedNode.RelativePath), true);
+            else {
+                File.Delete(Path.Combine(TemplatePath, selectedNode.RelativePath));
             }
 
     }

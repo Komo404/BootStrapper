@@ -18,24 +18,18 @@ public class ProjectService
 
         projectInfo.Path = Path.Combine(config.ProjectsFolder, projectInfo.Id.ToString());
 
-        Directory.CreateDirectory(projectInfo.Path);
-
         string manifestPath = Path.Combine(projectInfo.Path, "manifest.json");
-        File.Create(manifestPath).Close();
         ManifestService.WriteManifest(manifestPath, projectInfo);
 
-        string scriptsFolderPath = Path.Combine(projectInfo.Path, "Scripts");
+        string scriptsFolderPath = Path.Combine(projectInfo.Path, "Assets", "Scripts");
         Directory.CreateDirectory(scriptsFolderPath);
 
         List<string> TemplatePaths = [];
         foreach (var id in projectInfo.TemplateIds)
-        {
             TemplatePaths.Add(TemplateService.GetTemplateById(config, id).TemplatePath);
-            foreach (var templatePath in TemplatePaths)
-            {
-                FileSystemHelper.CopyDirectoryRecursively(Path.Combine(templatePath, projectInfo.UnityVersion), scriptsFolderPath);
-            }
-        }
+
+        foreach (var templatePath in TemplatePaths)
+            FileSystemHelper.CopyDirectoryRecursively(Path.Combine(templatePath, projectInfo.UnityVersion), scriptsFolderPath);
     }
 
     public static void DeleteProject(ProjectManifest project)

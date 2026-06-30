@@ -81,7 +81,7 @@ public class TemplateService
 
         templateInfo.Id = Guid.NewGuid();
         templateInfo.CreationDate = DateTime.Now;
-        templateInfo.TemplatePath = Path.Combine(config.TemplatesFolder, templateInfo.Id.ToString());
+        templateInfo.TemplatePath = Path.Combine(config.TemplatesFolder, templateInfo.Name);
         templateInfo.ManifestPath = Path.Combine(templateInfo.TemplatePath, "manifest.json");
 
         Directory.CreateDirectory(templateInfo.TemplatePath); // Cria pasta do template
