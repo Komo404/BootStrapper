@@ -44,14 +44,24 @@
                     <StackPanel Spacing="20">
                         <TextBlock Text="Unity" Foreground="White" FontSize="24" FontWeight="Bold"/>
 
-                        <Grid ColumnDefinitions="200,*, 55">
+                        <Grid ColumnDefinitions="200,*, 70">
                             <TextBlock Grid.Column="0" Text="Custom Unity Editors Path:"
                                        Foreground="White"
                                        VerticalAlignment="Center"/>
 
                             <TextBlock Grid.Column="1" Text="{Binding CustomUnityEditorsPath}" VerticalAlignment="Center"/>
 
-                            <Button Grid.Column="2" Content="Teste" Command="{Binding ChangeUnityEditorPathCommand}" />
+                            <Button Grid.Column="2" Content="Change" Command="{Binding ChangeUnityEditorPathCommand}" />
+                        </Grid>
+
+                        <Grid ColumnDefinitions="200,*, 70">
+                            <TextBlock Grid.Column="0" Text="Unity Projects Folder:"
+                                       Foreground="White"
+                                       VerticalAlignment="Center"/>
+
+                            <TextBlock Grid.Column="1" Text="{Binding CustomUnityProjectsFolderPath}" VerticalAlignment="Center"/>
+
+                            <Button Grid.Column="2" Content="Change" Command="{Binding ChangeUnityProjectsFolderPathCommand}" />
                         </Grid>
 
                     </StackPanel>

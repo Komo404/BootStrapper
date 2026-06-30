@@ -20,6 +20,7 @@ public partial class SettingsViewModel : ViewModelBase
     [ObservableProperty] private bool autoLaunchProject;
     [ObservableProperty] private bool checkForUpdates;
     [ObservableProperty] private string customUnityEditorsPath;
+    [ObservableProperty] private string customUnityProjectsFolderPath;
 
     private readonly NavigationService _navigation;
 
@@ -33,6 +34,7 @@ public partial class SettingsViewModel : ViewModelBase
         _config = config;
 
         CustomUnityEditorsPath = config.CustomUnityEditorsPath;
+        CustomUnityProjectsFolderPath = config.CustomUnityProjectsFolderPath;
         AutoLaunchProject = config.AutoLaunchProject;
         CheckForUpdates = config.AutoUpdateEnabled;
 
@@ -49,6 +51,15 @@ public partial class SettingsViewModel : ViewModelBase
         string? newUnityEditorPath = await _navigation.Explorer.OpenFolderDialogAsync();
         if (newUnityEditorPath != null)
             CustomUnityEditorsPath = newUnityEditorPath;
+        SaveSettings();
+    }
+
+    [RelayCommand]
+    private async Task ChangeUnityProjectsFolderPath()
+    {
+        string? newUnityProjectsFolderPath = await _navigation.Explorer.OpenFolderDialogAsync();
+        if (newUnityProjectsFolderPath != null)
+            CustomUnityProjectsFolderPath = newUnityProjectsFolderPath;
         SaveSettings();
     }
 

@@ -50,6 +50,7 @@ public static class ConfigService
         UserConfig defaultConfig = new UserConfig
         {
             CustomUnityEditorsPath = string.Empty,
+            CustomUnityProjectsFolderPath = string.Empty,
             ProjectsFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "BootStrapper", "Projects"),
             TemplatesFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "BootStrapper", "Templates"),
             AutoLaunchProject = true,

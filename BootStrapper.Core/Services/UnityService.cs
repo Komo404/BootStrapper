@@ -25,7 +25,17 @@ public static class UnityService
 
         try
         {
-            using var process = Process.Start(processStartInfo);
+            var process = Process.Start(processStartInfo);
+
+            string assetsPath = Path.Combine(project.Path, "Assets");
+            string projectSettingsPath = Path.Combine(project.Path, "ProjectSettings");
+
+            const int MaxAttempts = 40;
+            for (int i = 0; i < MaxAttempts; i++)
+            {
+                if (Directory.Exists(assetsPath) && Directory.Exists(projectSettingsPath)) return;
+                await Task.Delay(500);
+            }
         }
         catch (Exception ex)
         {
@@ -39,11 +49,16 @@ public static class UnityService
             throw new ArgumentNullException(nameof(project.Path), "Project path cannot be null or empty.");
 
         string unityExePath = GetUnityVersionPath(config, project.UnityVersion);
-       
-        string command = $"\"{unityExePath}\" -projectPath \"{project.Path}\""; // Abrir um projeto Unity
+
+        var processStartInfo = new ProcessStartInfo
+        {
+            FileName = unityExePath,
+            ArgumentList = { "-projectPath", project.Path },
+            UseShellExecute = false
+        };
 
         try {
-            Process processo = System.Diagnostics.Process.Start("cmd.exe", $"/C {command}");
+            Process.Start(processStartInfo);
         }
         catch (Exception ex) {
             throw new Exception("Failed to open Unity project.", ex);
