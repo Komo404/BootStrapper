@@ -1,6 +1,6 @@
 namespace BootStrapper.Core.Models
 {
-    public class UserConfig // Configs do usuário ficam
+    public class UserConfig
     {
         public string CustomUnityEditorsPath { get; set; } = string.Empty;
         public string CustomUnityProjectsFolderPath {  get; set; } = string.Empty;

@@ -11,15 +11,17 @@ public static class UnityService
 {
     public static async Task CreateUnityProjectAsync(UserConfig config, ProjectManifest project)
     {
-        if (string.IsNullOrEmpty(project.Path))
-            throw new ArgumentNullException(nameof(project.Path), "Project path cannot be null or empty.");
+        if (Directory.Exists(project.UnityProjectPath))
+            throw new Exception("Projeto unity encontrado com ESSE NOME????");
+
+        Directory.CreateDirectory(project.UnityProjectPath);
 
         string unityExePath = GetUnityVersionPath(config, project.UnityVersion);
 
         var processStartInfo = new ProcessStartInfo
         {
             FileName = unityExePath,
-            ArgumentList = { "-createProject", project.Path },
+            ArgumentList = { "-createProject", project.UnityProjectPath },
             UseShellExecute = false
         };
 
@@ -27,15 +29,19 @@ public static class UnityService
         {
             var process = Process.Start(processStartInfo);
 
-            string assetsPath = Path.Combine(project.Path, "Assets");
-            string projectSettingsPath = Path.Combine(project.Path, "ProjectSettings");
+            string assetsPath = Path.Combine(project.UnityProjectPath, "Assets");
+            string projectSettingsPath = Path.Combine(project.UnityProjectPath, "ProjectSettings");
 
-            const int MaxAttempts = 40;
-            for (int i = 0; i < MaxAttempts; i++)
+            var timeout = TimeSpan.FromSeconds(60);
+            var stopwatch = Stopwatch.StartNew();
+
+            while (stopwatch.Elapsed < timeout)
             {
                 if (Directory.Exists(assetsPath) && Directory.Exists(projectSettingsPath)) return;
                 await Task.Delay(500);
             }
+
+            throw new TimeoutException("Unity project creation timed out.");
         }
         catch (Exception ex)
         {
@@ -45,15 +51,15 @@ public static class UnityService
 
     public static void OpenUnityProject(UserConfig config, ProjectManifest project)
     {
-        if (string.IsNullOrEmpty(project.Path))
-            throw new ArgumentNullException(nameof(project.Path), "Project path cannot be null or empty.");
+        if (string.IsNullOrEmpty(project.UnityProjectPath))
+            throw new ArgumentNullException(nameof(project.UnityProjectPath), "Project path cannot be null or empty.");
 
         string unityExePath = GetUnityVersionPath(config, project.UnityVersion);
 
         var processStartInfo = new ProcessStartInfo
         {
             FileName = unityExePath,
-            ArgumentList = { "-projectPath", project.Path },
+            ArgumentList = { "-projectPath", project.UnityProjectPath },
             UseShellExecute = false
         };
 

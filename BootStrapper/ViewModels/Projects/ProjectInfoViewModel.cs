@@ -39,7 +39,7 @@ public partial class ProjectInfoViewModel : ViewModelBase
             projectTemplates.Add(TemplateService.GetTemplateById(config, id).Name);
         }
 
-        ProjectFiles = TemplateService.BuildScriptTree(_project.Path, _project.Path);
+        ProjectFiles = TemplateService.BuildScriptTree(_project.UnityProjectPath, _project.UnityProjectPath);
 
     }
 
@@ -62,7 +62,7 @@ public partial class ProjectInfoViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    private void OpenProjectFolder() => _navigation.Explorer.OpenBootStrapperFolder(_project.Path);
+    private void OpenProjectFolder() => _navigation.Explorer.OpenBootStrapperFolder(_project.UnityProjectPath);
 
     [RelayCommand]
     private void UpdateProject()

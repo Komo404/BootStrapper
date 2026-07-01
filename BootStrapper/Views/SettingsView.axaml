@@ -55,7 +55,7 @@
                         </Grid>
 
                         <Grid ColumnDefinitions="200,*, 70">
-                            <TextBlock Grid.Column="0" Text="Unity Projects Folder:"
+                            <TextBlock Grid.Column="0" Text="Unity Project Creation Folder:"
                                        Foreground="White"
                                        VerticalAlignment="Center"/>
 

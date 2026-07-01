@@ -57,7 +57,7 @@
                                         <TextBlock Text="{Binding Name}" FontSize="16" FontWeight="SemiBold" Foreground="White"/>
                                         <TextBlock Text="{Binding Description}" FontSize="13" Foreground="#CFCFCF"/>
                                         <TextBlock Text="{Binding UnityVersion}" FontSize="12" Foreground="#9CA3AF"/>
-                                        <TextBlock Text="{Binding Path}" FontSize="12" Foreground="#9CA3AF"/>
+                                        <TextBlock Text="{Binding UnityProjectPath}" FontSize="12" Foreground="#9CA3AF"/>
 
                                     </StackPanel>
 

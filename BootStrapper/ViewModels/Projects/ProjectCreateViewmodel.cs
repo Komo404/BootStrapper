@@ -141,6 +141,14 @@ public partial class ProjectCreateViewModel : ViewModelBase
         foreach (var template in AddedTemplates)
         {
             AddedTemplateIds.Add(template.Id);
+        };
+
+        string unityProjectsFolderPath;
+
+        if (_config.CustomUnityProjectsFolderPath != string.Empty)
+            unityProjectsFolderPath = _config.CustomUnityProjectsFolderPath;
+        else {
+            unityProjectsFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Unity BootStrapper Projects");
         }
 
         ProjectManifest newProject = new ProjectManifest
@@ -149,16 +157,14 @@ public partial class ProjectCreateViewModel : ViewModelBase
             Name = Name,
             Description  = Description,
             CreationDate = DateTime.Now,
-            Path = string.Empty,
+            MetadataPath = Path.Combine(_config.ProjectsFolder, Name),
+            UnityProjectPath = Path.Combine(unityProjectsFolderPath, Name),
             UnityVersion = ChoseUnityVersion,
-            TemplateIds = AddedTemplateIds,
-            ChangeHistory = Array.Empty<string>()
+            TemplateIds = AddedTemplateIds
         };
 
-        newProject.Path = Path.Combine(_config.ProjectsFolder, newProject.Id.ToString());
-
         await UnityService.CreateUnityProjectAsync(_config, newProject); // Unity cria Assets/, ProjectSettings/, etc
-        ProjectService.CreateProject(_config, newProject);                // só grava manifest + copia templates
+        ProjectService.CreateProject(_config, newProject);                // só grava manifest e copia os templates
         _navigation.CurrentView = new ProjectInfoViewModel(_navigation, newProject, _config);
     }
 

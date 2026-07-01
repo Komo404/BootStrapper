@@ -34,9 +34,9 @@ public partial class HomeViewModel : ViewModelBase
                 Name = "Mock1",
                 UnityVersion = "6000f",
                 Description = "Description",
-                Path = "C:",
+                MetadataPath = "C:",
+                UnityProjectPath = "",
                 TemplateIds = [],
-                ChangeHistory = [],
                 CreationDate = DateTime.Now,
                 Id = Guid.NewGuid()
             },
@@ -45,9 +45,9 @@ public partial class HomeViewModel : ViewModelBase
                 Name = "Mock2",
                 UnityVersion = "UV",
                 Description = "DESC",
-                Path = "/path",
+                MetadataPath = "/path",
+                UnityProjectPath = "",
                 TemplateIds = [],
-                ChangeHistory = [],
                 CreationDate = DateTime.Now,
                 Id = Guid.NewGuid()
             },
@@ -56,9 +56,9 @@ public partial class HomeViewModel : ViewModelBase
                 Name = "Mock3",
                 UnityVersion = "",
                 Description = "",
-                Path = "",
+                MetadataPath = "",
+                UnityProjectPath = "",
                 TemplateIds = [],
-                ChangeHistory = [],
                 CreationDate = DateTime.Now,
                 Id = Guid.NewGuid()
             }

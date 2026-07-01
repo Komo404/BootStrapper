@@ -13,42 +13,42 @@ public class ProjectService
 {
     public static void CreateProject(UserConfig config, ProjectManifest projectInfo)
     {
-        if (config.ProjectsFolder == null)
-            throw new DirectoryNotFoundException("Projects Folder is null");
+        if (Directory.Exists(projectInfo.MetadataPath))
+            throw new Exception("A project with --Wha, What? THIS NAME? Exists.");
 
-        projectInfo.Path = Path.Combine(config.ProjectsFolder, projectInfo.Id.ToString());
+        Directory.CreateDirectory(projectInfo.MetadataPath);
 
-        string manifestPath = Path.Combine(projectInfo.Path, "manifest.json");
+        string manifestPath = Path.Combine(projectInfo.MetadataPath, "manifest.json");
         ManifestService.WriteManifest(manifestPath, projectInfo);
 
-        string scriptsFolderPath = Path.Combine(projectInfo.Path, "Assets", "Scripts");
-        Directory.CreateDirectory(scriptsFolderPath);
+        string unityPath = Path.Combine(projectInfo.UnityProjectPath, "Assets", "Scripts");
+        Directory.CreateDirectory(unityPath);
 
         List<string> TemplatePaths = [];
         foreach (var id in projectInfo.TemplateIds)
             TemplatePaths.Add(TemplateService.GetTemplateById(config, id).TemplatePath);
 
         foreach (var templatePath in TemplatePaths)
-            FileSystemHelper.CopyDirectoryRecursively(Path.Combine(templatePath, projectInfo.UnityVersion), scriptsFolderPath);
+            FileSystemHelper.CopyDirectoryRecursively(Path.Combine(templatePath, projectInfo.UnityVersion), unityPath);
     }
 
     public static void DeleteProject(ProjectManifest project)
     {
-        if (!Directory.Exists(project.Path))
+        if (!Directory.Exists(project.UnityProjectPath) || !Directory.Exists(project.MetadataPath))
             throw new ArgumentNullException("Project is not existent");
 
-        Directory.Delete(project.Path, true);
+        Directory.Delete(project.MetadataPath, true);
+        Directory.Delete(project.UnityProjectPath, true);
     }
 
     public static void UpdateProject(ProjectManifest projectInfo)
     {
         if (projectInfo == null) throw new ArgumentNullException("Project is not existent");
-        ManifestService.WriteManifest(Path.Combine(projectInfo.Path, "manifest.json"), projectInfo);
+        ManifestService.WriteManifest(Path.Combine(projectInfo.MetadataPath, "manifest.json"), projectInfo);
     }
 
     public static List<ProjectManifest> ListProjects(UserConfig config)
     {
-
         string[] folders = Directory.GetDirectories(config.ProjectsFolder);
         List<ProjectManifest> projects = [];
 

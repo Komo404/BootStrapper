@@ -34,9 +34,9 @@ public partial class ProjectListViewModel : ViewModelBase
                 Name = "Mock1",
                 UnityVersion = "6000.0",
                 Description = "Mock Description",
-                Path = "C:",
+                MetadataPath = "C:",
+                UnityProjectPath = "",
                 TemplateIds = [],
-                ChangeHistory = [],
                 CreationDate = DateTime.Now,
                 Id = Guid.NewGuid()
             },
@@ -45,9 +45,9 @@ public partial class ProjectListViewModel : ViewModelBase
                 Name = "Mock2",
                 UnityVersion = "2022.3",
                 Description = "Description 2",
-                Path = "",
+                MetadataPath = "",
+                UnityProjectPath = "",
                 TemplateIds = [],
-                ChangeHistory = [],
                 CreationDate = DateTime.Now,
                 Id = Guid.NewGuid()
             },
@@ -56,9 +56,9 @@ public partial class ProjectListViewModel : ViewModelBase
                 Name = "Mock3",
                 UnityVersion = "2022.3",
                 Description = "Third one",
-                Path = "",
+                MetadataPath = "",
+                UnityProjectPath = "",
                 TemplateIds = [],
-                ChangeHistory = [],
                 CreationDate = DateTime.Now,
                 Id = Guid.NewGuid()
             }
@@ -76,9 +76,9 @@ public partial class ProjectListViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    private void GoToProjectInfo(ProjectManifest project)
+    private void GoToProjectInfo(ProjectManifest projectInfo)
     {
-        _navigation.CurrentView = new ProjectInfoViewModel(_navigation, project, _config);
+        _navigation.CurrentView = new ProjectInfoViewModel(_navigation, projectInfo, _config);
     }
 
     [RelayCommand]
