@@ -151,14 +151,16 @@ public partial class ProjectCreateViewModel : ViewModelBase
             unityProjectsFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Unity BootStrapper Projects");
         }
 
+        string cleanedName = string.Join("_", Name.Split(Path.GetInvalidFileNameChars()));
+
         ProjectManifest newProject = new ProjectManifest
         {
             Id = Guid.NewGuid(),
             Name = Name,
             Description  = Description,
             CreationDate = DateTime.Now,
-            MetadataPath = Path.Combine(_config.ProjectsFolder, Name),
-            UnityProjectPath = Path.Combine(unityProjectsFolderPath, Name),
+            MetadataPath = Path.Combine(_config.ProjectsFolder, cleanedName),
+            UnityProjectPath = Path.Combine(unityProjectsFolderPath, cleanedName),
             UnityVersion = ChoseUnityVersion,
             TemplateIds = AddedTemplateIds
         };

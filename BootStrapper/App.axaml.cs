@@ -11,6 +11,9 @@ using BootStrapper.Views;
 using System;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
+using Velopack;
+using Velopack.Exceptions;
 
 namespace BootStrapper;
 
@@ -30,7 +33,6 @@ public partial class App : Application // Ponto inicial da aplicação
             string configFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "BootStrapper", "config.json");
             UserConfig config = ConfigService.LoadConfig(configFilePath);
 
-
             var mainWindow = new MainWindow();
             IOpenExplorer explorer = new OpenExplorer(mainWindow);
 
@@ -38,9 +40,26 @@ public partial class App : Application // Ponto inicial da aplicação
             mainWindow.DataContext = new MainWindowViewModel(config, explorer);
 
             desktop.MainWindow = mainWindow;
-
+            _ = CheckForUpdatesAsync(config);
         }
 
         base.OnFrameworkInitializationCompleted();
+    }
+
+    private static async Task CheckForUpdatesAsync(UserConfig config)
+    {
+        if (!config.AutoUpdateEnabled) return;
+
+        try
+        {
+            var updManager = new UpdateManager("https://github.com/Komo404/BootStrapper");
+
+            var newVersion = await updManager.CheckForUpdatesAsync();
+            if (newVersion == null) return;
+
+            await updManager.DownloadUpdatesAsync(newVersion);
+            updManager.ApplyUpdatesAndRestart(newVersion);
+        }
+        catch (NotInstalledException) { } // Não importa em dev
     }
 }
