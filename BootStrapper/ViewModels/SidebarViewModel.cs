@@ -1,7 +1,6 @@
 ﻿using BootStrapper.Core.Models;
 using BootStrapper.ViewModels.Projects;
 using BootStrapper.ViewModels.Templates;
-using BootStrapper.Views;
 using CommunityToolkit.Mvvm.Input;
 using System;
 
@@ -10,12 +9,12 @@ namespace BootStrapper.ViewModels;
 public partial class SidebarViewModel: ViewModelBase
 {
     private readonly NavigationService? _navigation;
-    private readonly UserConfig? _config;
+    private readonly UserConfig _config;
 
     public SidebarViewModel(NavigationService navigation, UserConfig config)
     {
         _navigation = navigation;
-        _config = config ?? throw new ArgumentNullException(nameof(config));
+        _config = config;
     }
 
     [RelayCommand]

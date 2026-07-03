@@ -1,9 +1,4 @@
-﻿using BootStrapper.Views;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace BootStrapper.ViewModels;
+﻿namespace BootStrapper.ViewModels;
 
 public class CreditsViewModel : ViewModelBase
 {

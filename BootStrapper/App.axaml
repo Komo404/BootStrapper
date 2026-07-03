@@ -10,7 +10,7 @@
   
     <Application.Styles>
         <FluentTheme />
-        <StyleInclude Source="/Styles/horizontal.axaml"/>
+        <StyleInclude Source="avares://BootStrapper/Styles/horizontal.axaml"/>
     </Application.Styles>
 
     <Application.Resources>

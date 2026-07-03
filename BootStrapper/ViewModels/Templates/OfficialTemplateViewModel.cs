@@ -1,13 +1,9 @@
-﻿using Avalonia.Controls;
-using Avalonia.Markup.Xaml.Templates;
-using BootStrapper.Core.Models;
+﻿using BootStrapper.Core.Models;
 using BootStrapper.Core.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Text;
 
 namespace BootStrapper.ViewModels.Templates;
 
@@ -32,6 +28,9 @@ public partial class OfficialTemplatesViewModel : ViewModelBase
 
     public OfficialTemplatesViewModel()
     {
+        _navigation = null!;
+        _config = null!;
+
         Templates = 
         [
             new TemplateManifest()
@@ -76,6 +75,6 @@ public partial class OfficialTemplatesViewModel : ViewModelBase
     [RelayCommand]
     private void Action()
     {
-        // Download ou Add to Project, dependendo de IsInstalled
+        // Download or Add to Project, depending on IsInstalled
     }
 }
