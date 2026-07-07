@@ -1,5 +1,5 @@
-﻿using BootStrapper.Core.Models;
-using BootStrapper.Helpers;
+using BootStrapper.Core.Models;
+using BootStrapper.Core.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -19,7 +19,7 @@ public class ProjectService
         Directory.CreateDirectory(projectInfo.MetadataPath);
 
         string manifestPath = Path.Combine(projectInfo.MetadataPath, "manifest.json");
-        ManifestService.WriteManifest(manifestPath, projectInfo);
+        ManifestHelper.WriteManifest(manifestPath, projectInfo);
 
         string unityPath = Path.Combine(projectInfo.UnityProjectPath, "Assets", "Scripts");
         Directory.CreateDirectory(unityPath);
@@ -44,7 +44,7 @@ public class ProjectService
     public static void UpdateProject(ProjectManifest projectInfo)
     {
         if (projectInfo == null) throw new ArgumentNullException("Project is not existent");
-        ManifestService.WriteManifest(Path.Combine(projectInfo.MetadataPath, "manifest.json"), projectInfo);
+        ManifestHelper.WriteManifest(Path.Combine(projectInfo.MetadataPath, "manifest.json"), projectInfo);
     }
 
     public static List<ProjectManifest> ListProjects(UserConfig config)
@@ -59,7 +59,7 @@ public class ProjectService
             else if (!File.Exists(Path.Combine(folder, "manifest.json")))
                 continue;
             string manifestPath = Path.Combine(folder, "manifest.json");
-            ProjectManifest project = ManifestService.ReadManifest<ProjectManifest>(manifestPath);
+            ProjectManifest project = ManifestHelper.ReadManifest<ProjectManifest>(manifestPath);
             projects.Add(project);
         }
 

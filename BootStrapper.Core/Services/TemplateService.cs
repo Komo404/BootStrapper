@@ -1,6 +1,6 @@
-﻿using BootStrapper.Core.Models;
+using BootStrapper.Core.Models;
 using BootStrapper.Core.Services;
-using BootStrapper.Helpers;
+using BootStrapper.Core.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -31,7 +31,7 @@ public class TemplateService
             string manifestPath = Path.Combine(folder, $"manifest.json");
             if (File.Exists(manifestPath))
             {
-                TemplateManifest template = ManifestService.ReadManifest<TemplateManifest>(manifestPath);
+                TemplateManifest template = ManifestHelper.ReadManifest<TemplateManifest>(manifestPath);
                 templates.Add(template);
             }
         }
@@ -86,7 +86,7 @@ public class TemplateService
 
         Directory.CreateDirectory(templateInfo.TemplatePath); // Cria pasta do template
 
-        ManifestService.WriteManifest(templateInfo.ManifestPath, templateInfo); // Cria o manifest Json
+        ManifestHelper.WriteManifest(templateInfo.ManifestPath, templateInfo); // Cria o manifest Json
 
         foreach (string unityVersion in templateInfo.UnityVersions)
         {
@@ -122,7 +122,7 @@ public class TemplateService
 
     public static void UpdateTemplateManifest (TemplateManifest templateInfo)
     {
-        ManifestService.WriteManifest(templateInfo.ManifestPath, templateInfo);
+        ManifestHelper.WriteManifest(templateInfo.ManifestPath, templateInfo);
     }
 
     public static ObservableCollection<TemplateNode> BuildScriptTree(string path, string root)

@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.IO;
-using System.Text;
-
-namespace BootStrapper.Helpers;
+﻿namespace BootStrapper.Core.Helpers;
 
 public class FileSystemHelper
 {
     public static void CopyDirectoryRecursively(string sourcePath, string destinationPath)
     {
-        Directory.CreateDirectory(destinationPath); // Sem isso aparentemente dá erro
+        Directory.CreateDirectory(destinationPath); // Ensure the destination directory exists
 
         var folders = Directory.GetDirectories(sourcePath);
 

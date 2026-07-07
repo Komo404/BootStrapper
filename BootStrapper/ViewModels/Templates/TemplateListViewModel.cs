@@ -1,4 +1,4 @@
-﻿using BootStrapper.Core.Models;
+using BootStrapper.Core.Models;
 using BootStrapper.Core.Services;
 using BootStrapper.Helpers;
 using BootStrapper.Views;
