@@ -74,7 +74,7 @@ public class TemplateService
         throw new Exception($"Template with ID {templateId} not found.");
     }
 
-    public static TemplateManifest CreateTemplate(UserConfig config, TemplateManifest templateInfo, ObservableCollection<TemplateNode> TemplateScripts)
+    public static TemplateManifest CreateTemplate(UserConfig config, TemplateManifest templateInfo, List<TemplateNode> TemplateScripts)
     {   
         ArgumentNullException.ThrowIfNull(templateInfo, nameof(templateInfo));
         ArgumentNullException.ThrowIfNull(config, nameof(config));
@@ -125,63 +125,4 @@ public class TemplateService
         ManifestHelper.WriteManifest(templateInfo.ManifestPath, templateInfo);
     }
 
-    public static ObservableCollection<TemplateNode> BuildScriptTree(string path, string root)
-    {
-        // Le o path recursivamente e a cada iteraçao adiciona um node para o arquivo existente na pasta com if folder
-        ObservableCollection<TemplateNode> ScriptTree = [];
-        try
-        {
-            foreach (string file in Directory.GetFiles(path))
-            {
-                string extension = Path.GetExtension(file);
-                if (extension != null && (extension.Equals(".cs")))
-                {
-                    TemplateNode node = new TemplateNode
-                    {
-                        Name = Path.GetFileName(file),
-                        IsFolder = false,
-                        Children = [],
-                        UserScriptFolderPath = root,
-                        RelativePath = Path.GetRelativePath(root, file),
-                    };
-                    ScriptTree.Add(node);
-                }
-            }
-
-            foreach (string directory in Directory.GetDirectories(path))
-            {
-                var childs = BuildScriptTree(directory, root);
-                var folderNode = new TemplateNode
-                {
-                    Name = Path.GetFileName(directory),
-                    IsFolder = true,
-                    Children = new ObservableCollection<TemplateNode>(childs),
-                    UserScriptFolderPath = root,
-                    RelativePath = Path.GetRelativePath(root, directory),
-                };
-                ScriptTree.Add(folderNode); 
-            }
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(ex.Message);
-        }
-
-        return ScriptTree;
-    }
-
-    public static void RemoveTreeNode(ObservableCollection<TemplateNode> branch, TemplateNode selectedNode)
-    {
-        for (int i = 0; i <branch.Count(); i++)
-        {
-            var currentNode = branch[i];
-            if (currentNode == selectedNode)
-            {
-                branch.Remove(currentNode);
-                return;
-            }
-
-            RemoveTreeNode(currentNode.Children, selectedNode);
-        }
-    }
 }

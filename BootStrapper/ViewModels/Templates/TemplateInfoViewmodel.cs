@@ -50,7 +50,7 @@ public partial class TemplateInfoViewModel : ViewModelBase
         CreationDate = _template.CreationDate;
         AddedTags = new ObservableCollection<string>(_template.Tags);
         TemplatePath = _template.TemplatePath;
-        TemplateScripts = TemplateService.BuildScriptTree(TemplatePath, TemplatePath);
+        TemplateScripts = new ObservableCollection<TemplateNode>(ScriptTreeService.BuildScriptTree(TemplatePath, TemplatePath));
 
         UnityVersions = UnityService.GetUnityVersions(_config);
     }
@@ -122,15 +122,20 @@ public partial class TemplateInfoViewModel : ViewModelBase
     private void RemoveScript(TemplateNode selectedNode)
     {
         if (selectedNode is null) return;
+
+        var relativePath = selectedNode.RelativePath;
+        if (string.IsNullOrWhiteSpace(relativePath)) return;
+
         Debug.WriteLine(selectedNode);
-        TemplateService.RemoveTreeNode(TemplateScripts, selectedNode);
 
-            if(selectedNode.IsFolder == true)
-                Directory.Delete(Path.Combine(TemplatePath, selectedNode.RelativePath), true);
-            else {
-                File.Delete(Path.Combine(TemplatePath, selectedNode.RelativePath));
-            }
+        var fullPath = Path.Combine(TemplatePath, relativePath);
 
+        if (selectedNode.IsFolder == true)
+            Directory.Delete(fullPath, true);
+        else
+            File.Delete(fullPath);
+
+        refreshTemplateScripts();
     }
 
     [RelayCommand]
@@ -153,5 +158,9 @@ public partial class TemplateInfoViewModel : ViewModelBase
     {
         await TemplateService.DeleteTemplate(_config, _template.Id);
         _navigation.CurrentView = new TemplateListViewModel(_navigation, _config);
+    }
+    private void refreshTemplateScripts()
+    {
+        TemplateScripts = new ObservableCollection<TemplateNode>(ScriptTreeService.BuildScriptTree(TemplatePath, TemplatePath));
     }
 }

@@ -39,7 +39,7 @@ public partial class ProjectInfoViewModel : ViewModelBase
             projectTemplates.Add(TemplateService.GetTemplateById(config, id).Name);
         }
 
-        ProjectFiles = TemplateService.BuildScriptTree(_project.UnityProjectPath, _project.UnityProjectPath);
+        ProjectFiles = new ObservableCollection<TemplateNode>(ScriptTreeService.BuildScriptTree(_project.UnityProjectPath, _project.UnityProjectPath));
 
     }
 

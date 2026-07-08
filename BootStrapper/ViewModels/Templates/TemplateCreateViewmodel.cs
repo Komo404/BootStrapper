@@ -141,14 +141,20 @@ public partial class TemplateCreateViewModel : ViewModelBase
 
         UserScriptFolderPath = scripts;
 
-        TemplateScripts = TemplateService.BuildScriptTree(UserScriptFolderPath, UserScriptFolderPath);
+        TemplateScripts = new ObservableCollection<TemplateNode>(ScriptTreeService.BuildScriptTree(UserScriptFolderPath, UserScriptFolderPath));
     }
 
     [RelayCommand]
     private void RemoveScript(TemplateNode selectedNode)
     {
         if (selectedNode is null) return;
-        TemplateService.RemoveTreeNode(TemplateScripts, selectedNode);
+        var scripts = TemplateScripts.ToList();
+        if (ScriptTreeService.RemoveTreeNode(scripts, selectedNode))
+        {
+            // Rebind the tree after editing the selection, without reading discarded files back from disk.
+            TemplateScripts = [];
+            TemplateScripts = new ObservableCollection<TemplateNode>(scripts);
+        }
     }
 
     [RelayCommand]
@@ -169,7 +175,7 @@ public partial class TemplateCreateViewModel : ViewModelBase
             Tags = AddedTags.ToList()
         };
 
-        var createdTemplate = TemplateService.CreateTemplate(_config, newTemplateManifest, TemplateScripts);
+        var createdTemplate = TemplateService.CreateTemplate(_config, newTemplateManifest, new List<TemplateNode>(TemplateScripts));
 
         _navigation.CurrentView = new TemplateInfoViewModel(_navigation, createdTemplate, _config);
     }
