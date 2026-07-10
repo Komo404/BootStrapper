@@ -68,4 +68,22 @@ public static class ScriptTreeService
         return false;
     }
 
+    public static void CopyScriptNodeFromTreeToTemplatePath(List<TemplateNode> scriptTree, string templatePath)
+    {
+        foreach (TemplateNode node in scriptTree)
+        {
+            if (node.IsFolder)
+            {
+                string folderPath = Path.Combine(templatePath, node.Name);
+                Directory.CreateDirectory(folderPath);
+                CopyScriptNodeFromTreeToTemplatePath(node.Children, folderPath);
+            }
+            else
+            {
+                string sourceFilePath = Path.Combine(node.UserScriptFolderPath, node.RelativePath ?? throw new InvalidOperationException("RelativePath cannot be null."));
+                string destinationFilePath = Path.Combine(templatePath, node.Name);
+                File.Copy(sourceFilePath, destinationFilePath, true);
+            }
+        }
+    }
 }

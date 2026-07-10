@@ -1,30 +1,17 @@
 using BootStrapper.Core.Models;
-using BootStrapper.Core.Services;
 using BootStrapper.Core.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Security.Principal;
-using System.Text;
-using System.Xml.Linq;
 
 namespace BootStrapper.Core.Services;
 
 public class TemplateService
 {
 
-    /// <summary>
-    ///     Gets the Directories from the templates folder path
-    /// </summary>
-    /// <param name="templatesFolderPath"></param>
-    /// <returns>List of Type TemplateManifest</returns>
     public static List<TemplateManifest> GetAllTemplates(UserConfig config)
     {
         List<TemplateManifest> templates = [];
 
-        // 1. Ler todos os manifest JSON
-        string[] templatefolders = Directory.GetDirectories(config.TemplatesFolder);
+        // 1: Read all directories in the templates folder path
+        string[] templatefolders = Directory.GetDirectories(config.TemplatesFolder, "*", SearchOption.TopDirectoryOnly);
 
         foreach (string folder in templatefolders)
         {
@@ -39,28 +26,12 @@ public class TemplateService
         return templates;
     }
 
-
-    /// <summary>
-    ///     Get the  Directories from the templates folder path, filter by tag and returns the template of that tag
-    /// </summary>
-    /// <param name="config"></param>
-    /// <param name="tag"></param>
-    /// <returns></returns>
     public static List<TemplateManifest> GetTemplateByTag(UserConfig config, string tag)
     {
         List<TemplateManifest> allTemplates = GetAllTemplates(config);
         return allTemplates.FindAll(template => template.Tags.Contains(tag));
     }
 
-
-
-    /// <summary>
-    ///     Get the Directories from the templates folder path, filter by Id and  returns the template of that Id
-    /// </summary>
-    /// <param name="config"></param>
-    /// <param name="templateId"></param>
-    /// <returns></returns>
-    /// <exception cref="Exception"></exception>
     public static TemplateManifest GetTemplateById(UserConfig config, Guid templateId)
     {
         List<TemplateManifest> allTemplates = GetAllTemplates(config);
@@ -84,26 +55,18 @@ public class TemplateService
         templateInfo.TemplatePath = Path.Combine(config.TemplatesFolder, templateInfo.Name);
         templateInfo.ManifestPath = Path.Combine(templateInfo.TemplatePath, "manifest.json");
 
-        Directory.CreateDirectory(templateInfo.TemplatePath); // Cria pasta do template
+        Directory.CreateDirectory(templateInfo.TemplatePath); // Creates template folder
 
-        ManifestHelper.WriteManifest(templateInfo.ManifestPath, templateInfo); // Cria o manifest Json
 
         foreach (string unityVersion in templateInfo.UnityVersions)
         {
-            Directory.CreateDirectory(Path.Combine(templateInfo.TemplatePath, unityVersion));
+            string versionPath = Path.Combine(templateInfo.TemplatePath, unityVersion);
+            Directory.CreateDirectory(versionPath);
+            ScriptTreeService.CopyScriptNodeFromTreeToTemplatePath(TemplateScripts, versionPath);
         }
 
-        if (TemplateScripts != null)
-        {
-            foreach (TemplateNode node in TemplateScripts)
-            {
-                foreach (string unityVersion in templateInfo.UnityVersions)
-                {
-                    FileSystemHelper.CopyDirectoryRecursively(Path.Combine(node.UserScriptFolderPath, node.RelativePath), Path.Combine(templateInfo.TemplatePath, unityVersion, node.Name));
-                }
-            }
-        }
 
+        ManifestHelper.WriteManifest(templateInfo.ManifestPath, templateInfo);
         return templateInfo;
         }
 
@@ -124,5 +87,4 @@ public class TemplateService
     {
         ManifestHelper.WriteManifest(templateInfo.ManifestPath, templateInfo);
     }
-
 }
