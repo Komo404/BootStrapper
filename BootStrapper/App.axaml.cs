@@ -19,6 +19,8 @@ namespace BootStrapper;
 
 public partial class App : Application // Ponto inicial da aplicação
 {
+    internal static string ConfigFilePath => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "BootStrapper", "config.json");
+
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
@@ -30,8 +32,7 @@ public partial class App : Application // Ponto inicial da aplicação
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             // Carrega configurações do usuário
-            string configFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "BootStrapper", "config.json");
-            UserConfig config = ConfigService.LoadConfig(configFilePath);
+            UserConfig config = ConfigService.LoadConfig(ConfigFilePath);
 
             var mainWindow = new MainWindow();
             IOpenExplorer explorer = new OpenExplorer(mainWindow);

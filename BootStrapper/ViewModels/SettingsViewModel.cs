@@ -1,70 +1,46 @@
-using BootStrapper.Core.Models;
+﻿using BootStrapper.Core.Models;
 using BootStrapper.Core.Services;
-using BootStrapper.ViewModels.Projects;
-using BootStrapper.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.IO;
 using System.Threading.Tasks;
 
 namespace BootStrapper.ViewModels;
 
 public partial class SettingsViewModel : ViewModelBase
 {
-    private readonly UserConfig _config;
-
     [ObservableProperty] private bool autoLaunchProject;
     [ObservableProperty] private bool checkForUpdates;
-    [ObservableProperty] private string customUnityEditorsPath;
-    [ObservableProperty] private string customUnityProjectsFolderPath;
+    [ObservableProperty] private string unityProjectsFolderPath = null!;
 
-    private readonly NavigationService _navigation;
-
+    private readonly NavigationService _navigation = null!;
+    private readonly UserConfig _config = null!;
     public string BootStrapperPath { get; set; } = string.Empty;
-    public string ProjectsPath { get; set; } = string.Empty;
     public string TemplatesPath { get; set; } = string.Empty;
+    public string ProjectsPath { get; set; } = string.Empty;
 
     public SettingsViewModel(NavigationService navigation, UserConfig config)
     {
         _navigation = navigation;
         _config = config;
 
-        if (config.CustomUnityEditorsPath == string.Empty)
-            CustomUnityEditorsPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "Unity", "Hub", "Editor");
-        else { CustomUnityEditorsPath = config.CustomUnityEditorsPath; }
-
-        if (config.CustomUnityProjectsFolderPath == string.Empty)
-            CustomUnityProjectsFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Unity BootStrapper Projects");
-        else { CustomUnityProjectsFolderPath = config.CustomUnityProjectsFolderPath; }
-
+        UnityProjectsFolderPath = config.UnityProjectsFolderPath;
         AutoLaunchProject = config.AutoLaunchProject;
         CheckForUpdates = config.AutoUpdateEnabled;
-
-        ProjectsPath = config.ProjectsFolder;
-        TemplatesPath = config.TemplatesFolder;
-        BootStrapperPath = Path.GetDirectoryName(TemplatesPath);
+        TemplatesPath = config.TemplatesFolderPath;
+        BootStrapperPath = config.BootStrapperFolderPath;
+        ProjectsPath = config.UnityProjectsFolderPath;
     }
 
     public SettingsViewModel() { }
-
-    [RelayCommand]
-    private async Task ChangeUnityEditorPath()
-    {
-        string? newUnityEditorPath = await _navigation.Explorer.OpenFolderDialogAsync();
-        if (newUnityEditorPath != null)
-            CustomUnityEditorsPath = newUnityEditorPath;
-        SaveSettings();
-    }
 
     [RelayCommand]
     private async Task ChangeUnityProjectsFolderPath()
     {
         string? newUnityProjectsFolderPath = await _navigation.Explorer.OpenFolderDialogAsync();
         if (newUnityProjectsFolderPath != null)
-            CustomUnityProjectsFolderPath = newUnityProjectsFolderPath;
+            UnityProjectsFolderPath = newUnityProjectsFolderPath;
+        else
+            UnityProjectsFolderPath = _config.UnityProjectsFolderPath;
         SaveSettings();
     }
 
@@ -73,33 +49,26 @@ public partial class SettingsViewModel : ViewModelBase
     {
         _config.AutoLaunchProject = AutoLaunchProject;
         _config.AutoUpdateEnabled = CheckForUpdates;
-        _config.CustomUnityEditorsPath = CustomUnityEditorsPath;
-        _config.CustomUnityProjectsFolderPath = CustomUnityProjectsFolderPath;
-        ConfigService.SaveConfig(Path.Combine(BootStrapperPath, "config.json"), _config);
+        _config.UnityProjectsFolderPath = UnityProjectsFolderPath;
+        ConfigService.SaveConfig(App.ConfigFilePath, _config);
     }
 
     [RelayCommand]
     private void ResetSettings()
     {
-        ConfigService.CreateDefaultConfig(Path.Combine(BootStrapperPath, "config.json"));
-        var newConfig = ConfigService.LoadConfig(Path.Combine(BootStrapperPath, "config.json"));
+        ConfigService.CreateDefaultConfig(App.ConfigFilePath);
+        var newResetedConfig = ConfigService.LoadConfig(App.ConfigFilePath);
 
-        _config.AutoLaunchProject = newConfig.AutoLaunchProject;
-        _config.AutoUpdateEnabled = newConfig.AutoUpdateEnabled;
-        _config.CustomUnityEditorsPath = newConfig.CustomUnityEditorsPath;
-        _config.CustomUnityProjectsFolderPath = newConfig.CustomUnityProjectsFolderPath;
+        _config.AutoLaunchProject = newResetedConfig.AutoLaunchProject;
+        _config.AutoUpdateEnabled = newResetedConfig.AutoUpdateEnabled;
+        _config.UnityProjectsFolderPath = newResetedConfig.UnityProjectsFolderPath;
 
-        RefreshUI(newConfig);
+        RefreshUI(newResetedConfig);
     }
 
     private void RefreshUI(UserConfig newConfig)
     {
-        if (newConfig.CustomUnityEditorsPath == string.Empty)
-            CustomUnityEditorsPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "Unity", "Hub", "Editor");
-
-        if (newConfig.CustomUnityProjectsFolderPath == string.Empty)
-            CustomUnityProjectsFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Unity BootStrapper Projects");
-
+        UnityProjectsFolderPath = newConfig.UnityProjectsFolderPath;
         AutoLaunchProject = newConfig.AutoLaunchProject;
         CheckForUpdates = newConfig.AutoUpdateEnabled;
     }

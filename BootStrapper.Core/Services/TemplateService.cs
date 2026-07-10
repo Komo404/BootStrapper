@@ -11,7 +11,7 @@ public class TemplateService
         List<TemplateManifest> templates = [];
 
         // 1: Read all directories in the templates folder path
-        string[] templatefolders = Directory.GetDirectories(config.TemplatesFolder, "*", SearchOption.TopDirectoryOnly);
+        string[] templatefolders = Directory.GetDirectories(config.TemplatesFolderPath, "*", SearchOption.TopDirectoryOnly);
 
         foreach (string folder in templatefolders)
         {
@@ -52,7 +52,7 @@ public class TemplateService
 
         templateInfo.Id = Guid.NewGuid();
         templateInfo.CreationDate = DateTime.Now;
-        templateInfo.TemplatePath = Path.Combine(config.TemplatesFolder, templateInfo.Name);
+        templateInfo.TemplatePath = Path.Combine(config.TemplatesFolderPath, templateInfo.Name);
         templateInfo.ManifestPath = Path.Combine(templateInfo.TemplatePath, "manifest.json");
 
         Directory.CreateDirectory(templateInfo.TemplatePath); // Creates template folder

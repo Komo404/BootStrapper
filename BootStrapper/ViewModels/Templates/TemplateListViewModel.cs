@@ -67,7 +67,7 @@ public partial class TemplateListViewModel : ViewModelBase
     [RelayCommand]
     private void OpenExplorer()
     {
-        _navigation.Explorer.OpenBootStrapperFolder(_config.TemplatesFolder);
+        _navigation.Explorer.OpenBootStrapperFolder(_config.TemplatesFolderPath);
     }
 
     [RelayCommand]
