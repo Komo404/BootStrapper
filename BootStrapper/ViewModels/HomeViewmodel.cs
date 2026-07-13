@@ -1,12 +1,12 @@
 using BootStrapper.Core.Models;
 using BootStrapper.Core.Services;
 using BootStrapper.ViewModels.Projects;
-using BootStrapper.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 
 namespace BootStrapper.ViewModels;
 
@@ -27,6 +27,9 @@ public partial class HomeViewModel : ViewModelBase
 
     public HomeViewModel()
     {
+        _navigation = null!; // Not null (editor)
+        _config = null!;
+
         Projects = new ObservableCollection<ProjectManifest>
         {
             new ProjectManifest
@@ -34,7 +37,6 @@ public partial class HomeViewModel : ViewModelBase
                 Name = "Mock1",
                 UnityVersion = "6000f",
                 Description = "Description",
-                MetadataPath = "C:",
                 UnityProjectPath = "",
                 TemplateIds = [],
                 CreationDate = DateTime.Now,
@@ -45,7 +47,6 @@ public partial class HomeViewModel : ViewModelBase
                 Name = "Mock2",
                 UnityVersion = "UV",
                 Description = "DESC",
-                MetadataPath = "/path",
                 UnityProjectPath = "",
                 TemplateIds = [],
                 CreationDate = DateTime.Now,
@@ -56,7 +57,6 @@ public partial class HomeViewModel : ViewModelBase
                 Name = "Mock3",
                 UnityVersion = "",
                 Description = "",
-                MetadataPath = "",
                 UnityProjectPath = "",
                 TemplateIds = [],
                 CreationDate = DateTime.Now,
@@ -90,6 +90,6 @@ public partial class HomeViewModel : ViewModelBase
             throw new InvalidOperationException("NavigationService não foi inicializado");
 
         ProjectService.DeleteProject(project);
-        projects.Remove(project);
+        Projects.Remove(project);
     }
 }

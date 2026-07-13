@@ -1,20 +1,19 @@
 using BootStrapper.Core.Models;
 using BootStrapper.Core.Services;
-using BootStrapper.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Reflection.Metadata;
+using System.Threading.Tasks;
 
 namespace BootStrapper.ViewModels.Projects;
 
 public partial class ProjectInfoViewModel : ViewModelBase
 {
-    private readonly NavigationService _navigation;
-    private readonly ProjectManifest _project;
-    private readonly UserConfig _config;
+    private readonly NavigationService _navigation = null!;
+    private readonly ProjectManifest _project = null!;
+    private readonly UserConfig _config = null!;
 
     [ObservableProperty] public string name = string.Empty;
     public string Description { get; set; } = string.Empty;
@@ -67,7 +66,7 @@ public partial class ProjectInfoViewModel : ViewModelBase
     [RelayCommand]
     private void UpdateProject()
     {
-        _project.Name = name;
+        _project.Name = Name;
         _project.Description = Description;
         ProjectService.UpdateProject(_project);
     }

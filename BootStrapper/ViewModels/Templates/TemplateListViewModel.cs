@@ -1,7 +1,5 @@
-using BootStrapper.Core.Models;
+﻿using BootStrapper.Core.Models;
 using BootStrapper.Core.Services;
-using BootStrapper.Helpers;
-using BootStrapper.Views;
 using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
@@ -12,9 +10,9 @@ namespace BootStrapper.ViewModels.Templates;
 
 public partial class TemplateListViewModel : ViewModelBase
 {
-    private readonly NavigationService _navigation;
-    private readonly UserConfig _config;
-    private readonly List<TemplateManifest> _templates;
+    private readonly NavigationService _navigation = null!;
+    private readonly UserConfig _config = null!;
+    private readonly List<TemplateManifest> _templates = null!;
 
     public ObservableCollection<TemplateManifest> TemplateList { get; set; }
 
@@ -28,6 +26,7 @@ public partial class TemplateListViewModel : ViewModelBase
 
     public TemplateListViewModel()
     {
+
         TemplateList = new ObservableCollection<TemplateManifest>
         {
             new TemplateManifest

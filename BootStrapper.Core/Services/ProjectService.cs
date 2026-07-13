@@ -1,68 +1,71 @@
 using BootStrapper.Core.Models;
 using BootStrapper.Core.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Reflection.Metadata;
-using System.Text;
 
 namespace BootStrapper.Core.Services;
 
-public class ProjectService
+public static class ProjectService
 {
-    public static void CreateProject(UserConfig config, ProjectManifest projectInfo)
+    public static void CreateProjectManifestAndCopyTemplates(UserConfig config, ProjectManifest project)
     {
-        if (Directory.Exists(projectInfo.MetadataPath))
-            throw new Exception("A project with --Wha, What? THIS NAME? Exists.");
+        string manifestPath = Path.Combine(project.UnityProjectPath, "manifest.json");
 
-        Directory.CreateDirectory(projectInfo.MetadataPath);
-
-        string manifestPath = Path.Combine(projectInfo.MetadataPath, "manifest.json");
-        ManifestHelper.WriteManifest(manifestPath, projectInfo);
-
-        string unityPath = Path.Combine(projectInfo.UnityProjectPath, "Assets", "Scripts");
+        string unityPath = Path.Combine(project.UnityProjectPath, "Assets", "Scripts");
         Directory.CreateDirectory(unityPath);
 
         List<string> TemplatePaths = [];
-        foreach (var id in projectInfo.TemplateIds)
+        foreach (var id in project.TemplateIds)
             TemplatePaths.Add(TemplateService.GetTemplateById(config, id).TemplatePath);
 
-        foreach (var templatePath in TemplatePaths)
-            FileSystemHelper.CopyDirectoryRecursively(Path.Combine(templatePath, projectInfo.UnityVersion), unityPath);
+        var sources = TemplatePaths.Select(path => Path.Combine(path, project.UnityVersion)).ToList();
+        foreach (string source in sources)
+            if (!Directory.Exists(source))
+                throw new DirectoryNotFoundException($"Template version directory not found: {source}");
+
+        foreach (string source in sources)
+            FileSystemHelper.CopyDirectoryRecursively(source, unityPath);
+
+        ManifestHelper.WriteManifest(manifestPath, project);
     }
 
-    public static void DeleteProject(ProjectManifest project)
+    public static void UnlistProject(ProjectManifest project)
     {
-        if (!Directory.Exists(project.UnityProjectPath) || !Directory.Exists(project.MetadataPath))
-            throw new ArgumentNullException("Project is not existent");
+        if (project == null) throw new ArgumentNullException("Project is not existent");
+        string manifestPath = Path.Combine(project.UnityProjectPath, "manifest.json");
 
-        Directory.Delete(project.MetadataPath, true);
-        Directory.Delete(project.UnityProjectPath, true);
+        if (File.Exists(manifestPath))
+            File.Delete(manifestPath);
     }
 
     public static void UpdateProject(ProjectManifest projectInfo)
     {
         if (projectInfo == null) throw new ArgumentNullException("Project is not existent");
-        ManifestHelper.WriteManifest(Path.Combine(projectInfo.MetadataPath, "manifest.json"), projectInfo);
+        ManifestHelper.WriteManifest(Path.Combine(projectInfo.UnityProjectPath, "manifest.json"), projectInfo);
     }
 
     public static List<ProjectManifest> ListProjects(UserConfig config)
     {
-        string[] folders = Directory.GetDirectories(config.ProjectsFolder);
+        string[] folders = Directory.GetDirectories(config.UnityProjectsFolderPath, "*", SearchOption.TopDirectoryOnly);
         List<ProjectManifest> projects = [];
 
         foreach (string folder in folders)
         {
-            if (!Directory.Exists(folder))
-                continue;
-            else if (!File.Exists(Path.Combine(folder, "manifest.json")))
-                continue;
+            if (!Directory.Exists(folder)) continue; // just in case the folder was deleted between the time we got the list and now
+            else if (!File.Exists(Path.Combine(folder, "manifest.json"))) continue;
+
             string manifestPath = Path.Combine(folder, "manifest.json");
             ProjectManifest project = ManifestHelper.ReadManifest<ProjectManifest>(manifestPath);
             projects.Add(project);
         }
 
         return projects;
+    }
+    public static void DeleteProject(ProjectManifest project)
+    {
+        ArgumentNullException.ThrowIfNull(project);
+
+        if (!Directory.Exists(project.UnityProjectPath))
+            throw new DirectoryNotFoundException($"Project directory not found: {project.UnityProjectPath}");
+
+        Directory.Delete(project.UnityProjectPath, true);
     }
 }

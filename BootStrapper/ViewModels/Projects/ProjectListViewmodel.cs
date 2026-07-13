@@ -1,19 +1,18 @@
 using BootStrapper.Core.Models;
 using BootStrapper.Core.Services;
-using BootStrapper.Views;
-using BootStrapper.Views.Projects;
 using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 
 namespace BootStrapper.ViewModels.Projects;
 
 public partial class ProjectListViewModel : ViewModelBase
 {
-    private readonly NavigationService _navigation;
-    private readonly UserConfig _config;
-    private readonly List<ProjectManifest> _projects;
+    private readonly NavigationService _navigation  = null!;
+    private readonly UserConfig _config  = null!;
+    private readonly List<ProjectManifest> _projects  = null!;
     public ObservableCollection<ProjectManifest> ProjectList { get; set; }
 
     public ProjectListViewModel(NavigationService navigation, UserConfig config)
@@ -34,7 +33,6 @@ public partial class ProjectListViewModel : ViewModelBase
                 Name = "Mock1",
                 UnityVersion = "6000.0",
                 Description = "Mock Description",
-                MetadataPath = "C:",
                 UnityProjectPath = "",
                 TemplateIds = [],
                 CreationDate = DateTime.Now,
@@ -45,7 +43,6 @@ public partial class ProjectListViewModel : ViewModelBase
                 Name = "Mock2",
                 UnityVersion = "2022.3",
                 Description = "Description 2",
-                MetadataPath = "",
                 UnityProjectPath = "",
                 TemplateIds = [],
                 CreationDate = DateTime.Now,
@@ -56,7 +53,6 @@ public partial class ProjectListViewModel : ViewModelBase
                 Name = "Mock3",
                 UnityVersion = "2022.3",
                 Description = "Third one",
-                MetadataPath = "",
                 UnityProjectPath = "",
                 TemplateIds = [],
                 CreationDate = DateTime.Now,
@@ -64,25 +60,22 @@ public partial class ProjectListViewModel : ViewModelBase
             }
         };
     }
-    [RelayCommand]
-    private void OpenUnity(ProjectManifest project)
+    [RelayCommand] private void OpenUnity(ProjectManifest project)
     {
         UnityService.OpenUnityProject(_config, project);
     }
-    [RelayCommand]
-    private void GoToProjectCreate()
+
+    [RelayCommand] private void GoToProjectCreate()
     {
         _navigation.CurrentView = new ProjectCreateViewModel(_navigation, _config);
     }
 
-    [RelayCommand]
-    private void GoToProjectInfo(ProjectManifest projectInfo)
+    [RelayCommand] private void GoToProjectInfo(ProjectManifest projectInfo)
     {
         _navigation.CurrentView = new ProjectInfoViewModel(_navigation, projectInfo, _config);
     }
 
-    [RelayCommand]
-    private void DeleteProject(ProjectManifest project)
+    [RelayCommand] private void DeleteProject(ProjectManifest project)
     {
         ProjectService.DeleteProject(project);
         ProjectList.Remove(project);
