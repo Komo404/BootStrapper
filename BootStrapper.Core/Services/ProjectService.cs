@@ -59,13 +59,4 @@ public static class ProjectService
 
         return projects;
     }
-    public static void DeleteProject(ProjectManifest project)
-    {
-        ArgumentNullException.ThrowIfNull(project);
-
-        if (!Directory.Exists(project.UnityProjectPath))
-            throw new DirectoryNotFoundException($"Project directory not found: {project.UnityProjectPath}");
-
-        Directory.Delete(project.UnityProjectPath, true);
-    }
 }

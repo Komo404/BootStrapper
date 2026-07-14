@@ -60,9 +60,9 @@ public partial class ProjectListViewModel : ViewModelBase
             }
         };
     }
-    [RelayCommand] private void OpenUnity(ProjectManifest project)
+    [RelayCommand] private async Task OpenUnity(ProjectManifest project)
     {
-        UnityService.OpenUnityProject(_config, project);
+        await UnityService.OpenUnityProjectAsync(project);
     }
 
     [RelayCommand] private void GoToProjectCreate()
@@ -77,7 +77,7 @@ public partial class ProjectListViewModel : ViewModelBase
 
     [RelayCommand] private void DeleteProject(ProjectManifest project)
     {
-        ProjectService.DeleteProject(project);
+        UnityService.DeleteUnityProject(project);
         ProjectList.Remove(project);
     }
 }

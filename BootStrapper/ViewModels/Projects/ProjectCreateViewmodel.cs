@@ -1,7 +1,6 @@
 using BootStrapper.Core.Models;
 using BootStrapper.Core.Services;
 using BootStrapper.ViewModels.Templates;
-using BootStrapper.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
@@ -9,24 +8,22 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace BootStrapper.ViewModels.Projects;
 
 public partial class ProjectCreateViewModel : ViewModelBase
 {
-    private readonly NavigationService _navigation;
-    private readonly UserConfig _config;
+    private readonly NavigationService _navigation = null!;
+    private readonly UserConfig _config = null!;
     public string Name { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
     public string ChoseUnityVersion { get; set;  } = string.Empty;
-    public ObservableCollection<string> UnityVersions { get; set; } = [];
+    public ObservableCollection<string> UnityVersions { get; } = [];
     public ObservableCollection<TemplateManifest> Templates { get; set; } = [];
     public IReadOnlyList<string> Tags { get; } = ["2D", "3D", "Input System", "Cinemachine", "URP", "HDRP", "Addressables", "Localization", "NavMesh", "Mobile"];
     [ObservableProperty] private string actualFilter = string.Empty;
     public enum TemplateBrowsingMode { Official, Personal }
-
     [ObservableProperty] private TemplateBrowsingMode browsingMode = TemplateBrowsingMode.Official;
     public string BrowsingTitle => BrowsingMode == TemplateBrowsingMode.Official ? "Official Templates" : "My Templates";
     public ObservableCollection<TemplateManifest> BrowsableTemplates { get; set; } = [];
@@ -38,9 +35,10 @@ public partial class ProjectCreateViewModel : ViewModelBase
     {
         _navigation = navigation;
         _config = config;
+        foreach (string version in UnityService.GetUnityVersions()) UnityVersions.Add(version);
 
         Templates = new ObservableCollection<TemplateManifest>(TemplateService.GetAllTemplates(_config));
-        UnityVersions = new ObservableCollection<string>(UnityService.GetUnityVersions(_config));
+
         ChangeBrowserTemplates();
     }
 
@@ -49,8 +47,7 @@ public partial class ProjectCreateViewModel : ViewModelBase
         {
             new TemplateManifest
             {
-                Name = "Mock1",
-                Description = "",
+                Name = "Mock1", Description = "",
                 Category = new TemplateCategory(),
                 UnityVersions = [],
                 Tags = new List<string>(),
@@ -90,8 +87,7 @@ public partial class ProjectCreateViewModel : ViewModelBase
 
     private void ChangeBrowserTemplates()
     {
-        var allTemplates = TemplateService.GetAllTemplates(_config);
-        var officialTemplates = TemplateService.GetAllTemplates(_config);
+        List<TemplateManifest> officialTemplates = TemplateService.GetAllTemplates(_config);
 
         BrowsableTemplates.Clear();
         if (BrowsingMode == TemplateBrowsingMode.Official)
@@ -153,14 +149,13 @@ public partial class ProjectCreateViewModel : ViewModelBase
             Name = Name,
             Description  = Description,
             CreationDate = DateTime.Now,
-
             UnityProjectPath = Path.Combine(unityProjectsFolderPath, cleanedName),
             UnityVersion = ChoseUnityVersion,
             TemplateIds = AddedTemplateIds
         };
 
-        await UnityService.CreateUnityProjectAsync(_config, newProject); // Unity cria Assets/, ProjectSettings/, etc
-        ProjectService.CreateProjectManifestAndCopyTemplates(_config, newProject);                // só grava manifest e copia os templates
+        await UnityService.CreateUnityProjectAsync(newProject);
+        ProjectService.CreateProjectManifestAndCopyTemplates(_config, newProject);
         _navigation.CurrentView = new ProjectInfoViewModel(_navigation, newProject, _config);
     }
 

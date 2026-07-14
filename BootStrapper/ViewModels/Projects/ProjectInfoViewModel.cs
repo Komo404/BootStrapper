@@ -51,12 +51,12 @@ public partial class ProjectInfoViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    private void OpenProject() => UnityService.OpenUnityProject(_config, _project);
+    private Task OpenProject() => UnityService.OpenUnityProjectAsync(_project);
 
     [RelayCommand]
     private void DeleteProject()
     {
-        ProjectService.DeleteProject(_project);
+        UnityService.DeleteUnityProject(_project);
         _navigation.CurrentView = new ProjectListViewModel(_navigation, _config);
     }
 

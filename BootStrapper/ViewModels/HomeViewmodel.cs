@@ -66,12 +66,12 @@ public partial class HomeViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    private void OpenUnity(ProjectManifest project)
+    private async Task OpenUnity(ProjectManifest project)
     {
         if (_navigation is null)
             throw new InvalidOperationException("NavigationService não foi inicializado");
 
-        UnityService.OpenUnityProject(_config, project);
+        await UnityService.OpenUnityProjectAsync(project);
     }
 
     [RelayCommand]
@@ -89,7 +89,7 @@ public partial class HomeViewModel : ViewModelBase
         if (_navigation is null)
             throw new InvalidOperationException("NavigationService não foi inicializado");
 
-        ProjectService.DeleteProject(project);
+        UnityService.DeleteUnityProject(project);
         Projects.Remove(project);
     }
 }

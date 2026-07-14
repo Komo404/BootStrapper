@@ -1,25 +1,22 @@
 using BootStrapper.Core.Models;
 using BootStrapper.Core.Services;
-using BootStrapper.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace BootStrapper.ViewModels.Templates;
 
 public partial class TemplateInfoViewModel : ViewModelBase
 {
-    private readonly NavigationService _navigation;
-    private readonly TemplateManifest _template;
-    private readonly UserConfig _config;
+    private readonly NavigationService _navigation = null!;
+    private readonly TemplateManifest _template = null!;
+    private readonly UserConfig _config = null!;
 
     [ObservableProperty] public string name = string.Empty;
     public string Description { get; set; } = string.Empty;
@@ -30,7 +27,7 @@ public partial class TemplateInfoViewModel : ViewModelBase
     public IReadOnlyList<TemplateCategory> Categories { get; } = Enum.GetValues<TemplateCategory>();
     public ObservableCollection<string> AddedUnityVersions { get; set; } = [];
     public string ManualUnityVersion { get; set; } = string.Empty;
-    public List<string> UnityVersions { get; set; } = [];
+    public ObservableCollection<string> UnityVersions { get; } = [];
     public string UnityVersion { get; set; } = string.Empty;
     public string TemplatePath { get; } = string.Empty;
 
@@ -42,6 +39,7 @@ public partial class TemplateInfoViewModel : ViewModelBase
         _navigation = navigation;
         _template = template;
         _config = config;
+        foreach (string version in UnityService.GetUnityVersions()) UnityVersions.Add(version);
 
         name = _template.Name;
         Description = _template.Description;
@@ -52,24 +50,18 @@ public partial class TemplateInfoViewModel : ViewModelBase
         TemplatePath = _template.TemplatePath;
         TemplateScripts = new ObservableCollection<TemplateNode>(ScriptTreeService.BuildScriptTree(TemplatePath, TemplatePath));
 
-        UnityVersions = UnityService.GetUnityVersions(_config);
+
     }
 
     public TemplateInfoViewModel()
     {
-        name = "TEMPLATE NAME";
+        name = "Template Name";
         AddedUnityVersions = ["Teste", "Teste2"];
-        AddedTags = ["TagE 1", "TagE 2", "TagE 3"];
+        AddedTags = ["E.Tag 1", "E.Tag 2", "E.Tag 3"];
         TemplateScripts = [
-            new TemplateNode()
-            {
-                Name = "Teste",
-                Children = [],
-                IsFolder = true,
-                RelativePath = "",
-                UserScriptFolderPath = ""
-            }
-            ];
+            new TemplateNode() {
+                Name = "Teste", Children = [], IsFolder = true, RelativePath = "", UserScriptFolderPath = ""
+            }];
     }
 
     [RelayCommand]

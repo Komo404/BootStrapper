@@ -13,12 +13,11 @@ namespace BootStrapper.ViewModels.Templates;
 
 public partial class TemplateCreateViewModel : ViewModelBase
 {
-    private readonly NavigationService _navigation;
-    private readonly UserConfig _config;
-    public string UserScriptFolderPath;
+    private readonly NavigationService _navigation = null!;
+    private readonly UserConfig _config = null!;
+    public string UserScriptFolderPath = string.Empty;
 
-    [ObservableProperty]
-    private ObservableCollection<TemplateNode> templateScripts = [];
+    [ObservableProperty] private ObservableCollection<TemplateNode> templateScripts = [];
     public string Name { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
 
@@ -27,10 +26,10 @@ public partial class TemplateCreateViewModel : ViewModelBase
     public IReadOnlyList<TemplateCategory> Categories { get; } = Enum.GetValues<TemplateCategory>();
     public IReadOnlyList<string> Tags { get; } = [ "2D", "3D", "Input System", "Cinemachine", "URP", "HDRP", "Addressables", "Localization", "NavMesh", "Mobile"];
 
-    public string UnityVersion { get; set; } = String.Empty;
+    public string UnityVersion { get; set; } = string.Empty;
     public ObservableCollection<string> SelectedUnityVersions { get; set; } = [];
     public string ManualUnityVersion { get; set; } = string.Empty;
-    public List<string> UnityVersions { get; set; } = [];
+    public ObservableCollection<string> UnityVersions { get; } = [];
     public string Author { get; set; } = string.Empty;
 
     [ObservableProperty] private TemplateNode? selectedNode;
@@ -39,13 +38,16 @@ public partial class TemplateCreateViewModel : ViewModelBase
     {
         _navigation = navigation;
         _config = config;
+        foreach (string version in UnityService.GetUnityVersions()) UnityVersions.Add(version);
 
-        UnityVersions = UnityService.GetUnityVersions(_config);
+
+
     }
 
     public TemplateCreateViewModel()
     {
-        UnityVersions = ["Ver1", "Ver2"];
+        UnityVersions.Add("Ver1");
+        UnityVersions.Add("Ver2");
         AddedTags = ["Camera"];
         TemplateScripts = new ObservableCollection<TemplateNode>()
         {
@@ -138,6 +140,7 @@ public partial class TemplateCreateViewModel : ViewModelBase
     private async Task AddUserScriptFolder()
     {
         var scripts = await _navigation.Explorer.OpenFolderDialogAsync();
+        if (string.IsNullOrWhiteSpace(scripts)) return;
 
         UserScriptFolderPath = scripts;
 
@@ -160,7 +163,10 @@ public partial class TemplateCreateViewModel : ViewModelBase
     [RelayCommand]
     private void CreateTemplate()
     {
-        //if (string.IsNullOrWhiteSpace(Name) || string.IsNullOrWhiteSpace(Description) || UnityVersions == null || AddedTags == null || TemplateScripts == null)  return;
+        if (string.IsNullOrWhiteSpace(Name) || string.IsNullOrWhiteSpace(Description) || UnityVersions == null || AddedTags == null || TemplateScripts == null)
+        {
+            return;
+        }
 
         var newTemplateManifest = new TemplateManifest
         {

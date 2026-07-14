@@ -44,7 +44,6 @@ public static class ConfigService
         UserConfig defaultConfig = new UserConfig
         {
             UnityProjectsFolderPath = GetPathsHelper.GetUnityProjectsFolderPath(),
-            ProjectsFolder = Path.Combine(bootStrapperFolderPath, "Projects"),
             BootStrapperFolderPath = bootStrapperFolderPath,
             TemplatesFolderPath = Path.Combine(bootStrapperFolderPath, "Templates"),
             AutoLaunchProject = true,
@@ -54,7 +53,6 @@ public static class ConfigService
         if (!Directory.Exists(defaultConfig.TemplatesFolderPath))
             Directory.CreateDirectory(defaultConfig.TemplatesFolderPath);
 
-        Directory.CreateDirectory(defaultConfig.ProjectsFolder);
         SaveConfig(configFilePath, defaultConfig);
     }
 }
