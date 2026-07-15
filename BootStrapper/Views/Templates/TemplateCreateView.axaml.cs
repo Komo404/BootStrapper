@@ -1,6 +1,5 @@
-using Avalonia;
+using BootStrapper.ViewModels.Templates;
 using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
 
 namespace BootStrapper.Views.Templates;
 
@@ -9,5 +8,10 @@ public partial class TemplateCreateView : UserControl
     public TemplateCreateView()
     {
         InitializeComponent();
+        Loaded += async (_, _) =>
+        {
+            if (DataContext is TemplateCreateViewModel viewModel)
+                await viewModel.LoadUnityVersionsCommand.ExecuteAsync(null);
+        };
     }
 }

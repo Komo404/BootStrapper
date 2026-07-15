@@ -28,6 +28,7 @@
                 <!-- CRIAÇÃO DO PROJETO -->
                 <Border Grid.Column="0" Background="#37345D" Padding="24">
                     <StackPanel Spacing="14">
+                    <TextBlock Text="{Binding UnityVersionsStatus}" TextWrapping="Wrap" />
 
                         <StackPanel Spacing="6" Margin="0,0,0,10">
                             <TextBlock Text="New Unity Project" FontSize="22" Foreground="White"/>

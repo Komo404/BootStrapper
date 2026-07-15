@@ -97,8 +97,6 @@ public static class UnityService
         return versions;
     }
 
-    public static List<string> GetUnityVersions() => GetUnityVersionsAsync().GetAwaiter().GetResult();
-
     private static async Task<string> RunUnityCliAsync(params string[] arguments)
     {
         var startInfo = new ProcessStartInfo

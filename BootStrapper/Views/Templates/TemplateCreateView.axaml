@@ -22,6 +22,7 @@
             <Grid RowDefinitions="Auto,*,Auto" MinHeight="400" ColumnDefinitions="*,*" RowSpacing="18" ColumnSpacing="50">
 
                 <StackPanel Grid.Row="0" Grid.ColumnSpan="2" Spacing="6">
+                    <TextBlock Text="{Binding UnityVersionsStatus}" TextWrapping="Wrap" />
                     <TextBlock Text="Create Template" FontSize="24" Foreground="White"/>
                     <TextBlock Text="Insert the new template infos and the basic file structure" FontSize="14" Foreground="#D6D6D6"/>
                 </StackPanel>

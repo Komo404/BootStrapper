@@ -21,6 +21,7 @@
             <Grid ColumnDefinitions="*,Auto">
 
                 <StackPanel Spacing="8">
+                    <TextBlock Text="{Binding UnityVersionsStatus}" TextWrapping="Wrap" />
 
                     <TextBlock Text="{Binding Name}" FontSize="24" FontWeight="SemiBold" Foreground="White"/>
 

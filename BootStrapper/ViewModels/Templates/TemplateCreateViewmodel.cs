@@ -38,7 +38,6 @@ public partial class TemplateCreateViewModel : ViewModelBase
     {
         _navigation = navigation;
         _config = config;
-        foreach (string version in UnityService.GetUnityVersions()) UnityVersions.Add(version);
 
 
 
@@ -86,6 +85,32 @@ public partial class TemplateCreateViewModel : ViewModelBase
                 ]
             }
         };
+    }
+
+    [ObservableProperty] private bool isLoadingUnityVersions;
+    [ObservableProperty] private string unityVersionsStatus = string.Empty;
+
+    [RelayCommand]
+    private async Task LoadUnityVersions()
+    {
+        if (IsLoadingUnityVersions) return;
+        IsLoadingUnityVersions = true;
+        UnityVersionsStatus = "Loading Unity Editors…";
+        try
+        {
+            var versions = await UnityService.GetUnityVersionsAsync();
+            UnityVersions.Clear();
+            foreach (string version in versions) UnityVersions.Add(version);
+            UnityVersionsStatus = versions.Count == 0 ? "No installed Unity Editor found." : string.Empty;
+        }
+        catch (Exception ex)
+        {
+            UnityVersionsStatus = ex.Message;
+        }
+        finally
+        {
+            IsLoadingUnityVersions = false;
+        }
     }
 
     [RelayCommand]
