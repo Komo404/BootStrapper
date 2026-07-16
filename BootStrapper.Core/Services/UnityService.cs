@@ -9,7 +9,7 @@ public static class UnityService
 {
     private const string UnityCliExecutable = "unity";
 
-    public static async Task CreateUnityProjectAsync(ProjectManifest project)
+    public static async Task CreateUnityProjectAsync(ProjectManifest project, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(project);
 
@@ -26,7 +26,7 @@ public static class UnityService
         string projectName = Path.GetFileName(projectPath);
         string parentDirectory = Path.GetDirectoryName(projectPath) ?? throw new ArgumentException("Project path must include a parent directory.", nameof(project));
 
-        await RunUnityCliAsync(
+        await RunUnityCliAsync(TimeSpan.FromMinutes(10), cancellationToken,
             "projects", "create", projectName,
             "--path", parentDirectory,
             "--editor-version", project.UnityVersion,
@@ -38,13 +38,13 @@ public static class UnityService
             throw new IOException($"Unity CLI reported success but did not create the project directory: {projectPath}");
     }
 
-    public static async Task OpenUnityProjectAsync(ProjectManifest project)
+    public static async Task OpenUnityProjectAsync(ProjectManifest project, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(project);
         if (string.IsNullOrWhiteSpace(project.UnityProjectPath))
             throw new ArgumentException("Project path cannot be null or empty.", nameof(project));
 
-        await RunUnityCliAsync(
+        await RunUnityCliAsync(TimeSpan.FromMinutes(2), cancellationToken,
             "open", Path.GetFullPath(project.UnityProjectPath),
             "--non-interactive",
             "--no-banner");
@@ -60,9 +60,9 @@ public static class UnityService
         Directory.Delete(project.UnityProjectPath, true);
     }
 
-    public static async Task<List<string>> GetUnityVersionsAsync()
+    public static async Task<List<string>> GetUnityVersionsAsync(CancellationToken cancellationToken = default)
     {
-        string output = await RunUnityCliAsync(
+        string output = await RunUnityCliAsync(TimeSpan.FromSeconds(30), cancellationToken,
             "editors",
             "--installed",
             "--json",
@@ -97,8 +97,11 @@ public static class UnityService
         return versions;
     }
 
-    private static async Task<string> RunUnityCliAsync(params string[] arguments)
+    private static async Task<string> RunUnityCliAsync(TimeSpan timeout, CancellationToken cancellationToken, params string[] arguments)
     {
+        cancellationToken.ThrowIfCancellationRequested();
+        using var timeoutSource = new CancellationTokenSource(timeout);
+        using var linkedSource = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, timeoutSource.Token);
         var startInfo = new ProcessStartInfo
         {
             FileName = UnityCliExecutable,
@@ -118,14 +121,27 @@ public static class UnityService
             if (!process.Start())
                 throw new InvalidOperationException("Unity CLI could not be started.");
         }
-        catch (Win32Exception ex)
+        catch (Win32Exception ex) when (ex.NativeErrorCode == 2)
         {
             throw new InvalidOperationException("Unity CLI executable 'unity' was not found. Install Unity CLI and make sure it is available on PATH.", ex);
         }
 
         Task<string> standardOutputTask = process.StandardOutput.ReadToEndAsync();
         Task<string> standardErrorTask = process.StandardError.ReadToEndAsync();
-        await process.WaitForExitAsync().ConfigureAwait(false);
+        try
+        {
+            await process.WaitForExitAsync(linkedSource.Token).ConfigureAwait(false);
+        }
+        catch (OperationCanceledException)
+        {
+            if (!process.HasExited)
+                process.Kill(entireProcessTree: true);
+            await process.WaitForExitAsync().ConfigureAwait(false);
+            await Task.WhenAll(standardOutputTask, standardErrorTask).ConfigureAwait(false);
+            if (cancellationToken.IsCancellationRequested)
+                throw;
+            throw new TimeoutException($"Unity CLI did not finish within {timeout.TotalSeconds} seconds.");
+        }
 
         string standardOutput = await standardOutputTask.ConfigureAwait(false);
         string standardError = await standardErrorTask.ConfigureAwait(false);
