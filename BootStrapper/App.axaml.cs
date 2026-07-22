@@ -1,7 +1,5 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Data.Core;
-using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
 using BootStrapper.Core.Models;
 using BootStrapper.Core.Services;
@@ -10,10 +8,8 @@ using BootStrapper.ViewModels;
 using BootStrapper.Views;
 using System;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using Velopack;
-using Velopack.Exceptions;
 
 namespace BootStrapper;
 
@@ -31,13 +27,14 @@ public partial class App : Application // Ponto inicial da aplicação
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            // Carrega configurações do usuário
+            // Load user settings
             UserConfig config = ConfigService.LoadConfig(ConfigFilePath);
+
 
             var mainWindow = new MainWindow();
             IOpenExplorer explorer = new OpenExplorer(mainWindow);
 
-            // Carrega a MainWindow com as coisas que ela precisa. A Mainwindow que instancia o NavigateService. 
+            // Load the MainWindow with the things it needs. MainWindowViewModel Instantiates the Main Services.
             mainWindow.DataContext = new MainWindowViewModel(config, explorer);
 
             desktop.MainWindow = mainWindow;
@@ -60,7 +57,9 @@ public partial class App : Application // Ponto inicial da aplicação
 
             await updManager.DownloadUpdatesAsync(newVersion);
             updManager.ApplyUpdatesAndRestart(newVersion);
+        } catch (Exception ex)
+        {
+            Console.WriteLine($"Error checking for updates: {ex.Message}");
         }
-        catch (NotInstalledException) { } // Não importa em dev
     }
 }
