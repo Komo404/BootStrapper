@@ -10,6 +10,7 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using Velopack;
+using Velopack.Sources;
 
 namespace BootStrapper;
 
@@ -50,7 +51,8 @@ public partial class App : Application // Ponto inicial da aplicação
 
         try
         {
-            var updManager = new UpdateManager("https://github.com/Komo404/BootStrapper");
+            var updManager = new UpdateManager(new GithubSource(
+                "https://github.com/Komo404/BootStrapper", accessToken: null, prerelease: false));
 
             var newVersion = await updManager.CheckForUpdatesAsync();
             if (newVersion == null) return;
