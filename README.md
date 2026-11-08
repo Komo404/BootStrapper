@@ -26,10 +26,10 @@ single new Unity project at creation time. Instead of a single closed "project s
 - Create, edit and delete reusable script templates, each tied to one or more Unity versions
 - Preview a template's folder and file structure before using it
 - Combine multiple templates into a single new Unity project
-- Detect installed Unity Editor versions automatically and create or open projects through them
+- Detect installed Unity Editor versions and create or open projects through the Unity CLI
 - Browse both official and personal templates from the same interface
 - Fully local and file based: no server or account required to use the app
-- Configurable paths for projects, templates and the Unity Editor installation
+- Configurable paths for projects and templates
 
 ## Architecture
 
@@ -57,7 +57,7 @@ for this reason; that experience is earmarked for a future templates backend ins
 ### Prerequisites
 
 - .NET SDK 10 or newer
-- Unity Hub with at least one Unity Editor version installed
+- Unity CLI installed and available on `PATH`, with at least one Unity Editor version installed
 
 ### Build and run
 
